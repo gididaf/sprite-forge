@@ -3,7 +3,12 @@
     "allow": [
       "Bash(mkdir -p ~/.claude/skills)",
       "Bash(ln -sf /Users/gididaf/Documents/Code/utilities/sprite-forge/.claude/skills/sprite-forge.md ~/.claude/skills/sprite-forge.md)",
-      "Read(//Users/gididaf/.claude/skills/**)"
+      "Read(//Users/gididaf/.claude/skills/**)",
+      "Bash(mkdir -p /Users/gididaf/Documents/Code/utilities/sprite-forge/.claude/skills/sprite-forge)",
+      "Bash(mv /Users/gididaf/Documents/Code/utilities/sprite-forge/.claude/skills/sprite-forge.md /Users/gididaf/Documents/Code/utilities/sprite-forge/.claude/skills/sprite-forge/SKILL.md)",
+      "Bash(rm ~/.claude/skills/sprite-forge.md)",
+      "Bash(mkdir -p ~/.claude/skills/sprite-forge)",
+      "Bash(ln -sf /Users/gididaf/.sprite-forge/.claude/skills/sprite-forge/SKILL.md ~/.claude/skills/sprite-forge/SKILL.md)"
     ]
   }
 }

@@ -49,9 +49,9 @@ chmod +x "$INSTALL_DIR/sprite-forge.py"
 echo "[bin] Linked: sprite-forge -> $BIN_DIR/sprite-forge"
 
 # ── Install Claude Code skill ────────────────────────────────────────────
-mkdir -p "$SKILL_DIR"
-ln -sf "$INSTALL_DIR/.claude/skills/sprite-forge.md" "$SKILL_DIR/sprite-forge.md"
-echo "[skill] Linked: /sprite-forge skill -> $SKILL_DIR/sprite-forge.md"
+mkdir -p "$SKILL_DIR/sprite-forge"
+ln -sf "$INSTALL_DIR/.claude/skills/sprite-forge/SKILL.md" "$SKILL_DIR/sprite-forge/SKILL.md"
+echo "[skill] Linked: /sprite-forge skill -> $SKILL_DIR/sprite-forge/SKILL.md"
 
 # ── Check PATH ────────────────────────────────────────────────────────────
 if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then
