@@ -99,7 +99,28 @@ This produces:
 
 Optional flags: `--frames N`, `--size N`, `--preview`, `--keep-frames`, `--no-mirror`, `--no-meta`
 
-### Step 5: Report results
+### Step 5: Visual review & fix loop
+
+Read the generated sprite sheet PNG using the Read tool (it will display visually since you are multimodal). Inspect it carefully for issues:
+
+**Check for these common problems:**
+- **Detached parts**: elements that don't move with their parent (e.g., weapon spikes staying in place while the weapon swings). Fix: ensure ALL child elements are inside the animated `<g>` group.
+- **Clipping/overlap**: limbs or feet passing through the ground or body. Fix: adjust pivot points or animation value ranges.
+- **Wrong facing direction**: character should be in side-view profile facing LEFT, not front-facing. Fix: reposition facial features for profile view.
+- **Stiff animation**: limbs barely moving, or all frames looking identical. Fix: increase rotation/translation ranges in animation values.
+- **Floating parts**: gaps between limbs and body. Fix: adjust element positions to connect properly.
+- **Missing animation**: some parts should move but don't (e.g., arms during a walk cycle). Fix: add `<animateTransform>` to those elements.
+- **Proportions**: character too small in the viewBox, or parts disproportionately large/small.
+
+**If ANY issues are found:**
+1. Read the current SVG source
+2. Fix the identified problems
+3. Save the corrected SVG (overwrite the same file)
+4. Re-run `sprite-forge <file>.svg` to regenerate the sprite sheet
+5. Read the new sprite sheet PNG and review again
+6. Repeat until the sprite sheet looks correct (max 3 iterations)
+
+### Step 6: Report results
 
 Tell the user what was generated and suggest next steps (e.g., "want me to adjust the walk cycle?" or "want a running version?").
 
