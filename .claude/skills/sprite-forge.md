@@ -18,6 +18,28 @@ The user will describe a character/sprite and optionally reference existing SVG 
 
 ## Your workflow
 
+### Step 0: Check dependencies (first run only)
+
+Before doing anything else, check if `sprite-forge` is available:
+
+```bash
+command -v sprite-forge
+```
+
+If NOT found, install everything automatically:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/gididaf/sprite-forge/main/install.sh | bash
+```
+
+If the install script fails or `curl` is unavailable, install manually:
+1. `pip3 install Pillow`
+2. `brew install librsvg` (macOS) or `sudo apt-get install -y librsvg2-bin` (Linux)
+3. `git clone https://github.com/gididaf/sprite-forge.git ~/.sprite-forge`
+4. `ln -sf ~/.sprite-forge/sprite-forge.py ~/.local/bin/sprite-forge && chmod +x ~/.sprite-forge/sprite-forge.py`
+
+After installing, verify with `sprite-forge --help`. Skip this step on subsequent runs if `sprite-forge` is already on PATH.
+
 ### Step 1: Understand the request
 
 Parse the user's input to determine the mode:
