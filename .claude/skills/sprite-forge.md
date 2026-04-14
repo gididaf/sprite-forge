@@ -10,11 +10,11 @@ Generate animated SVG game sprites and convert them to PNG sprite sheets.
 
 ## Usage
 
-The user will describe a character/sprite and optionally reference existing SVG files:
+The user describes what they want in natural language:
 
-- `"skeleton warrior walking left"` — generate from scratch
-- `"make it red" --modify hero.svg` — modify an existing SVG in place
-- `"add a shield" --template hero.svg` — create a new SVG using an existing one as reference
+- `skeleton warrior walking left` — generate from scratch
+- `make it red, modify hero.svg` — modify an existing SVG in place
+- `add a shield, based on hero.svg` — create a new SVG using an existing one as reference
 
 ## Your workflow
 
@@ -42,10 +42,10 @@ After installing, verify with `sprite-forge --help`. Skip this step on subsequen
 
 ### Step 1: Understand the request
 
-Parse the user's input to determine the mode:
-- **Generate**: no existing SVG referenced — create from scratch
-- **Modify** (`--modify <file>`): read the existing SVG, apply the requested changes, overwrite it
-- **Template** (`--template <file>`): read the existing SVG as reference, create a new SVG inspired by it
+Determine the mode from the user's natural language:
+- **Generate**: no existing SVG mentioned — create from scratch
+- **Modify**: user references an SVG and wants to change it ("modify X", "update X", "change X") — read it, apply changes, overwrite it
+- **Template**: user references an SVG as a starting point ("based on X", "like X but...", "use X as reference") — read it, create a new SVG inspired by it
 
 ### Step 2: Generate the SVG
 

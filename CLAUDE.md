@@ -33,9 +33,9 @@ When generating animated SVGs for this project:
 ### Via Claude Code skill (recommended)
 
 ```
-/sprite-forge "skeleton warrior walking left"
-/sprite-forge "make it red" --modify hero_walk_left.svg
-/sprite-forge "add a shield" --template hero_walk_left.svg
+/sprite-forge skeleton warrior walking left
+/sprite-forge make it red, modify hero_walk_left.svg
+/sprite-forge add a shield, based on hero_walk_left.svg
 ```
 
 ### Direct conversion (standalone)

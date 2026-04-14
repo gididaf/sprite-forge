@@ -43,13 +43,13 @@ Start a Claude Code session anywhere and use the skill:
 
 ```
 # Generate a new sprite from a text description
-/sprite-forge "skeleton warrior walking left"
+/sprite-forge skeleton warrior walking left
 
 # Modify an existing SVG in place
-/sprite-forge "make the eyes glow red" --modify skeleton_walk_left.svg
+/sprite-forge make the eyes glow red, modify skeleton_walk_left.svg
 
 # Create a new sprite using an existing one as reference
-/sprite-forge "now make it run" --template skeleton_walk_left.svg
+/sprite-forge now make it run, based on skeleton_walk_left.svg
 ```
 
 Claude generates the SVG directly — no subprocess calls, no API keys beyond your Claude Code subscription.
