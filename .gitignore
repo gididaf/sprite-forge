@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+*_spritesheet.png
+*_spritesheet_mirror.png
+*_spritesheet.json
+*_preview.html
+*_frames/
+*.svg
+!.claude/
