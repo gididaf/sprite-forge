@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ellipse cx="32" cy="58" rx="13" ry="2.5" fill="rgba(255,100,0,0.35)">
+    <animate attributeName="rx" values="13;15;13;14;13" dur="0.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.35;0.55;0.35;0.45;0.35" dur="0.5s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- outer flame (red/orange) -->
+  <path d="M 32,56 Q 16,40 20,22 Q 26,12 32,4 Q 38,12 44,22 Q 48,40 32,56 Z" fill="#ff4400">
+    <animate attributeName="d"
+             values="M 32,56 Q 16,40 20,22 Q 26,12 32,4 Q 38,12 44,22 Q 48,40 32,56 Z;
+                     M 32,56 Q 18,42 18,20 Q 28,10 32,2 Q 36,12 46,20 Q 46,42 32,56 Z;
+                     M 32,56 Q 16,40 20,22 Q 26,12 32,4 Q 38,12 44,22 Q 48,40 32,56 Z;
+                     M 32,56 Q 20,44 22,24 Q 24,14 32,6 Q 40,14 42,24 Q 44,44 32,56 Z;
+                     M 32,56 Q 16,40 20,22 Q 26,12 32,4 Q 38,12 44,22 Q 48,40 32,56 Z"
+             dur="0.5s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- middle flame (orange) -->
+  <path d="M 32,54 Q 22,42 26,26 Q 30,16 32,10 Q 34,16 38,26 Q 42,42 32,54 Z" fill="#ff8800">
+    <animate attributeName="d"
+             values="M 32,54 Q 22,42 26,26 Q 30,16 32,10 Q 34,16 38,26 Q 42,42 32,54 Z;
+                     M 32,54 Q 24,40 24,24 Q 30,14 32,8 Q 36,16 40,24 Q 40,40 32,54 Z;
+                     M 32,54 Q 22,42 26,26 Q 30,16 32,10 Q 34,16 38,26 Q 42,42 32,54 Z;
+                     M 32,54 Q 26,44 28,28 Q 30,18 32,12 Q 34,18 36,28 Q 38,44 32,54 Z;
+                     M 32,54 Q 22,42 26,26 Q 30,16 32,10 Q 34,16 38,26 Q 42,42 32,54 Z"
+             dur="0.5s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- inner core (yellow) -->
+  <path d="M 32,50 Q 26,42 28,30 Q 30,22 32,18 Q 34,22 36,30 Q 38,42 32,50 Z" fill="#ffdd00">
+    <animate attributeName="d"
+             values="M 32,50 Q 26,42 28,30 Q 30,22 32,18 Q 34,22 36,30 Q 38,42 32,50 Z;
+                     M 32,50 Q 28,40 28,28 Q 30,20 32,16 Q 34,22 36,28 Q 36,40 32,50 Z;
+                     M 32,50 Q 26,42 28,30 Q 30,22 32,18 Q 34,22 36,30 Q 38,42 32,50 Z;
+                     M 32,50 Q 29,44 30,32 Q 30,24 32,20 Q 34,24 34,32 Q 35,44 32,50 Z;
+                     M 32,50 Q 26,42 28,30 Q 30,22 32,18 Q 34,22 36,30 Q 38,42 32,50 Z"
+             dur="0.5s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- face: eyes -->
+  <ellipse cx="28" cy="34" rx="2" ry="2.5" fill="#ffffff">
+    <animate attributeName="ry" values="2.5;0.5;2.5;2.5;2.5" dur="2.5s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="36" cy="34" rx="2" ry="2.5" fill="#ffffff">
+    <animate attributeName="ry" values="2.5;0.5;2.5;2.5;2.5" dur="2.5s" repeatCount="indefinite"/>
+  </ellipse>
+  <circle cx="28" cy="34" r="1" fill="#ff2200">
+    <animate attributeName="r" values="1;0.2;1;1;1" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="36" cy="34" r="1" fill="#ff2200">
+    <animate attributeName="r" values="1;0.2;1;1;1" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- mouth -->
+  <path d="M 28,40 Q 32,43 36,40" stroke="#cc2200" stroke-width="1" fill="none"/>
+
+  <!-- rising sparks -->
+  <circle cx="24" cy="18" r="1.2" fill="#ffff00">
+    <animate attributeName="cy" values="18;4" dur="1s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0" dur="1s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="40" cy="22" r="1" fill="#ffaa00">
+    <animate attributeName="cy" values="22;6" dur="1.2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0" dur="1.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="32" cy="16" r="0.8" fill="#ffffff">
+    <animate attributeName="cy" values="16;2" dur="0.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0" dur="0.8s" repeatCount="indefinite"/>
+  </circle>
+</svg>

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ellipse cx="32" cy="60" rx="12" ry="1.8" fill="rgba(0,0,0,0.25)"/>
+
+  <!-- legs -->
+  <rect x="34" y="42" width="5" height="16" fill="#3a4a60"/>
+  <rect x="33" y="56" width="7" height="3" fill="#1a1a1a"/>
+  <rect x="26" y="42" width="5" height="16" fill="#4a5a70"/>
+  <rect x="25" y="56" width="7" height="3" fill="#2a2a2a"/>
+
+  <!-- torso -->
+  <rect x="26" y="24" width="12" height="18" fill="#6a7a90"/>
+  <rect x="26" y="24" width="12" height="3" fill="#8a9ab0"/>
+  <polygon points="30,30 34,30 32,35" fill="#cc2222"/>
+  <rect x="26" y="40" width="12" height="2" fill="#3a4a60"/>
+
+  <!-- back arm -->
+  <rect x="35" y="26" width="4" height="11" fill="#5a6a80"/>
+  <circle cx="37" cy="38" r="1.8" fill="#9aaabc"/>
+
+  <!-- helmet (profile facing left) -->
+  <rect x="26" y="12" width="12" height="11" fill="#7a8aa0"/>
+  <rect x="26" y="12" width="12" height="3" fill="#9aaac0"/>
+  <rect x="24" y="16" width="4" height="2" fill="#000"/>
+  <polygon points="26,20 24,21 26,23" fill="#7a8aa0"/>
+  <polygon points="30,12 34,12 35,6 32,8 29,6" fill="#cc2222"/>
+  <polygon points="31,12 33,12 33.5,8 32,9 30.5,8" fill="#ee3333"/>
+
+  <!-- FRONT ARM WITH SWORD (pivot at shoulder) -->
+  <g transform="translate(28,26)">
+    <animateTransform attributeName="transform" type="rotate" values="60 0 0; 30 0 0; -50 0 0; -20 0 0; 60 0 0" dur="0.7s" repeatCount="indefinite" additive="sum"/>
+    <rect x="-2" y="0" width="4" height="10" fill="#5a6a80"/>
+    <circle cx="0" cy="10" r="2.2" fill="#9aaabc"/>
+    <rect x="-1" y="11" width="2" height="3" fill="#3a2a1a"/>
+    <rect x="-5" y="13" width="10" height="2" fill="#ccaa44"/>
+    <rect x="-1.5" y="15" width="3" height="20" fill="#e8e8e8"/>
+    <rect x="-0.3" y="15" width="0.6" height="20" fill="#ffffff"/>
+    <polygon points="-1.5,35 1.5,35 0,39" fill="#e8e8e8"/>
+  </g>
+
+  <!-- body bob -->
+  <animate attributeName="viewBox" values="0 0 64 64; 0 -1 64 64; 0 0 64 64" dur="0.7s" repeatCount="indefinite"/>
+
+  <!-- swoosh -->
+  <path d="M 6,28 Q 2,36 8,44" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0">
+    <animate attributeName="opacity" values="0;0;0.9;0.4;0" dur="0.7s" repeatCount="indefinite"/>
+  </path>
+</svg>

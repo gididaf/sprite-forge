@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0; 0,-2; 0,0" dur="0.4s" repeatCount="indefinite"/>
+  <ellipse cx="30" cy="60" rx="10" ry="1.6" fill="rgba(0,0,0,0.25)"/>
+
+  <!-- trailing scarf -->
+  <path d="M 32,22 Q 48,20 54,28 Q 50,32 40,28" fill="#cc2222">
+    <animate attributeName="d"
+             values="M 32,22 Q 48,20 54,28 Q 50,32 40,28;
+                     M 32,22 Q 50,24 58,26 Q 54,34 40,28;
+                     M 32,22 Q 46,28 52,32 Q 50,34 38,28;
+                     M 32,22 Q 48,20 54,28 Q 50,32 40,28"
+             dur="0.4s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- BACK LEG (single segment, large swing) -->
+  <g transform="translate(31,42)">
+    <animateTransform attributeName="transform" type="rotate" values="-55 0 0; 0 0 0; 55 0 0; 0 0 0; -55 0 0" dur="0.4s" repeatCount="indefinite" additive="sum"/>
+    <rect x="-2.2" y="0" width="4.4" height="16" fill="#1a1a2a"/>
+    <rect x="-3" y="14" width="6" height="3" fill="#000000"/>
+  </g>
+
+  <!-- BACK ARM -->
+  <g transform="translate(33,24)">
+    <animateTransform attributeName="transform" type="rotate" values="70 0 0; 0 0 0; -60 0 0; 0 0 0; 70 0 0" dur="0.4s" repeatCount="indefinite" additive="sum"/>
+    <rect x="-2" y="0" width="4" height="13" fill="#2a2a3a"/>
+    <circle cx="0" cy="13" r="1.8" fill="#2a2a3a"/>
+  </g>
+
+  <!-- torso (forward lean via skewed polygon) -->
+  <polygon points="26,22 34,22 36,42 27,42" fill="#2a2a3a"/>
+  <rect x="26" y="28" width="11" height="2" fill="#cc2222"/>
+
+  <!-- head (ninja mask, profile facing LEFT, slight lean forward) -->
+  <circle cx="28" cy="17" r="6" fill="#2a2a3a"/>
+  <rect x="20" y="15" width="5" height="2" fill="#ffffff"/>
+  <circle cx="22" cy="16" r="0.8" fill="#000"/>
+  <path d="M 32,13 Q 34,17 32,21" stroke="#1a1a2a" stroke-width="1" fill="none"/>
+  <!-- headband tie -->
+  <polygon points="34,16 38,14 38,18" fill="#cc2222"/>
+
+  <!-- FRONT LEG -->
+  <g transform="translate(29,42)">
+    <animateTransform attributeName="transform" type="rotate" values="55 0 0; 0 0 0; -55 0 0; 0 0 0; 55 0 0" dur="0.4s" repeatCount="indefinite" additive="sum"/>
+    <rect x="-2.2" y="0" width="4.4" height="16" fill="#3a3a4a"/>
+    <rect x="-3" y="14" width="6" height="3" fill="#111111"/>
+  </g>
+
+  <!-- FRONT ARM with kunai -->
+  <g transform="translate(27,24)">
+    <animateTransform attributeName="transform" type="rotate" values="-60 0 0; 0 0 0; 70 0 0; 0 0 0; -60 0 0" dur="0.4s" repeatCount="indefinite" additive="sum"/>
+    <rect x="-2" y="0" width="4" height="12" fill="#3a3a4a"/>
+    <circle cx="0" cy="12" r="1.8" fill="#3a3a4a"/>
+    <!-- kunai (grip + blade) -->
+    <rect x="-1" y="12" width="2" height="3" fill="#3a2a1a"/>
+    <polygon points="-2.5,15 2.5,15 0,22" fill="#aaaaaa"/>
+  </g>
+</svg>

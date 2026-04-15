@@ -1,0 +1,10 @@
+{
+  "source": "slime_bounce.svg",
+  "frameCount": 8,
+  "frameWidth": 64,
+  "frameHeight": 64,
+  "sheetWidth": 512,
+  "sheetHeight": 64,
+  "animationDuration": 0.7,
+  "fps": 11.43
+}

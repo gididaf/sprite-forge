@@ -1,0 +1,11 @@
+{
+  "source": "knight_attack_left.svg",
+  "frameCount": 8,
+  "frameWidth": 64,
+  "frameHeight": 64,
+  "sheetWidth": 512,
+  "sheetHeight": 64,
+  "animationDuration": 0.7,
+  "fps": 11.43,
+  "mirror": "knight_attack_left_spritesheet_mirror.png"
+}

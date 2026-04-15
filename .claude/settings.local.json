@@ -8,7 +8,8 @@
       "Bash(mv /Users/gididaf/Documents/Code/utilities/sprite-forge/.claude/skills/sprite-forge.md /Users/gididaf/Documents/Code/utilities/sprite-forge/.claude/skills/sprite-forge/SKILL.md)",
       "Bash(rm ~/.claude/skills/sprite-forge.md)",
       "Bash(mkdir -p ~/.claude/skills/sprite-forge)",
-      "Bash(ln -sf /Users/gididaf/.sprite-forge/.claude/skills/sprite-forge/SKILL.md ~/.claude/skills/sprite-forge/SKILL.md)"
+      "Bash(ln -sf /Users/gididaf/.sprite-forge/.claude/skills/sprite-forge/SKILL.md ~/.claude/skills/sprite-forge/SKILL.md)",
+      "Bash(cp /Users/gididaf/.claude/skills/sprite-forge/SKILL.md /Users/gididaf/Documents/Code/utilities/sprite-forge/.claude/skills/sprite-forge/SKILL.md)"
     ]
   }
 }

@@ -7,3 +7,5 @@ __pycache__/
 *_frames/
 *.svg
 !.claude/
+!showcase/
+!showcase/**

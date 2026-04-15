@@ -1,0 +1,10 @@
+{
+  "source": "treasure_chest_open.svg",
+  "frameCount": 8,
+  "frameWidth": 64,
+  "frameHeight": 64,
+  "sheetWidth": 512,
+  "sheetHeight": 64,
+  "animationDuration": 2.4,
+  "fps": 3.33
+}

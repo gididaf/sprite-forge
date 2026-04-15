@@ -1,0 +1,11 @@
+{
+  "source": "ninja_run_left.svg",
+  "frameCount": 8,
+  "frameWidth": 64,
+  "frameHeight": 64,
+  "sheetWidth": 512,
+  "sheetHeight": 64,
+  "animationDuration": 0.4,
+  "fps": 20.0,
+  "mirror": "ninja_run_left_spritesheet_mirror.png"
+}

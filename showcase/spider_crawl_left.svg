@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64">
+  <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1; 0,0.5; 0,-0.5; 0,0" dur="0.5s" repeatCount="indefinite"/>
+  <ellipse cx="40" cy="54" rx="18" ry="2.5" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- BACK (right-side) legs — alternating tetrapod: legs 1&3 up while 2&4 planted, then swap -->
+  <g stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" fill="none">
+    <!-- R1 (furthest back) — phase A -->
+    <path d="M 48,38 L 60,28 L 66,40">
+      <animate attributeName="d"
+               values="M 48,38 L 60,28 L 66,40;
+                       M 48,38 L 62,34 L 68,46;
+                       M 48,38 L 60,28 L 66,40"
+               dur="0.5s" repeatCount="indefinite"/>
+    </path>
+    <!-- R2 — phase B -->
+    <path d="M 50,40 L 64,42 L 72,46">
+      <animate attributeName="d"
+               values="M 50,40 L 64,42 L 72,46;
+                       M 50,40 L 62,34 L 70,34;
+                       M 50,40 L 64,42 L 72,46"
+               dur="0.5s" repeatCount="indefinite"/>
+    </path>
+    <!-- R3 — phase A -->
+    <path d="M 48,42 L 58,48 L 64,54">
+      <animate attributeName="d"
+               values="M 48,42 L 58,48 L 64,54;
+                       M 48,42 L 60,42 L 66,42;
+                       M 48,42 L 58,48 L 64,54"
+               dur="0.5s" repeatCount="indefinite"/>
+    </path>
+    <!-- R4 (closest to back end) — phase B -->
+    <path d="M 46,40 L 52,50 L 54,54">
+      <animate attributeName="d"
+               values="M 46,40 L 52,50 L 54,54;
+                       M 46,40 L 54,48 L 58,46;
+                       M 46,40 L 52,50 L 54,54"
+               dur="0.5s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- ABDOMEN (rear, bigger) -->
+  <ellipse cx="44" cy="38" rx="14" ry="10" fill="#2a2a2a"/>
+  <ellipse cx="44" cy="36" rx="12" ry="7" fill="#3a3a3a"/>
+  <!-- red hourglass marking -->
+  <polygon points="42,34 46,34 44,38 46,42 42,42 44,38" fill="#cc2222"/>
+  <!-- highlight -->
+  <ellipse cx="40" cy="32" rx="4" ry="2" fill="#4a4a4a"/>
+
+  <!-- CEPHALOTHORAX (front, smaller) -->
+  <ellipse cx="26" cy="38" rx="8" ry="6" fill="#1a1a1a"/>
+  <!-- eyes cluster (front = left) -->
+  <circle cx="20" cy="35" r="1.2" fill="#ff3333"/>
+  <circle cx="20" cy="39" r="1.2" fill="#ff3333"/>
+  <circle cx="22" cy="33" r="1" fill="#ff6666"/>
+  <circle cx="22" cy="41" r="1" fill="#ff6666"/>
+  <circle cx="19" cy="36" r="0.4" fill="#ffffff"/>
+  <circle cx="19" cy="40" r="0.4" fill="#ffffff"/>
+
+  <!-- fangs -->
+  <polygon points="18,40 20,44 16,42" fill="#ffffff"/>
+  <polygon points="20,40 22,44 18,42" fill="#ffffff"/>
+  <circle cx="17" cy="42" r="0.4" fill="#cc2222"/>
+  <circle cx="19" cy="42" r="0.4" fill="#cc2222"/>
+
+  <!-- FRONT (left-side) legs — opposite phase to back legs of same number for tetrapod gait -->
+  <g stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" fill="none">
+    <!-- L1 (front-most) — phase B (up when R1 is down) -->
+    <path d="M 24,36 L 16,28 L 8,40">
+      <animate attributeName="d"
+               values="M 24,36 L 16,28 L 8,40;
+                       M 24,36 L 14,34 L 6,46;
+                       M 24,36 L 16,28 L 8,40"
+               dur="0.5s" repeatCount="indefinite"
+               begin="0.25s"/>
+    </path>
+    <!-- L2 — phase A -->
+    <path d="M 22,38 L 12,40 L 4,46">
+      <animate attributeName="d"
+               values="M 22,38 L 12,40 L 4,46;
+                       M 22,38 L 14,34 L 6,34;
+                       M 22,38 L 12,40 L 4,46"
+               dur="0.5s" repeatCount="indefinite"
+               begin="0.25s"/>
+    </path>
+    <!-- L3 — phase B -->
+    <path d="M 24,40 L 18,46 L 14,54">
+      <animate attributeName="d"
+               values="M 24,40 L 18,46 L 14,54;
+                       M 24,40 L 16,42 L 10,42;
+                       M 24,40 L 18,46 L 14,54"
+               dur="0.5s" repeatCount="indefinite"
+               begin="0.25s"/>
+    </path>
+    <!-- L4 (closest to abdomen) — phase A -->
+    <path d="M 26,40 L 26,50 L 22,54">
+      <animate attributeName="d"
+               values="M 26,40 L 26,50 L 22,54;
+                       M 26,40 L 24,46 L 20,44;
+                       M 26,40 L 26,50 L 22,54"
+               dur="0.5s" repeatCount="indefinite"
+               begin="0.25s"/>
+    </path>
+  </g>
+</svg>

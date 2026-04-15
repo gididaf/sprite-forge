@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- shadow scales inversely to jump height -->
+  <ellipse cx="32" cy="58" rx="14" ry="2" fill="rgba(0,0,0,0.25)">
+    <animate attributeName="rx" values="14;7;14" dur="0.7s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.12;0.3" dur="0.7s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- body moves up then lands; squash/stretch -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="32,44; 32,28; 32,44; 32,44" dur="0.7s" repeatCount="indefinite"/>
+
+    <!-- body ellipse: stretched tall when airborne, squashed flat when landed -->
+    <ellipse cx="0" cy="0" rx="14" ry="12" fill="#4ade80">
+      <animate attributeName="rx" values="14;10;17;14" dur="0.7s" repeatCount="indefinite"/>
+      <animate attributeName="ry" values="12;16;7;12" dur="0.7s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="0;-2;3;0" dur="0.7s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- highlight (shiny spot) -->
+    <ellipse cx="-5" cy="-6" rx="3" ry="4" fill="#86efac" opacity="0.85">
+      <animate attributeName="ry" values="4;5;2;4" dur="0.7s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- eyes -->
+    <circle cx="-4" cy="-2" r="1.6" fill="#000">
+      <animate attributeName="cy" values="-2;-4;0;-2" dur="0.7s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="4" cy="-2" r="1.6" fill="#000">
+      <animate attributeName="cy" values="-2;-4;0;-2" dur="0.7s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="-3.7" cy="-2.6" r="0.5" fill="#fff">
+      <animate attributeName="cy" values="-2.6;-4.6;-0.6;-2.6" dur="0.7s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="4.3" cy="-2.6" r="0.5" fill="#fff">
+      <animate attributeName="cy" values="-2.6;-4.6;-0.6;-2.6" dur="0.7s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- mouth (smiles when airborne, neutral when landed) -->
+    <path d="M -3,3 Q 0,5 3,3" stroke="#000" stroke-width="1" fill="none">
+      <animate attributeName="d" values="M -3,3 Q 0,5 3,3; M -3,1 Q 0,4 3,1; M -3,4 Q 0,5 3,4; M -3,3 Q 0,5 3,3" dur="0.7s" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

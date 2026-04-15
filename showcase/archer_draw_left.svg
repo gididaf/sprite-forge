@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ellipse cx="36" cy="60" rx="8" ry="1.6" fill="rgba(0,0,0,0.25)"/>
+
+  <!-- stance: feet offset (side view) -->
+  <rect x="38" y="44" width="4" height="14" fill="#3a4a2a"/>
+  <rect x="37" y="56" width="6" height="3" fill="#2a1a1a"/>
+  <rect x="32" y="44" width="4" height="14" fill="#4a5a3a"/>
+  <rect x="31" y="56" width="6" height="3" fill="#3a2a1a"/>
+
+  <!-- NARROW profile torso (only 5px wide — true side view) -->
+  <rect x="34" y="26" width="5" height="18" fill="#5a8a4a"/>
+  <rect x="34" y="26" width="5" height="3" fill="#6a9a5a"/>
+  <rect x="34" y="42" width="5" height="2" fill="#3a5a2a"/>
+
+  <!-- head (profile, narrow, facing LEFT) -->
+  <ellipse cx="36" cy="20" rx="4.5" ry="5.5" fill="#e8b88a"/>
+  <!-- prominent nose on LEFT -->
+  <polygon points="31,19 27,21 31,22" fill="#d89868"/>
+  <!-- chin -->
+  <polygon points="32,23 34,25 36,24" fill="#e8b88a"/>
+  <!-- eye (on LEFT side of face) -->
+  <circle cx="33" cy="18" r="0.9" fill="#000"/>
+  <!-- hood (wraps profile head) -->
+  <path d="M 30,14 Q 36,8 42,14 L 42,24 L 36,24 L 30,22 Z" fill="#3a5a2a"/>
+  <path d="M 30,14 Q 36,9 41,14 L 41,18 L 31,18 Z" fill="#4a6a3a"/>
+
+  <!-- BACK ARM: pulls string. Shoulder at (38,28). Upper arm angles back (toward right), forearm bent. Animates from "pull" to "release". -->
+  <g transform="translate(38,28)">
+    <animateTransform attributeName="transform" type="rotate" values="120 0 0; 120 0 0; 120 0 0; 0 0 0; 120 0 0" dur="1.6s" repeatCount="indefinite" additive="sum"/>
+    <rect x="-2" y="0" width="4" height="7" fill="#e8b88a"/>
+    <g transform="translate(0,7)">
+      <animateTransform attributeName="transform" type="rotate" values="-90 0 0; -90 0 0; -90 0 0; 0 0 0; -90 0 0" dur="1.6s" repeatCount="indefinite" additive="sum"/>
+      <rect x="-2" y="0" width="4" height="7" fill="#e8b88a"/>
+      <circle cx="0" cy="8" r="1.8" fill="#d89868"/>
+    </g>
+  </g>
+
+  <!-- FRONT ARM: extends LEFT holding bow. Shoulder at (34,28), fully extended to ~(20,30). -->
+  <rect x="32" y="26" width="3" height="4" fill="#e8b88a"/>
+  <rect x="20" y="28.5" width="13" height="3" fill="#e8b88a"/>
+  <circle cx="19" cy="30" r="2" fill="#d89868"/>
+
+  <!-- BOW: vertical in front of archer at x=16, curved arms -->
+  <path d="M 16,12 Q 8,22 12,30 Q 8,38 16,48" stroke="#6b4423" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M 16,12 Q 8,22 12,30 Q 8,38 16,48" stroke="#8b5a33" stroke-width="1" fill="none" stroke-linecap="round"/>
+  <!-- bow grip (where front hand holds) -->
+  <rect x="14" y="27" width="5" height="6" fill="#4a2a11"/>
+
+  <!-- BOWSTRING: clear V-shape, nocking point (middle) pulled back to ~x=26 when drawn, returns to x=12 when loose -->
+  <polyline points="16,12 26,30 16,48" stroke="#ffffff" stroke-width="1.2" fill="none">
+    <animate attributeName="points"
+             values="16,12 26,30 16,48;
+                     16,12 30,30 16,48;
+                     16,12 30,30 16,48;
+                     16,12 12,30 16,48;
+                     16,12 26,30 16,48"
+             dur="1.6s" repeatCount="indefinite"/>
+  </polyline>
+
+  <!-- ARROW: thick, clearly visible, points LEFT (arrowhead at low x). Nock moves with string. -->
+  <g>
+    <!-- shaft -->
+    <rect x="6" y="29" width="22" height="1.8" fill="#8b5a2b">
+      <animate attributeName="x"
+               values="6;2;2;6;6"
+               dur="1.6s" repeatCount="indefinite"/>
+      <animate attributeName="width"
+               values="22;26;26;0;22"
+               dur="1.6s" repeatCount="indefinite"/>
+    </rect>
+    <!-- arrowhead (on LEFT) -->
+    <polygon points="6,27 2,30 6,33" fill="#aaaaaa">
+      <animate attributeName="points"
+               values="6,27 2,30 6,33;
+                       2,27 -2,30 2,33;
+                       2,27 -2,30 2,33;
+                       6,27 2,30 6,33;
+                       6,27 2,30 6,33"
+               dur="1.6s" repeatCount="indefinite"/>
+    </polygon>
+    <!-- fletching (on RIGHT, at nocking point) -->
+    <polygon points="26,27 30,30 26,33" fill="#cc3333">
+      <animate attributeName="points"
+               values="26,27 30,30 26,33;
+                       30,27 34,30 30,33;
+                       30,27 34,30 30,33;
+                       12,27 16,30 12,33;
+                       26,27 30,30 26,33"
+               dur="1.6s" repeatCount="indefinite"/>
+    </polygon>
+  </g>
+
+  <!-- release flash -->
+  <circle cx="12" cy="30" r="4" fill="#ffff88" opacity="0">
+    <animate attributeName="opacity" values="0;0;0;0.8;0" dur="1.6s" repeatCount="indefinite"/>
+  </circle>
+</svg>

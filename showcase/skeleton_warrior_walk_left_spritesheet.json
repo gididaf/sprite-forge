@@ -1,0 +1,11 @@
+{
+  "source": "skeleton_warrior_walk_left.svg",
+  "frameCount": 8,
+  "frameWidth": 64,
+  "frameHeight": 64,
+  "sheetWidth": 512,
+  "sheetHeight": 64,
+  "animationDuration": 0.6,
+  "fps": 13.33,
+  "mirror": "skeleton_warrior_walk_left_spritesheet_mirror.png"
+}
