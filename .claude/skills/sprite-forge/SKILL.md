@@ -77,10 +77,10 @@ Create a complete, self-contained animated SVG following these conventions:
 - Walk cycle duration: 0.4s–0.8s with `repeatCount="indefinite"`
 - Place `<animateTransform>` as a direct child of the animated element, NOT in a wrapper `<g>`
 
-**Animation pitfalls (confirmed bugs — avoid):**
-- **Shifting rotation pivots across keyframes breaks rendering.** In `<animateTransform type="rotate" values="...">`, the cx/cy in each `angle cx cy` triple MUST stay constant across all keyframes. Mixing `-8 0 0; -12 0 10; 5 0 10` (different pivots) causes parts of the group to disappear or fly off-screen in intermediate frames. Pick ONE pivot point and keep it identical in every keyframe.
-- **Nested `additive="sum"` rotates compound unpredictably.** One `<animateTransform additive="sum">` on a group works fine. But nesting another inside (e.g. upper-leg rotating with a lower-leg group that also has its own rotating animateTransform) causes the inner element to render at unexpected positions in baked frames. Prefer: single rotation per limb, even if that means coarser articulation. If you need a hinged joint, bake the bend into separate keyframes on the outer group rather than nesting.
-- **Do not nest animateTransforms more than one level deep** until this limitation is fixed in the baking engine.
+**Composing transforms correctly:**
+- When a `<g>` has a static `transform` attribute AND an `<animateTransform>`, set `additive="sum"` on the animation so the rotation composes with the translate instead of replacing it. Example: `<g transform="translate(34,42)"><animateTransform type="rotate" values="-25 0 0; 25 0 0; -25 0 0" additive="sum"/>`. Without `additive="sum"` the base translate is lost and the element renders at the origin.
+- Keep the rotation pivot (cx, cy in `angle cx cy`) constant across all keyframes within a single `<animateTransform>` unless you explicitly want the pivot to slide — mixing pivots produces physically odd motion (the element orbits around different anchor points mid-animation).
+- Nested rotating groups (shoulder rotate → elbow rotate inside) work correctly as long as each level uses `additive="sum"`.
 
 **Layering & depth:**
 - Draw back limbs first (further from viewer, darker color)

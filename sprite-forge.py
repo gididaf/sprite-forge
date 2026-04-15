@@ -110,7 +110,13 @@ def bake_frame(svg_text: str, time: float) -> str:
 
             if tag == "animateTransform":
                 transform_type = child.get("type", "translate")
-                parent.set("transform", f"{transform_type}({val})")
+                additive = child.get("additive", "replace")
+                new_transform = f"{transform_type}({val})"
+                existing = parent.get("transform", "")
+                if additive == "sum" and existing:
+                    parent.set("transform", f"{existing} {new_transform}")
+                else:
+                    parent.set("transform", new_transform)
             else:
                 attr_name = child.get("attributeName")
                 if attr_name:
