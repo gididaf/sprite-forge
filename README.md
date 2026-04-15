@@ -16,20 +16,24 @@ Describe a character, get a game-ready sprite sheet.
 
 Every sprite below was generated from a single text description. No art skills, no asset store, no subscription fees beyond Claude Code itself.
 
-| Sprite | Prompt |
-|---|---|
-| ![Skeleton warrior](showcase/skeleton_warrior_walk_left_spritesheet.png) | *"skeleton warrior walking left"* |
-| ![Wizard casting](showcase/wizard_cast_left_spritesheet.png) | *"wizard casting a spell, facing left"* |
-| ![Slime](showcase/slime_bounce_spritesheet.png) | *"slime bouncing"* |
-| ![Knight attacking](showcase/knight_attack_left_spritesheet.png) | *"knight attacking with a sword, facing left"* |
-| ![Archer](showcase/archer_draw_left_spritesheet.png) | *"archer drawing a bow, facing left"* |
-| ![Dragon](showcase/dragon_fly_left_spritesheet.png) | *"dragon flying left, breathing fire"* |
-| ![Spider](showcase/spider_crawl_left_spritesheet.png) | *"spider crawling left"* |
-| ![Ninja](showcase/ninja_run_left_spritesheet.png) | *"ninja running left with a kunai"* |
-| ![Treasure chest](showcase/treasure_chest_open_spritesheet.png) | *"treasure chest opening, revealing gold"* |
-| ![Fire elemental](showcase/fire_elemental_idle_spritesheet.png) | *"fire elemental idle, flickering"* |
+<table>
+  <tr>
+    <td align="center"><img src="showcase/skeleton_warrior_walk_left.gif" width="128"/><br/><sub><i>"skeleton warrior walking left"</i></sub></td>
+    <td align="center"><img src="showcase/wizard_cast_left.gif" width="128"/><br/><sub><i>"wizard casting a spell"</i></sub></td>
+    <td align="center"><img src="showcase/slime_bounce.gif" width="128"/><br/><sub><i>"slime bouncing"</i></sub></td>
+    <td align="center"><img src="showcase/knight_attack_left.gif" width="128"/><br/><sub><i>"knight attacking with a sword"</i></sub></td>
+    <td align="center"><img src="showcase/archer_draw_left.gif" width="128"/><br/><sub><i>"archer drawing a bow"</i></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="showcase/dragon_fly_left.gif" width="128"/><br/><sub><i>"dragon flying, breathing fire"</i></sub></td>
+    <td align="center"><img src="showcase/spider_crawl_left.gif" width="128"/><br/><sub><i>"spider crawling"</i></sub></td>
+    <td align="center"><img src="showcase/ninja_run_left.gif" width="128"/><br/><sub><i>"ninja running with a kunai"</i></sub></td>
+    <td align="center"><img src="showcase/treasure_chest_open.gif" width="128"/><br/><sub><i>"treasure chest opening"</i></sub></td>
+    <td align="center"><img src="showcase/fire_elemental_idle.gif" width="128"/><br/><sub><i>"fire elemental idle"</i></sub></td>
+  </tr>
+</table>
 
-Each sheet is 8 frames, 64×64 px, with a mirrored version for right-facing motion. The source SVGs are in [`showcase/`](showcase/) — edit them freely.
+Each sprite is an 8-frame animation, rendered at 128×128 for the README but exported as a 64×64 PNG sprite sheet (plus mirrored version, plus JSON metadata, plus the animated GIFs above). Source SVGs are in [`showcase/`](showcase/) — tweak them freely and re-run the pipeline.
 
 ---
 
@@ -102,6 +106,7 @@ sprite-forge hero_walk_left.svg --frames 12 --size 128 --preview
 | `--mirror` / `--no-mirror` | on | Generate flipped sprite sheet |
 | `--meta` / `--no-meta` | on | Emit JSON metadata |
 | `--preview` | off | Generate animated HTML preview |
+| `--gif` | off | Generate animated GIF (great for READMEs / Discord / wikis) |
 | `--keep-frames` | off | Keep individual frame PNGs |
 | `--duration SECS` | auto | Override animation duration |
 

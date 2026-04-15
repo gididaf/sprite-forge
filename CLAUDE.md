@@ -58,6 +58,7 @@ Options:
   --keep-frames    Keep individual frame PNGs in INPUT_frames/ directory
   --duration SECS  Override auto-detected animation duration
   --preview        Generate preview HTML (default: off)
+  --gif            Generate animated GIF (default: off)
 ```
 
 ### Output files
