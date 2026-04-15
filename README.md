@@ -18,22 +18,22 @@ Every sprite below was generated from a single text description. No art skills, 
 
 <table>
   <tr>
-    <td align="center"><img src="showcase/skeleton_warrior_walk_left.gif" width="128"/><br/><sub><i>"skeleton warrior walking left"</i></sub></td>
-    <td align="center"><img src="showcase/wizard_cast_left.gif" width="128"/><br/><sub><i>"wizard casting a spell"</i></sub></td>
-    <td align="center"><img src="showcase/slime_bounce.gif" width="128"/><br/><sub><i>"slime bouncing"</i></sub></td>
-    <td align="center"><img src="showcase/knight_attack_left.gif" width="128"/><br/><sub><i>"knight attacking with a sword"</i></sub></td>
-    <td align="center"><img src="showcase/archer_draw_left.gif" width="128"/><br/><sub><i>"archer drawing a bow"</i></sub></td>
+    <td align="center"><img src="showcase/skeleton_warrior_walk_left.svg" width="128"/><br/><sub><i>"skeleton warrior walking left"</i></sub></td>
+    <td align="center"><img src="showcase/wizard_cast_left.svg" width="128"/><br/><sub><i>"wizard casting a spell"</i></sub></td>
+    <td align="center"><img src="showcase/slime_bounce.svg" width="128"/><br/><sub><i>"slime bouncing"</i></sub></td>
+    <td align="center"><img src="showcase/knight_attack_left.svg" width="128"/><br/><sub><i>"knight attacking with a sword"</i></sub></td>
+    <td align="center"><img src="showcase/archer_draw_left.svg" width="128"/><br/><sub><i>"archer drawing a bow"</i></sub></td>
   </tr>
   <tr>
-    <td align="center"><img src="showcase/dragon_fly_left.gif" width="128"/><br/><sub><i>"dragon flying, breathing fire"</i></sub></td>
-    <td align="center"><img src="showcase/spider_crawl_left.gif" width="128"/><br/><sub><i>"spider crawling"</i></sub></td>
-    <td align="center"><img src="showcase/ninja_run_left.gif" width="128"/><br/><sub><i>"ninja running with a kunai"</i></sub></td>
-    <td align="center"><img src="showcase/treasure_chest_open.gif" width="128"/><br/><sub><i>"treasure chest opening"</i></sub></td>
-    <td align="center"><img src="showcase/fire_elemental_idle.gif" width="128"/><br/><sub><i>"fire elemental idle"</i></sub></td>
+    <td align="center"><img src="showcase/dragon_fly_left.svg" width="128"/><br/><sub><i>"dragon flying, breathing fire"</i></sub></td>
+    <td align="center"><img src="showcase/spider_crawl_left.svg" width="128"/><br/><sub><i>"spider crawling"</i></sub></td>
+    <td align="center"><img src="showcase/ninja_run_left.svg" width="128"/><br/><sub><i>"ninja running with a kunai"</i></sub></td>
+    <td align="center"><img src="showcase/treasure_chest_open.svg" width="128"/><br/><sub><i>"treasure chest opening"</i></sub></td>
+    <td align="center"><img src="showcase/fire_elemental_idle.svg" width="128"/><br/><sub><i>"fire elemental idle"</i></sub></td>
   </tr>
 </table>
 
-Each sprite is an 8-frame animation, rendered at 128×128 for the README but exported as a 64×64 PNG sprite sheet (plus mirrored version, plus JSON metadata, plus the animated GIFs above). Source SVGs are in [`showcase/`](showcase/) — tweak them freely and re-run the pipeline.
+The sprites above are the *animated SVGs themselves*, rendered inline by your browser — no GIF conversion, no video player. Each source file is 1–3 KB, vector, infinitely scalable, and auto-plays without click-to-start controls. The pipeline also produces 64×64 PNG sprite sheets (plus mirrored version, JSON metadata, optional animated GIFs) for game-engine import. Sources in [`showcase/`](showcase/) — tweak and re-run the pipeline.
 
 ---
 
