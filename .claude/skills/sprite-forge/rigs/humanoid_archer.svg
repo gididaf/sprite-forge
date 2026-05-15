@@ -1,0 +1,56 @@
+<!-- humanoid_archer.svg — humanoid drawing a bow, facing LEFT
+     Bow is in FRONT (left side, toward facing). Front arm extends to hold bow.
+     Back arm draws string back. Arrow nocked, parallel to ground, pointing LEFT. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ellipse cx="32" cy="60" rx="10" ry="1.6" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- BACK LEG (planted, slight stance) -->
+  <g id="back-leg" transform="translate(36,42)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#6a6a6a"/>
+    <rect x="-4" y="13" width="7" height="3" fill="#404040"/>
+  </g>
+
+  <!-- BACK ARM (drawing string — bent at elbow, pulls right) -->
+  <g id="back-arm" transform="translate(33,26)">
+    <rect x="-2" y="-1" width="4" height="8" fill="#6a6a6a"/>
+    <!-- forearm angled down-and-right toward draw anchor -->
+    <rect id="back-forearm" x="-1" y="6" width="4" height="8" fill="#6a6a6a" transform="rotate(-30 -1 6)"/>
+    <circle id="draw-hand" cx="6" cy="9" r="2" fill="#a0a0a0"/>
+  </g>
+
+  <!-- TORSO -->
+  <rect id="torso" x="29" y="22" width="6" height="20" fill="#9a9a9a"/>
+
+  <!-- HEAD (looking down-bow / forward) -->
+  <g id="head" transform="translate(32,16)">
+    <circle cx="0" cy="0" r="6" fill="#b8b8b8"/>
+    <circle cx="-4" cy="-1" r="1" fill="#202020"/>
+  </g>
+
+  <!-- FRONT ARM (locked, holds bow — points LEFT) -->
+  <g id="front-arm" transform="translate(28,26)">
+    <rect x="-12" y="-1.5" width="13" height="4" fill="#9a9a9a"/>
+    <circle id="bow-hand" cx="-12" cy="0.5" r="2.2" fill="#c0c0c0"/>
+  </g>
+
+  <!-- BOW (V-curve, anchored at bow-hand, opens to the right where string lives) -->
+  <g id="bow" transform="translate(16,26)">
+    <path d="M 0,-9 Q 4,0 0,9" fill="none" stroke="#5a3a1a" stroke-width="2" stroke-linecap="round"/>
+    <!-- bowstring V — pulled back to draw anchor at (23, 1) relative to bow base -->
+    <line id="bowstring-top" x1="0" y1="-9" x2="23" y2="1" stroke="#e8e8d0" stroke-width="0.6"/>
+    <line id="bowstring-bot" x1="0" y1="9" x2="23" y2="1" stroke="#e8e8d0" stroke-width="0.6"/>
+  </g>
+
+  <!-- ARROW (parallel to ground, pointing LEFT, nocked to string at draw anchor) -->
+  <g id="arrow">
+    <line x1="39" y1="27" x2="16" y2="27" stroke="#3a2a1a" stroke-width="1.2"/>
+    <polygon points="14,27 18,25 18,29" fill="#888"/>
+    <polygon points="39,27 42,25 42,29" fill="#a0826a"/>
+  </g>
+
+  <!-- FRONT LEG -->
+  <g id="front-leg" transform="translate(28,42)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#9a9a9a"/>
+    <rect x="-4" y="13" width="7" height="3" fill="#606060"/>
+  </g>
+</svg>

@@ -1,0 +1,53 @@
+<!-- wing_flapper_large.svg — dragon/eagle/large flyer, facing LEFT
+     Wider viewBox (80) so wings can extend at full down-stroke without clipping.
+     Wings should move through full down-stroke (power) AND up-stroke (recovery). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64">
+  <ellipse cx="40" cy="58" rx="14" ry="2" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- BACK WING (joint at upper back, large arc) -->
+  <g id="back-wing" transform="translate(44,26)">
+    <path d="M 0,0 Q 14,-8 22,-2 Q 16,-4 8,2 Q 4,2 0,0 Z" fill="#3a2a4a"/>
+    <!-- wing membrane ribs -->
+    <line x1="0" y1="0" x2="18" y2="-4" stroke="#2a1a3a" stroke-width="0.6"/>
+    <line x1="0" y1="0" x2="14" y2="2" stroke="#2a1a3a" stroke-width="0.6"/>
+  </g>
+
+  <!-- TAIL (long, sweeping behind) -->
+  <g id="tail" transform="translate(54,36)">
+    <path d="M 0,0 Q 12,2 22,8" fill="none" stroke="#5a3a6a" stroke-width="4" stroke-linecap="round"/>
+    <polygon points="22,8 26,6 26,10" fill="#5a3a6a"/>
+  </g>
+
+  <!-- BODY (chest + torso) -->
+  <ellipse id="body" cx="38" cy="32" rx="12" ry="8" fill="#5a3a6a"/>
+
+  <!-- NECK (curves up-left toward head) -->
+  <polygon id="neck" points="28,26 38,26 34,18 24,22" fill="#5a3a6a"/>
+
+  <!-- HEAD (facing LEFT, dragon-like) -->
+  <g id="head" transform="translate(20,18)">
+    <ellipse cx="0" cy="0" rx="6" ry="4" fill="#6a4a7a"/>
+    <!-- snout -->
+    <polygon points="-10,1 -3,-2 -3,3" fill="#6a4a7a"/>
+    <circle cx="-2" cy="-2" r="0.8" fill="#ff3030"/>
+    <!-- horn -->
+    <polygon points="2,-4 4,-8 5,-4" fill="#8a6a9a"/>
+  </g>
+
+  <!-- LEGS (small, tucked while flying) -->
+  <g id="back-leg" transform="translate(46,38)">
+    <rect x="-2" y="0" width="4" height="6" fill="#3a2a4a"/>
+    <polygon points="-3,5 3,5 3,7 -3,7" fill="#2a1a3a"/>
+  </g>
+  <g id="front-leg" transform="translate(34,38)">
+    <rect x="-2" y="0" width="4" height="6" fill="#6a4a7a"/>
+    <polygon points="-3,5 3,5 3,7 -3,7" fill="#3a2a4a"/>
+  </g>
+
+  <!-- FRONT WING (in front of body) -->
+  <g id="front-wing" transform="translate(36,26)">
+    <path d="M 0,0 Q -14,-8 -22,-2 Q -16,-4 -8,2 Q -4,2 0,0 Z" fill="#6a4a7a"/>
+    <line x1="0" y1="0" x2="-18" y2="-4" stroke="#4a2a5a" stroke-width="0.6"/>
+    <line x1="0" y1="0" x2="-14" y2="2" stroke="#4a2a5a" stroke-width="0.6"/>
+  </g>
+</svg>

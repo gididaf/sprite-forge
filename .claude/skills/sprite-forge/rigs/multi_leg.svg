@@ -1,0 +1,45 @@
+<!-- multi_leg.svg — spider/crab/insect with 6-8 legs, wider viewBox.
+     Each leg has its own joint group. For walking, animate adjacent legs in opposite
+     phase (tripod gait) — never animate all legs in sync, that reads as floating. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64">
+  <ellipse cx="40" cy="58" rx="20" ry="1.6" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- BACK LEGS (rear pair, darker) -->
+  <g id="back-leg-1" transform="translate(52,38)">
+    <path d="M 0,0 L 8,-6 L 14,2 L 18,10" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g id="back-leg-2" transform="translate(50,38)">
+    <path d="M 0,0 L 6,-2 L 10,6 L 12,12" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g id="back-leg-3" transform="translate(48,38)">
+    <path d="M 0,0 L 4,2 L 6,8 L 6,13" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- ABDOMEN (rear bulb) -->
+  <ellipse id="abdomen" cx="50" cy="36" rx="10" ry="8" fill="#3a3a3a"/>
+
+  <!-- THORAX / head (front body) -->
+  <ellipse id="thorax" cx="32" cy="36" rx="8" ry="6" fill="#4a4a4a"/>
+
+  <!-- EYES (cluster of 4–8 small eyes for spider; one for crab) -->
+  <g id="eyes" transform="translate(26,34)">
+    <circle cx="0" cy="-1" r="0.8" fill="#e0e0e0"/>
+    <circle cx="-2" cy="0" r="0.7" fill="#e0e0e0"/>
+    <circle cx="0" cy="1.5" r="0.6" fill="#e0e0e0"/>
+    <circle cx="-2.5" cy="2" r="0.5" fill="#e0e0e0"/>
+  </g>
+
+  <!-- FANGS / mandibles -->
+  <polygon id="fangs" points="22,40 24,42 26,40" fill="#1a1a1a"/>
+
+  <!-- FRONT LEGS (forward pair, lighter — these reach forward in walking) -->
+  <g id="front-leg-1" transform="translate(30,38)">
+    <path d="M 0,0 L -4,2 L -6,8 L -6,13" fill="none" stroke="#5a5a5a" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g id="front-leg-2" transform="translate(28,38)">
+    <path d="M 0,0 L -6,-2 L -10,6 L -12,12" fill="none" stroke="#5a5a5a" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g id="front-leg-3" transform="translate(26,38)">
+    <path d="M 0,0 L -8,-6 L -14,2 L -18,10" fill="none" stroke="#5a5a5a" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

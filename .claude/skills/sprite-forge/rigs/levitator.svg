@@ -1,0 +1,29 @@
+<!-- levitator.svg — ghost/elemental/wraith, no legs (or wispy tail), floats.
+     Idle: gentle up/down bob via animateTransform translate on root <svg>.
+     No ground shadow — or use a faint tiny one to anchor. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ellipse cx="32" cy="60" rx="6" ry="1" fill="rgba(0,0,0,0.1)"/>
+
+  <!-- TAIL / WISPY BASE (jagged bottom) -->
+  <g id="tail">
+    <path d="M 22,42 L 24,50 L 26,44 L 28,52 L 30,46 L 32,54 L 34,46 L 36,52 L 38,44 L 40,50 L 42,42 Z" fill="#d0d8ff" opacity="0.85"/>
+  </g>
+
+  <!-- BODY (rounded upper) -->
+  <ellipse id="body" cx="32" cy="30" rx="11" ry="14" fill="#e0e6ff"/>
+
+  <!-- ARMS (optional thin wisps — joints at shoulders) -->
+  <g id="back-arm" transform="translate(38,28)">
+    <path d="M 0,0 Q 6,4 8,10" fill="none" stroke="#d0d8ff" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+  </g>
+  <g id="front-arm" transform="translate(26,28)">
+    <path d="M 0,0 Q -6,4 -8,10" fill="none" stroke="#e0e6ff" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- FACE (hollow eyes + mouth — restyle for specific creature) -->
+  <g id="face">
+    <ellipse cx="28" cy="26" rx="2" ry="3" fill="#1a1a3a"/>
+    <ellipse cx="36" cy="26" rx="2" ry="3" fill="#1a1a3a"/>
+    <ellipse cx="32" cy="34" rx="3" ry="2" fill="#1a1a3a"/>
+  </g>
+</svg>

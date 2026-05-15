@@ -1,0 +1,45 @@
+<!-- humanoid_caster.svg — humanoid with raised staff/casting hand, facing LEFT
+     Front arm is raised/extended for spell-casting. The spell appears at the hand. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ellipse cx="32" cy="60" rx="10" ry="1.6" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- BACK LEG -->
+  <g id="back-leg" transform="translate(34,42)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#6a6a6a"/>
+    <rect x="-4" y="13" width="7" height="3" fill="#404040"/>
+  </g>
+
+  <!-- BACK ARM (holds staff vertical) -->
+  <g id="back-arm" transform="translate(35,25)">
+    <rect x="-2" y="0" width="5" height="12" fill="#6a6a6a"/>
+    <circle cx="0.5" cy="13" r="2" fill="#a0a0a0"/>
+    <!-- staff -->
+    <rect x="0" y="-12" width="2" height="26" fill="#4a3a2a"/>
+    <circle cx="1" cy="-13" r="2.5" fill="#7080a0"/>
+  </g>
+
+  <!-- TORSO + robe -->
+  <rect id="torso" x="29" y="22" width="6" height="14" fill="#9a9a9a"/>
+  <polygon id="robe" points="26,36 38,36 40,52 24,52" fill="#7a7a9a"/>
+
+  <!-- HEAD -->
+  <g id="head" transform="translate(32,16)">
+    <circle cx="0" cy="0" r="6" fill="#b8b8b8"/>
+    <circle cx="-4" cy="-1" r="1" fill="#202020"/>
+    <!-- hood point -->
+    <polygon points="-6,-5 6,-5 4,-10 -4,-10" fill="#7a7a9a"/>
+  </g>
+
+  <!-- FRONT ARM (extended for casting — points down-left toward spell origin) -->
+  <g id="front-arm" transform="translate(29,26)">
+    <rect x="-3" y="0" width="5" height="10" fill="#9a9a9a"/>
+    <!-- casting hand (skill can attach spell effect here) -->
+    <circle id="cast-hand" cx="-2" cy="11" r="2.2" fill="#c0c0c0"/>
+  </g>
+
+  <!-- FRONT LEG -->
+  <g id="front-leg" transform="translate(30,42)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#9a9a9a"/>
+    <rect x="-4" y="13" width="7" height="3" fill="#606060"/>
+  </g>
+</svg>

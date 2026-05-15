@@ -55,10 +55,11 @@ Options:
   --output PATH    Output PNG path (default: INPUT_spritesheet.png)
   --mirror         Generate a horizontally-flipped sprite sheet (default: on, --no-mirror to disable)
   --meta           Generate a JSON metadata file (default: on, --no-meta to disable)
+  --gif            Generate animated GIF (default: on, --no-gif to disable)
   --keep-frames    Keep individual frame PNGs in INPUT_frames/ directory
   --duration SECS  Override auto-detected animation duration
   --preview        Generate preview HTML (default: off)
-  --gif            Generate animated GIF (default: off)
+  --silhouette     Generate a black-on-white silhouette of frame 0 for readability checks (default: off)
 ```
 
 ### Output files
@@ -67,6 +68,8 @@ For an input `hero_walk_left.svg`, the script produces:
 - `hero_walk_left_spritesheet.png` — horizontal sprite sheet
 - `hero_walk_left_spritesheet_mirror.png` — flipped version (on by default, `--no-mirror` to skip)
 - `hero_walk_left_spritesheet.json` — metadata (on by default, `--no-meta` to skip)
+- `hero_walk_left.gif` — animated GIF (on by default, `--no-gif` to skip)
+- `hero_walk_left_silhouette.png` — black-on-white silhouette of frame 0 (off by default, `--silhouette` to enable)
 - `hero_walk_left_preview.html` — visual preview with animated playback (off by default, `--preview` to enable)
 - `hero_walk_left_frames/` — individual PNGs (if `--keep-frames`)
 

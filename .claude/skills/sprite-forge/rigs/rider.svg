@@ -1,0 +1,66 @@
+<!-- rider.svg — humanoid mounted on a quadruped, facing LEFT
+     Wider viewBox 80. Rider's torso pivots slightly with the mount's gait —
+     animate the rider as a whole via translate (small Y bob); animate the mount's
+     legs separately. Do NOT animate the rider's legs (they're locked to the mount). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64">
+  <ellipse cx="40" cy="58" rx="22" ry="2" fill="rgba(0,0,0,0.22)"/>
+
+  <!-- MOUNT BACK LEGS -->
+  <g id="mount-back-hindleg" transform="translate(56,42)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#5a4030"/>
+    <rect x="-3.5" y="13" width="7" height="3" fill="#2a1810"/>
+  </g>
+  <g id="mount-back-foreleg" transform="translate(28,42)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#5a4030"/>
+    <rect x="-3.5" y="13" width="7" height="3" fill="#2a1810"/>
+  </g>
+
+  <!-- MOUNT BODY -->
+  <rect id="mount-body" x="20" y="30" width="40" height="14" fill="#7a5a4a"/>
+  <ellipse id="mount-rump" cx="60" cy="34" rx="6" ry="9" fill="#7a5a4a"/>
+  <polygon id="mount-neck" points="18,32 26,30 24,20 14,24" fill="#7a5a4a"/>
+
+  <!-- MOUNT HEAD -->
+  <g id="mount-head" transform="translate(12,20)">
+    <ellipse cx="0" cy="0" rx="6" ry="4" fill="#8a6a5a"/>
+    <rect x="-9" y="-1.5" width="5" height="4" fill="#8a6a5a"/>
+    <circle cx="-3" cy="-1" r="0.8" fill="#202020"/>
+    <polygon points="2,-4 5,-2 3,-5" fill="#8a6a5a"/>
+  </g>
+
+  <!-- MOUNT TAIL -->
+  <g id="mount-tail" transform="translate(64,30)">
+    <path d="M 0,0 Q 6,2 12,8" fill="none" stroke="#3a2010" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- MOUNT FRONT LEGS -->
+  <g id="mount-front-foreleg" transform="translate(26,42)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#8a6a5a"/>
+    <rect x="-3.5" y="13" width="7" height="3" fill="#4a2a1a"/>
+  </g>
+  <g id="mount-front-hindleg" transform="translate(54,42)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#8a6a5a"/>
+    <rect x="-3.5" y="13" width="7" height="3" fill="#4a2a1a"/>
+  </g>
+
+  <!-- RIDER (sits centered on mount's back, around y=24) -->
+  <g id="rider" transform="translate(38,18)">
+    <!-- back arm holds reins -->
+    <g id="rider-back-arm" transform="translate(4,4)">
+      <rect x="-2" y="0" width="4" height="8" fill="#5a5a7a"/>
+    </g>
+    <!-- torso -->
+    <rect id="rider-torso" x="-3" y="2" width="6" height="12" fill="#7a7a9a"/>
+    <!-- head -->
+    <g id="rider-head" transform="translate(0,-4)">
+      <circle cx="0" cy="0" r="5" fill="#c8a888"/>
+      <circle cx="-3" cy="-1" r="0.8" fill="#202020"/>
+    </g>
+    <!-- front arm holds reins (forward) -->
+    <g id="rider-front-arm" transform="translate(-3,4)">
+      <rect x="-2" y="0" width="4" height="8" fill="#9a9aba"/>
+    </g>
+    <!-- reins (from rider's hands to mount's neck) -->
+    <line id="reins" x1="-5" y1="12" x2="-22" y2="6" stroke="#3a2a1a" stroke-width="0.8"/>
+  </g>
+</svg>

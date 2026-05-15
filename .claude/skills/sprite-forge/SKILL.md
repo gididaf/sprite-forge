@@ -16,182 +16,285 @@ The user describes what they want in natural language:
 - `make it red, modify hero.svg` — modify an existing SVG in place
 - `add a shield, based on hero.svg` — create a new SVG using an existing one as reference
 
+## Library available to you
+
+Three directories ship inside this skill. Read from them whenever they help.
+
+- `rigs/` — pre-wired rest-pose SVGs for common archetypes (humanoid, quadruped, wing-flapper, caster, archer, brute, serpent, multi-leg, blob, levitator, static-object, rider, projectile, vehicle). `additive="sum"` is already set on shoulder/elbow/hip groups; limb thickness and torso width already pass the conventions below. **Default behaviour: start from a rig when one fits, then restyle.** Never re-derive a humanoid skeleton from scratch when `rigs/humanoid.svg` exists.
+- `styles/` — style packs (palette + line conventions) you can pick from or combine: `pixel-chunky`, `cel-shaded`, `dark-fantasy`, `high-saturation`, `monochrome`. Use one unless the user specifies otherwise.
+- `principles/` — one doc per animation principle (anticipation, follow-through, ease, squash-stretch, arcs, secondary-motion, weight) with inline SVG snippets you can adapt. Consult before phases 5 and 6.
+
 ## Your workflow
 
-### Step 0: Check dependencies (first run only)
+### Phase 0 — Dependency check (first run only)
 
-Before doing anything else, check if `sprite-forge` is available:
+Verify `sprite-forge` is on PATH:
 
 ```bash
 command -v sprite-forge
 ```
 
-If NOT found, install everything automatically:
+If NOT found, install:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/gididaf/sprite-forge/main/install.sh | bash
 ```
 
-If the install script fails or `curl` is unavailable, install manually:
+If `curl` is unavailable, install manually:
 1. `pip3 install Pillow`
 2. `brew install librsvg` (macOS) or `sudo apt-get install -y librsvg2-bin` (Linux)
 3. `git clone https://github.com/gididaf/sprite-forge.git ~/.sprite-forge`
 4. `ln -sf ~/.sprite-forge/sprite-forge.py ~/.local/bin/sprite-forge && chmod +x ~/.sprite-forge/sprite-forge.py`
 
-After installing, verify with `sprite-forge --help`. Skip this step on subsequent runs if `sprite-forge` is already on PATH.
+Verify with `sprite-forge --help`. Skip this phase on subsequent runs.
 
-### Step 1: Understand the request
+### Mode detection
 
-Determine the mode from the user's natural language:
-- **Generate**: no existing SVG mentioned — create from scratch
-- **Modify**: user references an SVG and wants to change it ("modify X", "update X", "change X") — read it, apply changes, overwrite it
-- **Template**: user references an SVG as a starting point ("based on X", "like X but...", "use X as reference") — read it, create a new SVG inspired by it
+Classify the user's request before starting:
+- **Generate**: no existing SVG referenced — create from scratch (start from a rig when one fits).
+- **Modify**: user references an SVG and wants to change it ("modify X", "update X", "change X") — read it, apply changes, overwrite it.
+- **Template**: user references an SVG as starting point ("based on X", "like X but...") — read it, create a new SVG inspired by it.
 
-### Step 1.5: Write a correctness spec BEFORE generating
+In Modify mode, skip phases that don't apply (e.g. if the change is colour-only, you can jump from spec straight to phase 6 polish). In all other cases, run all six phases below in order.
 
-Before you draw anything, write out 3–5 domain-specific correctness checks for *this particular subject* and keep them in your working context. These are facts about what makes the subject recognizable and physically/anatomically correct — not generic animation hygiene.
+---
 
-Examples:
-- **Archer drawing bow**: bow is in front of body (toward facing direction); bowstring forms a V-shape when drawn (center pulled back, tips anchored); arrow points toward the target (away from archer); arrow fires in the facing direction; back arm rotates/flexes during draw, not just translates.
-- **Walking character**: feet alternate ground contact; back leg pushes off while front leg reaches forward; arms swing opposite to legs.
-- **Wizard casting**: casting hand extends outward; spell effect appears at the hand, not the body; staff (if any) is held, not floating.
-- **Dragon flying**: wings move through a full down-stroke (power) and up-stroke (recovery), not just a small wiggle; body rises on down-stroke.
+## The 6-phase pipeline
 
-Write this spec explicitly before Step 2. You will grade against it in Step 5. The point is to commit to correctness criteria *before* you become invested in the specific SVG you produced.
+Each phase produces or modifies a single artifact and is reviewed against the prior phase before continuing. **Iteration cap: 3 per phase**, not global — you may iterate up to 3 times inside any phase before reporting remaining issues to the user.
 
-### Step 2: Generate the SVG
+### Phase 1 — Spec + key-pose plan (text only)
 
-Create a complete, self-contained animated SVG following these conventions:
+Before drawing anything, commit in writing to:
 
-**Structure:**
-- Side-view characters facing LEFT
-- `viewBox="0 0 64 64"` for standard characters, `"0 0 80 64"` for wider ones (spiders, etc.)
-- Keep shapes simple and game-appropriate (low detail, clear silhouettes)
-- Use flat colors, no gradients unless essential for shading
-- **Side-view torso width ≤ 7px** (at viewBox 64). A 12px-wide body reads as front-facing no matter how much profile detail you put on the head. True side-view = narrow torso.
-- **Limb thickness ≥ 5px.** 4px limbs render as threads at 64x64 and disappear. Width 5–6 reads cleanly.
+**1a. Three-layer correctness spec.** Write 3–5 items under each layer:
 
-**Animation (SMIL only):**
-- Use `<animate>` and `<animateTransform>` with `dur` and `values` attributes
-- NO CSS animations, NO JavaScript
-- Walk cycle duration: 0.4s–0.8s with `repeatCount="indefinite"`
-- Place `<animateTransform>` as a direct child of the animated element, NOT in a wrapper `<g>`
+- **Subject anchors** — identity facts that distinguish this subject from similar ones. Example for a kobold: "small, bipedal, dragon-like snout (not pig-like), reddish-brown scales, short tail, simple cloth garments — NOT a goblin (green, larger ears) or a lizardman (taller, no snout)."
+- **Action mechanics** — the physics of the verb. Example for archer drawing: "bowstring is pulled back into a V shape with the centre toward the archer; bow is in front of the body relative to facing direction; arrow nocked to string, parallel to ground, pointing in facing direction; back arm rotates at shoulder + flexes at elbow while drawing; front arm extends straight, locked."
+- **Animation principles** — which of the seven principles apply and how. Consult `principles/`. Example: "anticipation: micro-crouch before the bounce; follow-through: ears/cloth lag behind the body; ease-out: the bounce decelerates at apex; secondary motion: tail wiggles a quarter-cycle behind the body."
 
-**Composing transforms correctly:**
-- When a `<g>` has a static `transform` attribute AND an `<animateTransform>`, set `additive="sum"` on the animation so the rotation composes with the translate instead of replacing it. Example: `<g transform="translate(34,42)"><animateTransform type="rotate" values="-25 0 0; 25 0 0; -25 0 0" additive="sum"/>`. Without `additive="sum"` the base translate is lost and the element renders at the origin.
-- Keep the rotation pivot (cx, cy in `angle cx cy`) constant across all keyframes within a single `<animateTransform>` unless you explicitly want the pivot to slide — mixing pivots produces physically odd motion (the element orbits around different anchor points mid-animation).
-- Nested rotating groups (shoulder rotate → elbow rotate inside) work correctly as long as each level uses `additive="sum"`.
+**1b. Key-pose plan.** Describe the silhouette at THREE specific moments in plain language:
 
-**Layering & depth:**
-- Draw back limbs first (further from viewer, darker color)
-- Then body/torso
-- Then front limbs
-- This creates depth
+- **Rest** — the default neutral pose.
+- **Peak/Extreme** — the most extreme moment of the action (arm fully drawn, leg fully forward, jaws fully open). This is the readability stress test.
+- **Contact/Impact** — the moment of force transfer (foot plant, projectile release, hit landed), if applicable.
 
-**Standard elements:**
-- Body bob: add `<animateTransform type="translate" values="0,0; 0,-1; 0,0">` on the root `<svg>` for natural walking bounce
-- Shadow: add `<ellipse>` with `fill="rgba(0,0,0,0.15)"` at the character's feet
-- Do NOT use `scale(-1,1)` transforms for mirroring — the pipeline handles that
+For each, describe what makes the silhouette unambiguous — what about the outline alone reads as "archer drawing bow" or "ogre swinging club"?
 
-### Step 3: Save the SVG
+Do not draw yet. The spec and pose plan stay in your working context for all later phases — you grade against them in every review.
 
-Choose a descriptive filename based on the subject (e.g., `skeleton_warrior_walk_left.svg`, not `create_a_skeleton.svg`).
+### Phase 2 — Rest pose
 
-- **Generate mode**: pick a new name, never overwrite existing files. If the name collides, append `_2`, `_3`, etc.
-- **Modify mode**: overwrite the source file
-- **Template mode**: pick a new name, never overwrite existing files or the template
+Generate a static SVG at the **rest pose only** (no `<animate>` elements yet).
 
-Use the Write tool to save the SVG file.
+Filename rules:
+- **Generate mode**: pick descriptive `<subject>_<action>_left.svg`. Append `_2`, `_3` on collision.
+- **Modify mode**: overwrite the source file.
+- **Template mode**: pick a new name, never overwrite the template.
 
-### Step 4: Convert to sprite sheet
+Apply SVG conventions:
+- Side-view, facing LEFT.
+- `viewBox="0 0 64 64"` standard, `"0 0 80 64"` for wider subjects.
+- Side-view torso width ≤ 7px (at viewBox 64). Anything wider reads as front-facing.
+- Limb thickness ≥ 5px. 4px renders as a thread at 64×64.
+- Flat colours. No gradients unless essential.
+- Layer back limbs first (darker), then body, then front limbs.
+- Pick a palette from `styles/` unless the user has specified.
 
-Run the conversion pipeline:
+Render at 256×256:
 
 ```bash
-sprite-forge <svg_file>.svg
+sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --no-mirror
 ```
 
-This produces:
-- `<name>_spritesheet.png` — horizontal sprite sheet (8 frames, 64x64)
-- `<name>_spritesheet_mirror.png` — flipped version
-- `<name>_spritesheet.json` — metadata
+This produces `<name>_spritesheet.png` containing only the rest pose at high resolution.
 
-Optional flags: `--frames N`, `--size N`, `--preview`, `--keep-frames`, `--no-mirror`, `--no-meta`
+**Review (statics):**
+- Pass A (adversarial): "If this rest pose is wrong, what are the 3 most likely problems?"
+- Pass B (spec check): for each subject-anchor item, verdict PASS/FAIL/UNCLEAR. Cite which spec item.
+- Check: proportions, palette consistency, facing direction (true side-view profile), layering depth, limb thickness ≥ 5px, torso width ≤ 7px.
 
-### Step 5: Visual review & fix loop
+Fix and re-render until rest pose passes, max 3 iterations.
 
-Read the generated sprite sheet PNG using the Read tool (it will display visually since you are multimodal). Review in two passes:
+### Phase 3 — Silhouette readability test
 
-**Pass A — Adversarial critique (do this first).** Do NOT ask "does this look OK?" — that primes you to confirm. Instead, assume the sprite has problems and force yourself to answer:
+Render the rest pose as a black-on-white silhouette:
 
-> "If this sprite is wrong, what are the 3 things most likely wrong with it? List them, even if you're not sure."
+```bash
+sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --no-mirror --silhouette
+```
 
-This adversarial framing catches issues that passive scanning misses. You can dismiss items after listing them, but you must list them first.
+This produces `<name>_silhouette.png`.
 
-**Pass B — Spec check.** Go through the correctness spec you wrote in Step 1.5 and verify each item against the sprite sheet. For each spec item, state explicitly: PASS, FAIL, or UNCLEAR. Do not skip items.
+**Review (readability):**
+Look at the silhouette alone — no colours, no detail. Ask:
+- Can you tell from the silhouette alone what subject this is? (humanoid vs quadruped vs flying creature)
+- Can you tell what it's doing or about to do?
+- Is there a clear focal element (weapon, wings, tail) breaking the body outline, or does everything collapse into one blob?
 
-**Then check these generic problems:**
-- **Detached parts**: elements that don't move with their parent (e.g., weapon spikes staying in place while the weapon swings). Fix: ensure ALL child elements are inside the animated `<g>` group.
-- **Clipping/overlap**: limbs or feet passing through the ground or body. Fix: adjust pivot points or animation value ranges.
-- **Wrong facing direction**: character should be in side-view profile facing LEFT, not front-facing. Fix: reposition facial features for profile view.
-- **Stiff animation**: limbs barely moving, or all frames looking identical. Fix: increase rotation/translation ranges in animation values.
-- **Floating parts**: gaps between limbs and body. Fix: adjust element positions to connect properly.
-- **Missing animation**: some parts should move but don't (e.g., arms during a walk cycle). Fix: add `<animateTransform>` to those elements.
-- **Proportions**: character too small in the viewBox, or parts disproportionately large/small.
+If the answer to any is no, the silhouette has failed readability. Common fixes: widen weapon, separate limbs from torso, add hat/horn/feature that breaks the head outline, exaggerate the action limb. Update SVG and re-test.
 
-**If ANY issues are found:**
-1. Read the current SVG source
-2. Fix the identified problems
-3. Save the corrected SVG (overwrite the same file)
-4. Re-run `sprite-forge <file>.svg` to regenerate the sprite sheet
-5. Read the new sprite sheet PNG and review again (Pass A + Pass B)
-6. Repeat until the sprite sheet looks correct (**hard max: 3 iterations** — do NOT exceed this; further loops show diminishing returns and risk over-editing. If still not right after 3, report the remaining issues to the user and let them decide.)
+Max 3 iterations.
 
-Do NOT use a percentage threshold ("looks 95% perfect") as a stop condition — you cannot reliably self-score. Stop when Pass A yields no real issues AND every Pass B spec item is PASS.
+### Phase 4 — Peak pose
 
-### Step 6: Report results
+Modify the SVG to show the **extreme of the action** (arm fully extended, bow fully drawn, leg fully forward, wings fully down-stroked, jaws fully open). The peak is the moment you wrote about in 1b — make the SVG show that pose now.
 
-Tell the user what was generated and suggest next steps (e.g., "want me to adjust the walk cycle?" or "want a running version?").
+Render at 256×256 (regular and silhouette):
 
-## Batch requests (multiple sprites in one invocation)
+```bash
+sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --no-mirror --silhouette
+```
 
-When the user asks for multiple sprites at once (e.g. "generate 10 sprites" or "make a goblin, ogre, and orc"), do NOT batch-generate everything and review at the end. Instead, run the full Step 2 → Step 5 loop **per sprite, sequentially**:
+**Review (extreme readability):**
+- Does the peak silhouette read as the verb? (a peak archer silhouette must read as "drawing a bow", not "standing weirdly")
+- Is the contrast with the rest pose dramatic enough? If peak and rest look identical in silhouette, the eventual animation will look stiff. The peak should be visibly different.
+- Are limbs clipping into the body or each other at the extreme?
 
-1. Generate sprite #1 → save → convert → review → fix if needed
-2. Then move on to sprite #2, carrying forward any lessons learned
-3. Repeat for each sprite
+Max 3 iterations. **Save the peak-pose attribute values** (limb rotations, positions) before moving to phase 5 — you'll use them as animation keyframes.
 
-**Why this matters:**
-- **Fresh attention per sprite**: reviewing 10 sprite sheets in one batch means each gets a glance — subtle issues (thin limbs, stiff animation, wrong proportions) slip through. Reviewing one at a time gives each its own focused inspection.
-- **Cross-sprite learning**: if sprite #1 reveals that 4px-wide limbs render too thin at 64x64, you apply that fix to sprites #2–N before generating them, instead of baking the same mistake into all of them.
-- **Cheaper fixes**: catching an issue on sprite #1 is one fix; catching the same issue on all 10 at the end is ten fixes.
+### Phase 5 — Primary animation
 
-Only skip per-sprite review if the user explicitly asks for speed over quality ("just generate them all fast, I'll review").
+Now write the animated SVG. The default static attributes describe the rest pose; `<animateTransform>` and `<animate>` elements interpolate toward (and back from) the peak pose you saved in phase 4.
 
-### Fresh-eyes subagent review (recommended for complex subjects)
+**Add ONLY the primary motion in this phase:**
+- For a walk: leg cycle.
+- For a draw: back arm rotation + bowstring pullback.
+- For a flap: wing rotation.
+- For a swing: weapon arc.
 
-Your self-review has a known blind spot: you "know what you meant" and unconsciously fill in gaps the viewer cannot. A fresh subagent reviewing the PNG alone catches directional/physics errors that Pass A + Pass B can miss.
+Leave secondary motion (head bob, tail sway, cloth flutter, body bob) for phase 6. Resist the temptation to add everything at once — primary motion has to read cleanly on its own before secondary motion can complement it.
 
-**When to spawn one** (trigger heuristics):
-- Subject involves **directional physics**: archers firing arrows, casters aiming spells, catapults, projectile launchers. Your self-review is most likely to miss "arrow/projectile fires the wrong way" errors.
-- Subject involves **multi-part interaction**: e.g. two parts that must stay synchronized (bow + arrow + string, character + weapon, rider + mount).
-- Subject is **asymmetric/profile-dependent**: anything where front-view vs. side-view matters and you're not 100% sure the profile reads.
+**Animation rules:**
+- SMIL only (`<animate>`, `<animateTransform>`). No CSS, no JS.
+- Duration 0.4s–0.8s for cycles, `repeatCount="indefinite"`.
+- `<animateTransform>` is a direct child of the animated element, NOT inside a wrapper `<g>`.
+- When a `<g>` has both a static `transform` AND an `<animateTransform>`, set `additive="sum"`. Without it, the static translate is lost and the element renders at the origin.
+- Keep rotation pivot (cx, cy) constant across keyframes within one `<animateTransform>`.
+- Prefer **5–7 keyframes** over 2–3. The lerper produces smoother motion with more anchor points. Example: `values="0; 8; 12; 10; 0; -8; -12; -10; 0"` reads as eased; `values="-12; 12; -12"` reads as triangle-wave robotic.
 
-**When to skip it:**
-- Symmetric idle animations (slime, fire, torch, gem, chest) — your self-review is usually sufficient and the subagent won't find more.
-- The user explicitly asks for speed.
+Bake and render the GIF:
 
-For each sprite, after your own Step 5 passes, invoke the Agent tool (subagent_type: `general-purpose`) with a prompt like:
+```bash
+sprite-forge <file>.svg
+```
 
-> "Read the PNG at `<path>`. The user requested: `<original description, e.g. 'archer drawing a bow, facing left'>`. You have no other context — do not read the SVG source. Answer in under 150 words: (1) what do you actually see in this sprite sheet? (2) does it match the request? (3) list the 3 most likely issues, even if minor."
+This produces the sprite sheet, mirror, JSON, and GIF (GIF is default on now).
 
-If the subagent flags an issue you missed, treat it as a real finding and fix it (still within the 3-iteration cap). The subagent's fresh eyes are the whole point — don't dismiss its feedback as "I already checked that."
+**Review (dynamics — review the GIF, not the strip):**
+- Pass A (adversarial): "If this motion is wrong, what are the 3 most likely problems?"
+- Pass B (spec check): every action-mechanics item from phase 1a — PASS/FAIL/UNCLEAR.
+- Look for: detached parts (something stays still when its parent moves), clipping, dead limbs (no movement when there should be), uneven timing, robotic linear motion, wrong direction (projectile fires the wrong way).
 
-Skip the subagent review only for single-sprite requests (your own review is usually sufficient) or when the user explicitly opts out.
+If you need detail, render a single suspect frame at high resolution:
+
+```bash
+sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --no-mirror --duration <T>
+```
+
+where `<T>` makes frame 0 land at the suspect moment.
+
+Max 3 iterations.
+
+### Phase 6 — Secondary motion + polish
+
+Now layer in the secondary motion that makes the sprite feel alive:
+
+- Body bob on the root `<svg>` (translate `0,0; 0,-1; 0,0` is the classic).
+- Counter-motion: arms swing opposite to legs in a walk.
+- Lag/follow-through: ears, cloth, tail, hair animate a quarter-cycle behind the body.
+- Secondary part wobble: weapon sway, helmet jiggle, antenna flop.
+- Ease shaping: if the primary motion still looks robotic, add intermediate keyframes near the extremes (slowing in/out) — consult `principles/ease.md`.
+- Anticipation frames: a small reverse motion before the main strike — consult `principles/anticipation.md`.
+- Shadow ellipse if missing: `<ellipse fill="rgba(0,0,0,0.15)">` at the character's feet.
+
+Bake and re-render:
+
+```bash
+sprite-forge <file>.svg
+```
+
+**Review (full dynamics):**
+- Pass A: 3 most likely remaining issues.
+- Pass B: every spec item from phase 1a (all three layers) — PASS/FAIL/UNCLEAR.
+- Animation principles check: does this sprite show anticipation? follow-through? ease? Any principle from phase 1a marked FAIL needs a fix here.
+
+Max 3 iterations.
+
+### Phase 7 — Report
+
+Tell the user what was generated, summarise the spec checks (which items PASS, any UNCLEAR/FAIL left), and suggest next steps ("want a running version?", "want me to add idle frames?").
+
+---
+
+## Review conventions used in every phase
+
+### Two passes, always in this order
+
+- **Pass A — Adversarial.** Do NOT ask "does this look OK?" — that primes confirmation. Ask: "If this is wrong, what are the 3 most likely things wrong with it?" List them even if uncertain. You can dismiss after listing, but you must list first.
+- **Pass B — Spec check.** Walk every spec item from phase 1a. State PASS / FAIL / UNCLEAR explicitly. Don't skip items.
+
+### Statics vs dynamics — different views
+
+- **Statics phases (2, 3, 4):** review a single high-res render. Look for proportions, palette, facing, silhouette, layering, limb thickness, clipping.
+- **Dynamics phases (5, 6):** review the GIF. Animation problems live in time, not space. The 8-frame sprite-sheet strip is for game engines, not for you.
+
+### Fresh-eyes subagent (recommended for complex subjects)
+
+After your own phase 5 or 6 review passes, spawn a subagent (subagent_type: `general-purpose`) with the GIF. Triggers:
+- Directional physics (archer, caster, projectile launcher).
+- Multi-part interaction (rider+mount, character+weapon, multi-segment creature).
+- Asymmetric/profile-dependent subjects where front vs side matters.
+
+Skip for symmetric idle (slime, torch, gem, chest) and when the user opts out of quality for speed.
+
+**Prompt the subagent to return structured JSON only**, like:
+
+```
+Read the GIF at <absolute-path>. User requested: "<original description>".
+You have no other context — do NOT read the SVG source.
+
+Return ONLY valid JSON in this schema:
+{
+  "summary": "<what you actually see, under 80 words>",
+  "matches_request": true | false,
+  "spec_checks": [
+    {"item": "<one spec criterion you can evaluate from the GIF>",
+     "verdict": "pass" | "fail" | "unclear",
+     "severity": 1-5,
+     "evidence": "<which frame or motion shows this>",
+     "suggested_fix": "<concrete change to the SVG>"}
+  ],
+  "top_issues": ["<issue 1>", "<issue 2>", "<issue 3>"]
+}
+```
+
+Hand it the spec from phase 1a so it can grade against your criteria, not just react. Any `verdict: "fail"` with `severity >= 3` is a real finding — fix it within the iteration cap. Do not dismiss the subagent's findings as "I already checked that" — its fresh eyes are the whole point.
+
+---
+
+## Batch requests
+
+When the user asks for multiple sprites in one invocation (e.g. "generate 10 sprites" or "make a goblin, ogre, and orc"), run the full 6-phase pipeline **per sprite, sequentially**:
+
+1. Sprite #1: phases 1 → 7. Carry forward any lessons (e.g. "4px limbs render too thin at 64×64 — bump all future sprites to 5px").
+2. Sprite #2: phases 1 → 7, with prior lessons applied.
+3. Continue for each.
+
+Reviewing 10 sprites in one batch turns each review into a glance. Per-sprite review preserves quality.
+
+Only skip per-sprite review when the user explicitly trades quality for speed ("just generate them all fast, I'll review").
+
+---
+
+## Mirroring
+
+Do NOT use `scale(-1,1)` for right-facing versions inside the SVG — it breaks SMIL animation. The pipeline produces a `_mirror.png` flipped sprite sheet automatically (`--no-mirror` to disable).
 
 ## Important
 
-- The SVG is the source of truth — PNGs can always be regenerated
-- Always output a COMPLETE SVG — never use placeholders like `...` or `<!-- rest here -->`
-- Every `<animate>` and `<animateTransform>` must have both `dur` and `values` attributes
-- Test that the SVG is valid XML before saving
+- The SVG is the source of truth — PNGs always regenerable.
+- Output COMPLETE SVGs — never `...` or `<!-- rest here -->`.
+- Every `<animate>` / `<animateTransform>` needs both `dur` and `values`.
+- Validate the SVG is well-formed XML before saving.
+- A single SVG file is built up across phases 2 → 6 — don't fragment into multiple files unless explicitly asked.

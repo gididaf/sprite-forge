@@ -1,0 +1,53 @@
+<!-- quadruped_predator.svg — feline/canine predator (wolf, panther, lion), facing LEFT
+     Lower, sleeker silhouette than the horse-shaped quadruped. Head closer to ground. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64">
+  <ellipse cx="40" cy="58" rx="22" ry="2" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- BACK LEGS (haunches more powerful) -->
+  <g id="back-hindleg" transform="translate(58,40)">
+    <rect x="-3" y="0" width="6" height="14" fill="#5a4a3a"/>
+    <ellipse cx="0" cy="-3" rx="5" ry="4" fill="#5a4a3a"/>
+    <rect x="-3.5" y="13" width="7" height="3" fill="#2a2018"/>
+  </g>
+  <g id="back-foreleg" transform="translate(28,40)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#5a4a3a"/>
+    <rect x="-3.5" y="13" width="7" height="3" fill="#2a2018"/>
+  </g>
+
+  <!-- BODY (low slung, elongated) -->
+  <rect id="body" x="22" y="32" width="38" height="10" fill="#7a6a5a"/>
+  <ellipse id="rump" cx="58" cy="36" rx="6" ry="7" fill="#7a6a5a"/>
+
+  <!-- SHOULDERS / chest -->
+  <ellipse id="chest" cx="22" cy="36" rx="5" ry="6" fill="#7a6a5a"/>
+
+  <!-- NECK (short, head close to body) -->
+  <polygon id="neck" points="18,32 24,32 22,28 16,30" fill="#7a6a5a"/>
+
+  <!-- HEAD (low, predator profile) -->
+  <g id="head" transform="translate(13,28)">
+    <ellipse cx="0" cy="0" rx="5" ry="4" fill="#8a7a6a"/>
+    <!-- snout -->
+    <polygon points="-9,0 -3,-2 -3,3" fill="#8a7a6a"/>
+    <circle cx="-2" cy="-2" r="0.8" fill="#202020"/>
+    <!-- ears (pointed) -->
+    <polygon points="1,-4 3,-7 4,-3" fill="#8a7a6a"/>
+    <!-- teeth -->
+    <polygon points="-7,1 -6,3 -5,1" fill="#e8e0d0"/>
+  </g>
+
+  <!-- TAIL (longer than horse-quadruped, often swishes) -->
+  <g id="tail" transform="translate(63,32)">
+    <path d="M 0,0 Q 8,-2 14,3" fill="none" stroke="#5a4a3a" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- FRONT LEGS -->
+  <g id="front-foreleg" transform="translate(26,40)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#9a8a7a"/>
+    <rect x="-3.5" y="13" width="7" height="3" fill="#3a2a1a"/>
+  </g>
+  <g id="front-hindleg" transform="translate(56,40)">
+    <rect x="-3" y="0" width="6" height="14" fill="#9a8a7a"/>
+    <rect x="-3.5" y="13" width="7" height="3" fill="#3a2a1a"/>
+  </g>
+</svg>

@@ -1,0 +1,26 @@
+<!-- projectile.svg — arrow / bullet / magic bolt / thrown axe, facing LEFT (heading left)
+     For in-flight loop: spin (rotate around center) or wobble (small Y oscillation).
+     For trail: add streak/particle elements behind, animate opacity.
+     Tip points LEFT — heading direction. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- TRAIL (behind, fades back) -->
+  <g id="trail">
+    <ellipse cx="44" cy="32" rx="8" ry="1.2" fill="#ffd060" opacity="0.45"/>
+    <ellipse cx="52" cy="32" rx="6" ry="0.8" fill="#ffd060" opacity="0.25"/>
+    <ellipse cx="58" cy="32" rx="4" ry="0.5" fill="#ffd060" opacity="0.12"/>
+  </g>
+
+  <!-- SHAFT (horizontal, points LEFT) -->
+  <g id="shaft">
+    <rect x="14" y="31" width="28" height="2" fill="#5a3a1a"/>
+  </g>
+
+  <!-- TIP (leftmost) -->
+  <polygon id="tip" points="14,32 8,28 8,36" fill="#a0a0a0"/>
+
+  <!-- FLETCHING (rightmost) -->
+  <g id="fletching">
+    <polygon points="42,32 46,28 48,32" fill="#aa3030"/>
+    <polygon points="42,32 46,36 48,32" fill="#aa3030"/>
+  </g>
+</svg>

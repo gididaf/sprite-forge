@@ -1,0 +1,42 @@
+<!-- humanoid.svg — basic side-view humanoid, facing LEFT
+     viewBox 64x64. All limb joints are <g transform="translate(joint_x, joint_y)">
+     so adding <animateTransform type="rotate" values="..." additive="sum"/> rotates
+     around the joint. Use additive="sum" so the translate is preserved.
+     Palette is neutral grey — restyle for the actual subject. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ellipse cx="32" cy="60" rx="10" ry="1.6" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- BACK LEG (joint at right hip, knee/foot hang below) -->
+  <g id="back-leg" transform="translate(34,42)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#6a6a6a"/>
+    <rect x="-4" y="13" width="7" height="3" fill="#404040"/>
+  </g>
+
+  <!-- BACK ARM (joint at right shoulder) -->
+  <g id="back-arm" transform="translate(35,25)">
+    <rect x="-2" y="0" width="5" height="12" fill="#6a6a6a"/>
+    <circle cx="0.5" cy="13" r="2" fill="#a0a0a0"/>
+  </g>
+
+  <!-- TORSO -->
+  <rect id="torso" x="29" y="22" width="6" height="20" fill="#9a9a9a"/>
+
+  <!-- HEAD (profile facing LEFT — features on left side) -->
+  <g id="head" transform="translate(32,16)">
+    <circle cx="0" cy="0" r="6" fill="#b8b8b8"/>
+    <circle cx="-4" cy="-1" r="1" fill="#202020"/>
+    <rect x="-6" y="2" width="2" height="0.8" fill="#202020"/>
+  </g>
+
+  <!-- FRONT ARM (joint at left shoulder, slightly forward) -->
+  <g id="front-arm" transform="translate(29,25)">
+    <rect x="-2" y="0" width="5" height="12" fill="#9a9a9a"/>
+    <circle cx="-0.5" cy="13" r="2" fill="#c0c0c0"/>
+  </g>
+
+  <!-- FRONT LEG (joint at left hip) -->
+  <g id="front-leg" transform="translate(30,42)">
+    <rect x="-2.5" y="0" width="5" height="14" fill="#9a9a9a"/>
+    <rect x="-4" y="13" width="7" height="3" fill="#606060"/>
+  </g>
+</svg>

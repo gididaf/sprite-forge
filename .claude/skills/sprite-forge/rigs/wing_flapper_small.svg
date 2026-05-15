@@ -1,0 +1,35 @@
+<!-- wing_flapper_small.svg — bat/bird/sprite, small wings, facing LEFT
+     Wings pivot at the body. Animate rotation around the wing-base joint for flap. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ellipse cx="32" cy="56" rx="8" ry="1.5" fill="rgba(0,0,0,0.15)"/>
+
+  <!-- BACK WING (joint at shoulder, sweeps up-and-back when at rest) -->
+  <g id="back-wing" transform="translate(34,28)">
+    <path d="M 0,0 Q 10,-4 16,-10 Q 8,-2 0,0 Z" fill="#4a3a4a"/>
+  </g>
+
+  <!-- BODY (small, rounded) -->
+  <ellipse id="body" cx="32" cy="30" rx="7" ry="9" fill="#6a4a6a"/>
+
+  <!-- HEAD (facing LEFT) -->
+  <g id="head" transform="translate(28,20)">
+    <circle cx="0" cy="0" r="5" fill="#7a5a7a"/>
+    <circle cx="-3" cy="-1" r="1" fill="#202020"/>
+    <!-- bat ears / bird beak — left as small triangles, restyle as needed -->
+    <polygon points="-2,-4 -3,-7 -1,-5" fill="#7a5a7a"/>
+    <polygon points="-5,1 -8,0 -5,2" fill="#c0c0a0"/>
+  </g>
+
+  <!-- LEGS / talons (short, tucked) -->
+  <g id="back-leg" transform="translate(34,38)">
+    <rect x="-1" y="0" width="2" height="4" fill="#4a3a4a"/>
+  </g>
+  <g id="front-leg" transform="translate(30,38)">
+    <rect x="-1" y="0" width="2" height="4" fill="#7a5a7a"/>
+  </g>
+
+  <!-- FRONT WING (joint at shoulder, in front of body) -->
+  <g id="front-wing" transform="translate(30,28)">
+    <path d="M 0,0 Q -10,-4 -16,-10 Q -8,-2 0,0 Z" fill="#7a5a7a"/>
+  </g>
+</svg>

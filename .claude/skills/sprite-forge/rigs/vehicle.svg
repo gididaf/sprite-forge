@@ -1,0 +1,35 @@
+<!-- vehicle.svg — cart / wagon / cannon (wheeled prop), facing LEFT
+     Wheels rotate; cart body bobs slightly; payload (if any) bounces.
+     For motion, wheels animate rotation continuously; body uses a small Y bob. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64">
+  <ellipse cx="40" cy="58" rx="26" ry="2" fill="rgba(0,0,0,0.25)"/>
+
+  <!-- BACK WHEEL (right side from viewer, partially occluded by cart) -->
+  <g id="back-wheel" transform="translate(58,48)">
+    <circle cx="0" cy="0" r="6" fill="#3a2a1a"/>
+    <circle cx="0" cy="0" r="4" fill="#5a3a1a"/>
+    <line x1="-4" y1="0" x2="4" y2="0" stroke="#3a2a1a" stroke-width="0.8"/>
+    <line x1="0" y1="-4" x2="0" y2="4" stroke="#3a2a1a" stroke-width="0.8"/>
+  </g>
+
+  <!-- CART BODY -->
+  <g id="body">
+    <rect x="18" y="32" width="42" height="14" fill="#7a5a3a"/>
+    <rect x="18" y="28" width="42" height="6" fill="#6a4a2a"/>
+    <line x1="18" y1="36" x2="60" y2="36" stroke="#4a2a0a" stroke-width="0.8"/>
+    <line x1="18" y1="40" x2="60" y2="40" stroke="#4a2a0a" stroke-width="0.8"/>
+  </g>
+
+  <!-- HITCH / TONGUE (extends forward-left) -->
+  <g id="hitch">
+    <rect x="6" y="40" width="14" height="2" fill="#5a3a1a"/>
+  </g>
+
+  <!-- FRONT WHEEL (visible, in front) -->
+  <g id="front-wheel" transform="translate(24,48)">
+    <circle cx="0" cy="0" r="6" fill="#5a3a1a"/>
+    <circle cx="0" cy="0" r="4" fill="#7a5a3a"/>
+    <line x1="-4" y1="0" x2="4" y2="0" stroke="#3a2a1a" stroke-width="0.8"/>
+    <line x1="0" y1="-4" x2="0" y2="4" stroke="#3a2a1a" stroke-width="0.8"/>
+  </g>
+</svg>

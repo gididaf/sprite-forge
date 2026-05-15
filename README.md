@@ -105,8 +105,9 @@ sprite-forge hero_walk_left.svg --frames 12 --size 128 --preview
 | `--output PATH` | auto | Output PNG path |
 | `--mirror` / `--no-mirror` | on | Generate flipped sprite sheet |
 | `--meta` / `--no-meta` | on | Emit JSON metadata |
+| `--gif` / `--no-gif` | on | Animated GIF (great for READMEs / Discord / wikis) |
 | `--preview` | off | Generate animated HTML preview |
-| `--gif` | off | Generate animated GIF (great for READMEs / Discord / wikis) |
+| `--silhouette` | off | Black-on-white silhouette of frame 0 (readability check) |
 | `--keep-frames` | off | Keep individual frame PNGs |
 | `--duration SECS` | auto | Override animation duration |
 

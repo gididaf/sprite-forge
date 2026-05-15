@@ -1,0 +1,21 @@
+<!-- blob.svg — slime/jelly/pudding, idle pose, no facing required (symmetric).
+     For bounce: animate scale on the whole body (squash-y, stretch-x at landing).
+     For wobble: animate the path 'd' attribute via <animate> with multiple values. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ellipse cx="32" cy="58" rx="14" ry="1.6" fill="rgba(0,0,0,0.2)"/>
+
+  <!-- BODY (rounded blob, slightly flattened at base) -->
+  <g id="body">
+    <path d="M 18,50 Q 16,30 32,26 Q 48,30 46,50 Q 46,56 32,56 Q 18,56 18,50 Z" fill="#4a8aaa"/>
+    <!-- highlight -->
+    <ellipse cx="26" cy="32" rx="4" ry="2.5" fill="#7ab0c8" opacity="0.7"/>
+  </g>
+
+  <!-- EYES (two simple dots — orientation flexible) -->
+  <g id="eyes">
+    <circle cx="28" cy="40" r="1.6" fill="#202020"/>
+    <circle cx="36" cy="40" r="1.6" fill="#202020"/>
+    <circle cx="28.4" cy="39.6" r="0.5" fill="#e0e0e0"/>
+    <circle cx="36.4" cy="39.6" r="0.5" fill="#e0e0e0"/>
+  </g>
+</svg>

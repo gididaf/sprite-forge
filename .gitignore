@@ -4,8 +4,10 @@ __pycache__/
 *_spritesheet_mirror.png
 *_spritesheet.json
 *_preview.html
+*_silhouette.png
 *_frames/
 *.svg
 !.claude/
+!.claude/**
 !showcase/
 !showcase/**

@@ -1,0 +1,22 @@
+<!-- static_object.svg — chest / torch / brazier / lever (a stationary prop)
+     Animate by modifying a small element (flame, lid, glow) — body stays still.
+     The 'animated' group is the feature; the 'base' group is the static prop. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <ellipse cx="32" cy="58" rx="14" ry="2" fill="rgba(0,0,0,0.25)"/>
+
+  <!-- BASE (the static prop — chest body, torch handle, brazier bowl) -->
+  <g id="base">
+    <rect x="18" y="36" width="28" height="20" fill="#6a4a2a"/>
+    <rect x="18" y="32" width="28" height="6" fill="#5a3a1a"/>
+    <rect x="29" y="42" width="6" height="6" fill="#c8a060"/>
+    <line x1="18" y1="42" x2="46" y2="42" stroke="#4a2a0a" stroke-width="1.2"/>
+  </g>
+
+  <!-- FEATURE (the animated part — lid, flame, glow, gem, dust)
+       This group is what you animate. The base stays still. -->
+  <g id="feature" transform="translate(32,32)">
+    <!-- Example: a gem/glow above the chest. Replace shape for torch flame etc. -->
+    <circle cx="0" cy="0" r="3" fill="#ffcc00" opacity="0.9"/>
+    <circle cx="0" cy="0" r="6" fill="#ffaa00" opacity="0.3"/>
+  </g>
+</svg>

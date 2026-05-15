@@ -1,0 +1,38 @@
+<!-- serpent.svg — snake/eel/worm, facing LEFT
+     Wider viewBox 80. Segments laid out left-to-right; for slither animation, each
+     segment gets its own animateTransform with a phase offset (use 'begin="-0.1s"'
+     etc. on later segments, or just stagger the values curves). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64">
+  <ellipse cx="40" cy="58" rx="28" ry="1.6" fill="rgba(0,0,0,0.18)"/>
+
+  <!-- TAIL TIP -->
+  <g id="seg-7" transform="translate(72,36)">
+    <ellipse cx="0" cy="0" rx="3" ry="2.5" fill="#3a5a3a"/>
+  </g>
+
+  <!-- BODY SEGMENTS (rightmost = tail) -->
+  <g id="seg-6" transform="translate(64,36)">
+    <ellipse cx="0" cy="0" rx="5" ry="4" fill="#4a6a4a"/>
+  </g>
+  <g id="seg-5" transform="translate(54,36)">
+    <ellipse cx="0" cy="0" rx="6" ry="4.5" fill="#5a7a5a"/>
+  </g>
+  <g id="seg-4" transform="translate(44,36)">
+    <ellipse cx="0" cy="0" rx="6" ry="5" fill="#5a7a5a"/>
+  </g>
+  <g id="seg-3" transform="translate(34,36)">
+    <ellipse cx="0" cy="0" rx="6" ry="5" fill="#5a7a5a"/>
+  </g>
+  <g id="seg-2" transform="translate(24,36)">
+    <ellipse cx="0" cy="0" rx="6" ry="4.5" fill="#6a8a6a"/>
+  </g>
+
+  <!-- HEAD (leftmost) -->
+  <g id="head" transform="translate(14,36)">
+    <ellipse cx="0" cy="0" rx="7" ry="5" fill="#7a9a7a"/>
+    <polygon points="-8,0 -3,-2 -3,3" fill="#7a9a7a"/>
+    <circle cx="-3" cy="-2" r="0.9" fill="#ffcc00"/>
+    <line x1="-8" y1="2" x2="-13" y2="3" stroke="#aa3030" stroke-width="0.6"/>
+    <line x1="-8" y1="2" x2="-13" y2="1" stroke="#aa3030" stroke-width="0.6"/>
+  </g>
+</svg>

@@ -179,6 +179,16 @@ def generate_mirror(sheet: Image.Image, size: int, frame_count: int, output_path
     return mirrored
 
 
+def write_silhouette(frame_path: str, output_path: str):
+    """Convert a frame to a pure black-on-white silhouette for readability inspection."""
+    src = Image.open(frame_path).convert("RGBA")
+    bg = Image.new("RGBA", src.size, (255, 255, 255, 255))
+    alpha = src.split()[3]
+    silhouette = Image.new("RGBA", src.size, (0, 0, 0, 255))
+    bg.paste(silhouette, mask=alpha)
+    bg.convert("RGB").save(output_path, "PNG")
+
+
 def write_gif(frame_paths: list[str], duration: float, output_path: str):
     """Stitch individual frame PNGs into an animated GIF with transparent background."""
     frames = [Image.open(p).convert("RGBA") for p in frame_paths]
@@ -331,6 +341,7 @@ def run_pipeline(svg_path: Path, args):
     meta_path = out_dir / f"{stem}_spritesheet.json" if args.meta else None
     preview_path = out_dir / f"{stem}_preview.html" if args.preview else None
     gif_path = out_dir / f"{stem}.gif" if args.gif else None
+    silhouette_path = out_dir / f"{stem}_silhouette.png" if args.silhouette else None
 
     svg_text = input_path.read_text(encoding="utf-8")
     duration = args.duration or detect_duration(svg_text)
@@ -358,6 +369,10 @@ def run_pipeline(svg_path: Path, args):
     if gif_path:
         write_gif(frame_paths, duration, str(gif_path))
         print(f"[gif] {gif_path.name} ({args.frames} frames, {duration}s loop)")
+
+    if silhouette_path:
+        write_silhouette(frame_paths[0], str(silhouette_path))
+        print(f"[silhouette] {silhouette_path.name} (frame 0, black-on-white)")
 
     if meta_path:
         write_metadata(str(meta_path), input_path.name, args.frames, args.size,
@@ -405,7 +420,8 @@ def main():
     parser.add_argument("--keep-frames", action="store_true", help="keep individual frame PNGs")
     parser.add_argument("--duration", type=float, help="override animation duration (seconds)")
     parser.add_argument("--preview", action=argparse.BooleanOptionalAction, default=False, help="generate preview HTML (default: off)")
-    parser.add_argument("--gif", action=argparse.BooleanOptionalAction, default=False, help="generate animated GIF (default: off)")
+    parser.add_argument("--gif", action=argparse.BooleanOptionalAction, default=True, help="generate animated GIF (default: on)")
+    parser.add_argument("--silhouette", action=argparse.BooleanOptionalAction, default=False, help="generate a black-on-white silhouette of frame 0 for readability checks (default: off)")
     args = parser.parse_args()
 
     svg_path = Path(args.svg)
