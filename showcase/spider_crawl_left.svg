@@ -1,104 +1,207 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64">
-  <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1; 0,0.5; 0,-0.5; 0,0" dur="0.5s" repeatCount="indefinite"/>
-  <ellipse cx="40" cy="54" rx="18" ry="2.5" fill="rgba(0,0,0,0.2)"/>
+  <!-- Ground shadow (subtle pulse with body bob) -->
+  <ellipse cx="38" cy="54" rx="18" ry="2.5" fill="#000000" opacity="0.25">
+    <animate attributeName="rx" values="18;17;18;19;18;17;18;19" dur="0.5s" repeatCount="indefinite"/>
+  </ellipse>
 
-  <!-- BACK (right-side) legs — alternating tetrapod: legs 1&3 up while 2&4 planted, then swap -->
-  <g stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" fill="none">
-    <!-- R1 (furthest back) — phase A -->
-    <path d="M 48,38 L 60,28 L 66,40">
-      <animate attributeName="d"
-               values="M 48,38 L 60,28 L 66,40;
-                       M 48,38 L 62,34 L 68,46;
-                       M 48,38 L 60,28 L 66,40"
-               dur="0.5s" repeatCount="indefinite"/>
-    </path>
-    <!-- R2 — phase B -->
-    <path d="M 50,40 L 64,42 L 72,46">
-      <animate attributeName="d"
-               values="M 50,40 L 64,42 L 72,46;
-                       M 50,40 L 62,34 L 70,34;
-                       M 50,40 L 64,42 L 72,46"
-               dur="0.5s" repeatCount="indefinite"/>
-    </path>
-    <!-- R3 — phase A -->
-    <path d="M 48,42 L 58,48 L 64,54">
-      <animate attributeName="d"
-               values="M 48,42 L 58,48 L 64,54;
-                       M 48,42 L 60,42 L 66,42;
-                       M 48,42 L 58,48 L 64,54"
-               dur="0.5s" repeatCount="indefinite"/>
-    </path>
-    <!-- R4 (closest to back end) — phase B -->
-    <path d="M 46,40 L 52,50 L 54,54">
-      <animate attributeName="d"
-               values="M 46,40 L 52,50 L 54,54;
-                       M 46,40 L 54,48 L 58,46;
-                       M 46,40 L 52,50 L 54,54"
-               dur="0.5s" repeatCount="indefinite"/>
-    </path>
-  </g>
+  <!-- Body bob group (NOT whole svg; shadow stays put) -->
+  <g>
+    <animateTransform attributeName="transform" type="translate"
+                      values="0,0; 0,-0.5; 0,0; 0,-1; 0,-0.5; 0,0; 0,-0.8; 0,-0.3"
+                      dur="0.5s" repeatCount="indefinite"/>
 
-  <!-- ABDOMEN (rear, bigger) -->
-  <ellipse cx="44" cy="38" rx="14" ry="10" fill="#2a2a2a"/>
-  <ellipse cx="44" cy="36" rx="12" ry="7" fill="#3a3a3a"/>
-  <!-- red hourglass marking -->
-  <polygon points="42,34 46,34 44,38 46,42 42,42 44,38" fill="#cc2222"/>
-  <!-- highlight -->
-  <ellipse cx="40" cy="32" rx="4" ry="2" fill="#4a4a4a"/>
+    <!-- BACK-SIDE legs (drawn first, partially hidden behind body) -->
+    <g stroke="#0a0a0a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <!-- R1 (front-far, group A: planted frames 0-3, lifted 4-7) -->
+      <path d="M 44,36 L 58,30 L 66,40">
+        <animate attributeName="d"
+                 values="M 44,36 L 58,30 L 66,40;
+                         M 44,36 L 60,30 L 66,40;
+                         M 44,36 L 62,32 L 66,40;
+                         M 44,36 L 64,34 L 66,40;
+                         M 44,36 L 64,28 L 64,36;
+                         M 44,36 L 60,26 L 56,32;
+                         M 44,36 L 58,26 L 58,34;
+                         M 44,36 L 58,28 L 62,38"
+                 dur="0.5s" repeatCount="indefinite"/>
+      </path>
+      <!-- R2 (group B) -->
+      <path d="M 48,38 L 62,40 L 70,44">
+        <animate attributeName="d"
+                 values="M 48,38 L 62,32 L 64,38;
+                         M 48,38 L 60,30 L 60,38;
+                         M 48,38 L 60,32 L 64,42;
+                         M 48,38 L 64,36 L 70,44;
+                         M 48,38 L 66,38 L 72,44;
+                         M 48,38 L 66,40 L 72,46;
+                         M 48,38 L 64,40 L 72,46;
+                         M 48,38 L 64,38 L 70,44"
+                 dur="0.5s" repeatCount="indefinite"/>
+      </path>
+      <!-- R3 (group A) -->
+      <path d="M 46,40 L 56,46 L 64,52">
+        <animate attributeName="d"
+                 values="M 46,40 L 56,46 L 62,52;
+                         M 46,40 L 58,46 L 64,52;
+                         M 46,40 L 60,46 L 66,52;
+                         M 46,40 L 62,46 L 68,52;
+                         M 46,40 L 62,40 L 64,46;
+                         M 46,40 L 58,38 L 56,44;
+                         M 46,40 L 56,38 L 56,46;
+                         M 46,40 L 56,42 L 60,50"
+                 dur="0.5s" repeatCount="indefinite"/>
+      </path>
+      <!-- R4 (back-far, group B) -->
+      <path d="M 50,42 L 56,52 L 60,56">
+        <animate attributeName="d"
+                 values="M 50,42 L 54,42 L 52,48;
+                         M 50,42 L 54,44 L 54,52;
+                         M 50,42 L 54,48 L 56,54;
+                         M 50,42 L 56,52 L 60,56;
+                         M 50,42 L 58,52 L 62,56;
+                         M 50,42 L 58,54 L 62,56;
+                         M 50,42 L 56,54 L 60,56;
+                         M 50,42 L 54,52 L 56,56"
+                 dur="0.5s" repeatCount="indefinite"/>
+      </path>
+    </g>
 
-  <!-- CEPHALOTHORAX (front, smaller) -->
-  <ellipse cx="26" cy="38" rx="8" ry="6" fill="#1a1a1a"/>
-  <!-- eyes cluster (front = left) -->
-  <circle cx="20" cy="35" r="1.2" fill="#ff3333"/>
-  <circle cx="20" cy="39" r="1.2" fill="#ff3333"/>
-  <circle cx="22" cy="33" r="1" fill="#ff6666"/>
-  <circle cx="22" cy="41" r="1" fill="#ff6666"/>
-  <circle cx="19" cy="36" r="0.4" fill="#ffffff"/>
-  <circle cx="19" cy="40" r="0.4" fill="#ffffff"/>
+    <!-- ABDOMEN (rear/right, larger bulb) -->
+    <g>
+      <ellipse cx="44" cy="40" rx="14" ry="10" fill="#1a1a1a"/>
+      <ellipse cx="44" cy="38" rx="13" ry="9" fill="#2a2a2a"/>
+      <ellipse cx="44" cy="36" rx="11" ry="6" fill="#3a3a3a"/>
+      <!-- top highlight (shiny chitin) -->
+      <ellipse cx="40" cy="33" rx="5" ry="2" fill="#5a5a5a" opacity="0.7"/>
+      <ellipse cx="42" cy="32" rx="3" ry="1" fill="#7a7a7a" opacity="0.6"/>
+      <!-- Red hourglass marking (black widow) -->
+      <polygon points="42,36 46,36 44,40 46,44 42,44 44,40" fill="#cc1a1a"/>
+      <polygon points="43,36.5 45,36.5 44,39 45,43 43,43 44,39" fill="#ee3030"/>
+      <!-- abdomen segmentation hint -->
+      <path d="M 32,40 Q 44,42 56,40" stroke="#0a0a0a" stroke-width="0.4" fill="none" opacity="0.5"/>
+    </g>
 
-  <!-- fangs -->
-  <polygon points="18,40 20,44 16,42" fill="#ffffff"/>
-  <polygon points="20,40 22,44 18,42" fill="#ffffff"/>
-  <circle cx="17" cy="42" r="0.4" fill="#cc2222"/>
-  <circle cx="19" cy="42" r="0.4" fill="#cc2222"/>
+    <!-- CEPHALOTHORAX (front-left, smaller) -->
+    <g>
+      <ellipse cx="24" cy="38" rx="8" ry="6" fill="#1a1a1a"/>
+      <ellipse cx="24" cy="36" rx="7" ry="5" fill="#2a2a2a"/>
+      <!-- top highlight -->
+      <ellipse cx="22" cy="34" rx="3" ry="1.5" fill="#4a4a4a" opacity="0.7"/>
+      <!-- pedicel (connector to abdomen) -->
+      <rect x="30" y="37" width="3" height="2.5" fill="#0a0a0a"/>
+      <!-- EYE CLUSTER (spiders have 8 eyes, simplified to grouped clusters) -->
+      <!-- main eyes (large, glowing red) -->
+      <circle cx="18" cy="35" r="1.5" fill="#cc2222"/>
+      <circle cx="18" cy="39" r="1.5" fill="#cc2222"/>
+      <circle cx="17.5" cy="35" r="0.6" fill="#ff6666">
+        <animate attributeName="opacity" values="0.8;1;0.8;1;0.8;1;0.8;1" dur="0.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="17.5" cy="39" r="0.6" fill="#ff6666">
+        <animate attributeName="opacity" values="0.8;1;0.8;1;0.8;1;0.8;1" dur="0.5s" repeatCount="indefinite"/>
+      </circle>
+      <!-- catchlight -->
+      <circle cx="17" cy="34.5" r="0.3" fill="#ffaaaa"/>
+      <circle cx="17" cy="38.5" r="0.3" fill="#ffaaaa"/>
+      <!-- smaller eyes above/below -->
+      <circle cx="21" cy="33" r="0.7" fill="#aa1010"/>
+      <circle cx="21" cy="41" r="0.7" fill="#aa1010"/>
+      <circle cx="19" cy="32" r="0.5" fill="#aa1010"/>
+      <circle cx="19" cy="42" r="0.5" fill="#aa1010"/>
+      <!-- FANGS / Chelicerae (subtle open/close) -->
+      <g>
+        <animateTransform attributeName="transform" type="translate"
+                          values="0,0; 0,0; 0,0.3; 0,0.5; 0,0.3; 0,0; 0,0.2; 0,0"
+                          dur="0.5s" repeatCount="indefinite"/>
+        <polygon points="17,40 20,44 14,42" fill="#e0e0e0"/>
+        <polygon points="20,40 23,44 17,42" fill="#e0e0e0"/>
+        <polygon points="17,40 19,43 16,42" fill="#ffffff"/>
+        <polygon points="20,40 22,43 19,42" fill="#ffffff"/>
+        <!-- venom drops on fang tips -->
+        <circle cx="15" cy="42.5" r="0.4" fill="#dc2030">
+          <animate attributeName="opacity" values="0.9;1;0.9;0.8;0.9;1;0.9;0.8" dur="0.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="18" cy="42.5" r="0.4" fill="#dc2030">
+          <animate attributeName="opacity" values="0.8;0.9;1;0.9;0.8;0.9;1;0.9" dur="0.5s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+      <!-- pedipalps (small front appendages) -->
+      <path d="M 18,40 L 14,42 L 12,44" stroke="#0a0a0a" stroke-width="1.2" fill="none" stroke-linecap="round">
+        <animate attributeName="d"
+                 values="M 18,40 L 14,42 L 12,44;
+                         M 18,40 L 13,43 L 11,46;
+                         M 18,40 L 14,42 L 12,44;
+                         M 18,40 L 13,43 L 11,46;
+                         M 18,40 L 14,42 L 12,44;
+                         M 18,40 L 13,43 L 11,46;
+                         M 18,40 L 14,42 L 12,44;
+                         M 18,40 L 13,43 L 11,46"
+                 dur="0.5s" repeatCount="indefinite"/>
+      </path>
+    </g>
 
-  <!-- FRONT (left-side) legs — opposite phase to back legs of same number for tetrapod gait -->
-  <g stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" fill="none">
-    <!-- L1 (front-most) — phase B (up when R1 is down) -->
-    <path d="M 24,36 L 16,28 L 8,40">
-      <animate attributeName="d"
-               values="M 24,36 L 16,28 L 8,40;
-                       M 24,36 L 14,34 L 6,46;
-                       M 24,36 L 16,28 L 8,40"
-               dur="0.5s" repeatCount="indefinite"
-               begin="0.25s"/>
-    </path>
-    <!-- L2 — phase A -->
-    <path d="M 22,38 L 12,40 L 4,46">
-      <animate attributeName="d"
-               values="M 22,38 L 12,40 L 4,46;
-                       M 22,38 L 14,34 L 6,34;
-                       M 22,38 L 12,40 L 4,46"
-               dur="0.5s" repeatCount="indefinite"
-               begin="0.25s"/>
-    </path>
-    <!-- L3 — phase B -->
-    <path d="M 24,40 L 18,46 L 14,54">
-      <animate attributeName="d"
-               values="M 24,40 L 18,46 L 14,54;
-                       M 24,40 L 16,42 L 10,42;
-                       M 24,40 L 18,46 L 14,54"
-               dur="0.5s" repeatCount="indefinite"
-               begin="0.25s"/>
-    </path>
-    <!-- L4 (closest to abdomen) — phase A -->
-    <path d="M 26,40 L 26,50 L 22,54">
-      <animate attributeName="d"
-               values="M 26,40 L 26,50 L 22,54;
-                       M 26,40 L 24,46 L 20,44;
-                       M 26,40 L 26,50 L 22,54"
-               dur="0.5s" repeatCount="indefinite"
-               begin="0.25s"/>
-    </path>
+    <!-- FRONT-SIDE legs (drawn AFTER body, in front of it) -->
+    <g stroke="#0a0a0a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <!-- L1 (front-near, group B) -->
+      <path d="M 22,36 L 14,28 L 8,40">
+        <animate attributeName="d"
+                 values="M 22,36 L 14,28 L 8,40;
+                         M 22,36 L 12,28 L 6,32;
+                         M 22,36 L 12,28 L 8,36;
+                         M 22,36 L 12,30 L 10,40;
+                         M 22,36 L 14,32 L 10,42;
+                         M 22,36 L 14,34 L 8,42;
+                         M 22,36 L 14,32 L 8,40;
+                         M 22,36 L 12,30 L 8,38"
+                 dur="0.5s" repeatCount="indefinite"/>
+      </path>
+      <!-- L2 (group A) -->
+      <path d="M 20,38 L 12,40 L 4,44">
+        <animate attributeName="d"
+                 values="M 20,38 L 12,40 L 4,44;
+                         M 20,38 L 12,40 L 6,46;
+                         M 20,38 L 14,40 L 8,46;
+                         M 20,38 L 14,40 L 10,46;
+                         M 20,38 L 14,32 L 12,38;
+                         M 20,38 L 12,30 L 8,34;
+                         M 20,38 L 10,32 L 4,40;
+                         M 20,38 L 10,36 L 2,44"
+                 dur="0.5s" repeatCount="indefinite"/>
+      </path>
+      <!-- L3 (group B) -->
+      <path d="M 22,40 L 16,46 L 10,52">
+        <animate attributeName="d"
+                 values="M 22,40 L 16,46 L 10,52;
+                         M 22,40 L 14,42 L 8,46;
+                         M 22,40 L 14,40 L 6,42;
+                         M 22,40 L 14,42 L 6,48;
+                         M 22,40 L 16,46 L 10,52;
+                         M 22,40 L 18,48 L 14,54;
+                         M 22,40 L 18,48 L 12,54;
+                         M 22,40 L 16,46 L 10,52"
+                 dur="0.5s" repeatCount="indefinite"/>
+      </path>
+      <!-- L4 (back-near, group A) -->
+      <path d="M 28,42 L 26,52 L 22,56">
+        <animate attributeName="d"
+                 values="M 28,42 L 26,52 L 22,56;
+                         M 28,42 L 28,52 L 24,56;
+                         M 28,42 L 28,54 L 26,56;
+                         M 28,42 L 28,54 L 28,56;
+                         M 28,42 L 26,46 L 24,52;
+                         M 28,42 L 24,44 L 20,48;
+                         M 28,42 L 22,44 L 18,50;
+                         M 28,42 L 24,48 L 20,54"
+                 dur="0.5s" repeatCount="indefinite"/>
+      </path>
+    </g>
+
+    <!-- Small body hair details (chitin texture) -->
+    <g opacity="0.6">
+      <line x1="40" y1="32" x2="40" y2="30.5" stroke="#5a5a5a" stroke-width="0.4"/>
+      <line x1="44" y1="31" x2="44" y2="29.5" stroke="#5a5a5a" stroke-width="0.4"/>
+      <line x1="48" y1="32" x2="48" y2="30.5" stroke="#5a5a5a" stroke-width="0.4"/>
+      <line x1="22" y1="32" x2="22" y2="30.7" stroke="#5a5a5a" stroke-width="0.4"/>
+      <line x1="26" y1="32" x2="26" y2="30.7" stroke="#5a5a5a" stroke-width="0.4"/>
+    </g>
   </g>
 </svg>

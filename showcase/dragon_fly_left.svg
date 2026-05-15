@@ -1,71 +1,167 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 64">
-  <!-- body rises on downstroke -->
-  <animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0; 0,2; 0,0" dur="0.7s" repeatCount="indefinite"/>
-  <ellipse cx="40" cy="60" rx="14" ry="2" fill="rgba(0,0,0,0.2)">
-    <animate attributeName="rx" values="14;9;14;16;14" dur="0.7s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.2;0.1;0.2;0.3;0.2" dur="0.7s" repeatCount="indefinite"/>
+  <!-- Ground shadow (size/opacity pulses with wing beats) -->
+  <ellipse cx="40" cy="60" rx="14" ry="2" fill="#000000" opacity="0.25">
+    <animate attributeName="rx" values="14;13;14;15;16;15.5;14.5;13.5;12.5;13;14;15;15.5;14.5" dur="0.7s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.25;0.22;0.24;0.28;0.32;0.30;0.27;0.24;0.20;0.22;0.25;0.28;0.30;0.27" dur="0.7s" repeatCount="indefinite"/>
   </ellipse>
 
-  <!-- BACK WING (far side, darker) - full down/up stroke -->
-  <g transform="translate(44,28)">
-    <animateTransform attributeName="transform" type="rotate" values="-60 0 0; 40 0 0; -60 0 0" dur="0.7s" repeatCount="indefinite" additive="sum"/>
-    <path d="M 0,0 Q 14,-10 22,-2 Q 18,6 0,4 Z" fill="#7a1a1a"/>
-    <!-- wing membrane lines -->
-    <line x1="2" y1="2" x2="18" y2="-4" stroke="#5a1010" stroke-width="0.5"/>
-    <line x1="2" y1="3" x2="20" y2="-1" stroke="#5a1010" stroke-width="0.5"/>
-  </g>
-
-  <!-- TAIL (trails right/back) -->
-  <path d="M 50,32 Q 64,30 72,38 Q 70,42 68,40" stroke="#a12e2e" stroke-width="4" fill="none" stroke-linecap="round"/>
-  <polygon points="68,36 78,38 68,42" fill="#a12e2e"/>
-  <polygon points="70,38 76,38 70,40" fill="#cc4444"/>
-
-  <!-- BODY -->
-  <ellipse cx="38" cy="30" rx="14" ry="8" fill="#c13939"/>
-  <ellipse cx="38" cy="28" rx="12" ry="5" fill="#d94a4a"/>
-  <!-- belly/scales (yellow underside, profile view) -->
-  <path d="M 28,32 L 50,32 L 48,37 L 30,37 Z" fill="#f5b545"/>
-  <line x1="32" y1="34" x2="32" y2="36" stroke="#d89a30" stroke-width="0.5"/>
-  <line x1="36" y1="34" x2="36" y2="36" stroke="#d89a30" stroke-width="0.5"/>
-  <line x1="40" y1="34" x2="40" y2="36" stroke="#d89a30" stroke-width="0.5"/>
-  <line x1="44" y1="34" x2="44" y2="36" stroke="#d89a30" stroke-width="0.5"/>
-
-  <!-- NECK + HEAD (profile, facing LEFT) -->
-  <path d="M 28,28 Q 22,26 20,24" stroke="#c13939" stroke-width="6" fill="none" stroke-linecap="round"/>
-  <!-- head -->
-  <ellipse cx="18" cy="24" rx="8" ry="6" fill="#c13939"/>
-  <!-- snout extending LEFT -->
-  <polygon points="10,24 4,22 8,26 12,26" fill="#c13939"/>
-  <!-- horns -->
-  <polygon points="18,18 16,12 20,16" fill="#888888"/>
-  <polygon points="22,18 24,12 20,16" fill="#888888"/>
-  <!-- eye (on left side of head) -->
-  <circle cx="14" cy="22" r="1.5" fill="#ffff00"/>
-  <ellipse cx="14" cy="22" rx="0.6" ry="1.2" fill="#000"/>
-  <!-- teeth -->
-  <polygon points="8,26 7,28 10,27" fill="#ffffff"/>
-  <polygon points="10,26 11,28 12,27" fill="#ffffff"/>
-
-  <!-- FIRE BREATH -->
+  <!-- Body bob group: rises on downstroke (high), falls on upstroke (low) — opposite phase to wings -->
   <g>
-    <animate attributeName="opacity" values="1;0.7;1;0.5;1" dur="0.4s" repeatCount="indefinite"/>
-    <polygon points="4,22 -2,20 0,24 -4,26 2,26 0,28 4,26" fill="#ff6600"/>
-    <polygon points="4,22 0,22 1,26 4,25" fill="#ffcc00"/>
-    <polygon points="3,24 1,24 2,26" fill="#ffffff"/>
+    <animateTransform attributeName="transform" type="translate"
+                      values="0,0; 0,1.5; 0,1; 0,-0.5; 0,-2; 0,-2.8; 0,-3; 0,-2.5; 0,-1.5; 0,0; 0,1; 0,1.5; 0,1; 0,0.5"
+                      dur="0.7s" repeatCount="indefinite"/>
+
+    <!-- BACK WING (far side, darker — same flap cycle, slightly offset/inset visually) -->
+    <g transform="translate(46, 28)">
+      <animateTransform attributeName="transform" type="rotate"
+                        values="-80; -85; -75; -35; 15; 45; 50; 45; 25; -15; -45; -70; -80; -82"
+                        dur="0.7s" repeatCount="indefinite" additive="sum"/>
+      <!-- wing main shape -->
+      <path d="M 0,0 Q 16,-10 24,-2 Q 20,6 0,4 Z" fill="#6a1414"/>
+      <!-- finger bones / membrane ribs -->
+      <path d="M 0,0 L 16,-9" stroke="#4a0a0a" stroke-width="0.7"/>
+      <path d="M 0,1 L 20,-5" stroke="#4a0a0a" stroke-width="0.5"/>
+      <path d="M 0,2 L 22,0" stroke="#4a0a0a" stroke-width="0.5"/>
+      <!-- wing edge highlight -->
+      <path d="M 0,0 Q 16,-10 24,-2" fill="none" stroke="#8a2020" stroke-width="0.5"/>
+    </g>
+
+    <!-- TAIL (waves with lag — secondary motion behind body bob) -->
+    <g transform="translate(50,32)">
+      <animateTransform attributeName="transform" type="rotate"
+                        values="0; 0; -1; -3; -5; -6; -5; -3; 0; 2; 4; 5; 4; 2"
+                        dur="0.7s" repeatCount="indefinite" additive="sum"/>
+      <!-- tail body -->
+      <path d="M 0,0 Q 14,-2 22,6 Q 20,10 18,8" stroke="#a12e2e" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <path d="M 0,0 Q 14,-2 22,6" stroke="#c14545" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <!-- tail spike/tip -->
+      <polygon points="18,4 28,7 18,10" fill="#a12e2e"/>
+      <polygon points="20,6 26,7 20,8" fill="#cc4444"/>
+    </g>
+
+    <!-- LEGS (tucked, with subtle dangle) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+                        values="0,0; 0,0; 0,0.2; 0,0.4; 0,0.5; 0,0.4; 0,0.2; 0,0; 0,-0.2; 0,-0.3; 0,-0.4; 0,-0.3; 0,-0.2; 0,0"
+                        dur="0.7s" repeatCount="indefinite" additive="sum"/>
+      <!-- back leg -->
+      <rect x="42" y="36" width="3" height="5" fill="#7a2020"/>
+      <rect x="42" y="36" width="0.8" height="5" fill="#5a1010"/>
+      <polygon points="41.5,40 45.5,40 44,42 42,42" fill="#5a1010"/>
+      <!-- front leg -->
+      <rect x="34" y="36" width="3" height="5" fill="#8a2a2a"/>
+      <rect x="34" y="36" width="0.8" height="5" fill="#5a1010"/>
+      <polygon points="33.5,40 37.5,40 36,42 34,42" fill="#5a1010"/>
+      <!-- claws -->
+      <polygon points="42,42 41,43 41.5,42" fill="#e0e0e0"/>
+      <polygon points="44,42 45,43 44.5,42" fill="#e0e0e0"/>
+      <polygon points="34,42 33,43 33.5,42" fill="#e0e0e0"/>
+      <polygon points="36,42 37,43 36.5,42" fill="#e0e0e0"/>
+    </g>
+
+    <!-- BODY -->
+    <g>
+      <!-- main torso -->
+      <ellipse cx="38" cy="30" rx="14" ry="8" fill="#b03030"/>
+      <!-- highlight along top -->
+      <ellipse cx="38" cy="27" rx="12" ry="4" fill="#d04545"/>
+      <ellipse cx="38" cy="25" rx="8" ry="2" fill="#e06060"/>
+      <!-- belly/scales -->
+      <path d="M 26,32 L 50,32 L 48,37 L 28,37 Z" fill="#f5b545"/>
+      <path d="M 26,32 L 50,32 L 50,33 L 26,33 Z" fill="#ffd870"/>
+      <!-- scale lines -->
+      <line x1="30" y1="33" x2="30" y2="37" stroke="#c89030" stroke-width="0.5"/>
+      <line x1="34" y1="33" x2="34" y2="37" stroke="#c89030" stroke-width="0.5"/>
+      <line x1="38" y1="33" x2="38" y2="37" stroke="#c89030" stroke-width="0.5"/>
+      <line x1="42" y1="33" x2="42" y2="37" stroke="#c89030" stroke-width="0.5"/>
+      <line x1="46" y1="33" x2="46" y2="37" stroke="#c89030" stroke-width="0.5"/>
+      <!-- back spikes -->
+      <polygon points="32,23 33,20 34,23" fill="#7a1a1a"/>
+      <polygon points="36,22 37,18 38,22" fill="#7a1a1a"/>
+      <polygon points="40,22 41,18 42,22" fill="#7a1a1a"/>
+      <polygon points="44,23 45,20 46,23" fill="#7a1a1a"/>
+    </g>
+
+    <!-- NECK + HEAD (profile, facing LEFT) -->
+    <g>
+      <!-- neck curve -->
+      <path d="M 28,28 Q 22,25 18,22" stroke="#b03030" stroke-width="6.5" fill="none" stroke-linecap="round"/>
+      <path d="M 28,27 Q 22,24 18,22" stroke="#d04545" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <!-- head -->
+      <ellipse cx="16" cy="22" rx="8" ry="6" fill="#b03030"/>
+      <ellipse cx="14" cy="20" rx="5" ry="3" fill="#d04545"/>
+      <!-- snout extending LEFT -->
+      <path d="M 10,21 Q 4,20 2,22 L 4,25 Q 8,25 10,24 Z" fill="#b03030"/>
+      <path d="M 10,21 Q 4,20 2,22" fill="none" stroke="#d04545" stroke-width="0.6"/>
+      <!-- horns (two, swept back) -->
+      <polygon points="18,16 16,10 19,14" fill="#5a5a5a"/>
+      <polygon points="18,16 17,11 18.5,13" fill="#888888"/>
+      <polygon points="22,17 24,11 21,15" fill="#5a5a5a"/>
+      <polygon points="22,17 23,12 22,14" fill="#888888"/>
+      <!-- ear -->
+      <polygon points="20,17 22,14 22,18" fill="#7a1a1a"/>
+      <!-- eye (yellow, slit pupil) -->
+      <ellipse cx="13" cy="20" rx="1.8" ry="1.5" fill="#fff099"/>
+      <ellipse cx="13" cy="20" rx="1.5" ry="1.2" fill="#ffe040"/>
+      <ellipse cx="13" cy="20" rx="0.5" ry="1.1" fill="#1a1a05"/>
+      <circle cx="12.7" cy="19.5" r="0.3" fill="#ffffff"/>
+      <!-- nostril -->
+      <circle cx="4" cy="22.5" r="0.5" fill="#3a0a0a"/>
+      <!-- teeth -->
+      <polygon points="6,24 5,26 7,25" fill="#ffffff"/>
+      <polygon points="8,24 7.5,26 9,25" fill="#ffffff"/>
+      <!-- jaw line shadow -->
+      <path d="M 4,24 Q 8,25 10,24" fill="none" stroke="#8a2020" stroke-width="0.4"/>
+    </g>
+
+    <!-- FRONT WING (near side, BRIGHTER, drawn AFTER body so it's in front) -->
+    <g transform="translate(36, 26)">
+      <animateTransform attributeName="transform" type="rotate"
+                        values="-85; -90; -80; -40; 10; 45; 55; 50; 30; -10; -50; -75; -85; -88"
+                        dur="0.7s" repeatCount="indefinite" additive="sum"/>
+      <!-- main wing membrane -->
+      <path d="M 0,0 Q 18,-14 28,-4 Q 24,7 0,5 Z" fill="#a12e2e"/>
+      <!-- inner highlight -->
+      <path d="M 0,0 Q 16,-12 22,-3" fill="none" stroke="#c14545" stroke-width="0.8"/>
+      <!-- finger bones -->
+      <path d="M 0,0 L 18,-12" stroke="#5a1010" stroke-width="0.8"/>
+      <path d="M 0,1 L 24,-7" stroke="#5a1010" stroke-width="0.6"/>
+      <path d="M 0,2 L 26,-1" stroke="#5a1010" stroke-width="0.6"/>
+      <path d="M 0,3 L 24,4" stroke="#5a1010" stroke-width="0.5"/>
+      <!-- wing edge darker outline -->
+      <path d="M 0,0 Q 18,-14 28,-4 Q 24,7 0,5" fill="none" stroke="#5a1010" stroke-width="0.7"/>
+    </g>
   </g>
 
-  <!-- legs tucked under -->
-  <rect x="34" y="36" width="3" height="5" fill="#8a2a2a"/>
-  <rect x="42" y="36" width="3" height="5" fill="#8a2a2a"/>
-  <polygon points="34,41 37,41 36,43 34,43" fill="#5a1a1a"/>
-  <polygon points="42,41 45,41 44,43 42,43" fill="#5a1a1a"/>
-
-  <!-- FRONT WING (near side, brighter) -->
-  <g transform="translate(36,26)">
-    <animateTransform attributeName="transform" type="rotate" values="-70 0 0; 50 0 0; -70 0 0" dur="0.7s" repeatCount="indefinite" additive="sum"/>
-    <path d="M 0,0 Q 16,-14 26,-4 Q 22,6 0,5 Z" fill="#a12e2e"/>
-    <line x1="2" y1="2" x2="20" y2="-6" stroke="#7a1a1a" stroke-width="0.5"/>
-    <line x1="2" y1="3" x2="22" y2="-2" stroke="#7a1a1a" stroke-width="0.5"/>
-    <line x1="2" y1="4" x2="16" y2="4" stroke="#7a1a1a" stroke-width="0.5"/>
+  <!-- FIRE BREATH (dynamic flame shape, emerges from snout at world x ~2) -->
+  <g>
+    <animate attributeName="opacity" values="1;0.95;1;0.9;1;0.85;1" dur="0.25s" repeatCount="indefinite"/>
+    <!-- outer flame (orange) -->
+    <g>
+      <animateTransform attributeName="transform" type="scale"
+                        values="1,1; 1.05,0.95; 0.95,1.05; 1.1,0.9; 1,1; 0.95,1.05; 1,1"
+                        dur="0.25s" repeatCount="indefinite" additive="sum"/>
+      <path d="M 2,22 Q -6,18 -10,22 Q -6,26 2,25 Q 0,24 2,23 Z" fill="#ff6600"/>
+      <path d="M 2,22 Q -4,20 -8,22 Q -4,25 2,24" fill="#ff8a00"/>
+    </g>
+    <!-- inner flame (yellow) -->
+    <g>
+      <animateTransform attributeName="transform" type="scale"
+                        values="1,1; 1.1,0.9; 0.9,1.1; 1.05,0.95; 1,1; 0.9,1.1; 1,1"
+                        dur="0.25s" repeatCount="indefinite" additive="sum"/>
+      <path d="M 2,22 Q -3,21 -6,22 Q -3,24 2,23.5" fill="#ffcc00"/>
+      <path d="M 2,22 Q -1,21.5 -3,22.5 Q -1,23.5 2,23" fill="#ffee88"/>
+    </g>
+    <!-- white-hot core -->
+    <ellipse cx="0" cy="22.5" rx="1.5" ry="0.6" fill="#ffffff"/>
+    <!-- spark particles drifting away -->
+    <circle cx="-12" cy="20" r="0.5" fill="#ffaa00">
+      <animate attributeName="cx" values="-8;-15;-22;-8" dur="0.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0.5;0;1" dur="0.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="-10" cy="24" r="0.4" fill="#ff8800">
+      <animate attributeName="cx" values="-6;-12;-18;-6" dur="0.35s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0.4;0;0.8" dur="0.35s" repeatCount="indefinite"/>
+    </circle>
   </g>
 </svg>

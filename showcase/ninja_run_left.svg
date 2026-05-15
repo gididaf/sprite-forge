@@ -1,57 +1,187 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0; 0,-2; 0,0" dur="0.4s" repeatCount="indefinite"/>
-  <ellipse cx="30" cy="60" rx="10" ry="1.6" fill="rgba(0,0,0,0.25)"/>
+  <!-- Ground shadow (stays put, pulses with footfalls) -->
+  <ellipse cx="30" cy="60" rx="10" ry="1.6" fill="#000000" opacity="0.28">
+    <animate attributeName="rx" values="10;11;10;9.5;10;11;10;9.5" dur="0.4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.35;0.28;0.22;0.3;0.35;0.28;0.22" dur="0.4s" repeatCount="indefinite"/>
+  </ellipse>
 
-  <!-- trailing scarf -->
-  <path d="M 32,22 Q 48,20 54,28 Q 50,32 40,28" fill="#cc2222">
-    <animate attributeName="d"
-             values="M 32,22 Q 48,20 54,28 Q 50,32 40,28;
-                     M 32,22 Q 50,24 58,26 Q 54,34 40,28;
-                     M 32,22 Q 46,28 52,32 Q 50,34 38,28;
-                     M 32,22 Q 48,20 54,28 Q 50,32 40,28"
-             dur="0.4s" repeatCount="indefinite"/>
-  </path>
-
-  <!-- BACK LEG (single segment, large swing) -->
-  <g transform="translate(31,42)">
-    <animateTransform attributeName="transform" type="rotate" values="-55 0 0; 0 0 0; 55 0 0; 0 0 0; -55 0 0" dur="0.4s" repeatCount="indefinite" additive="sum"/>
-    <rect x="-2.2" y="0" width="4.4" height="16" fill="#1a1a2a"/>
-    <rect x="-3" y="14" width="6" height="3" fill="#000000"/>
+  <!-- Speed lines (behind ninja, show forward momentum) -->
+  <g opacity="0.6">
+    <line x1="54" y1="22" x2="62" y2="22" stroke="#aaaaaa" stroke-width="0.8">
+      <animate attributeName="opacity" values="0.6;0.3;0.6;0.4;0.6;0.3;0.6;0.4" dur="0.4s" repeatCount="indefinite"/>
+    </line>
+    <line x1="56" y1="30" x2="62" y2="30" stroke="#aaaaaa" stroke-width="0.6">
+      <animate attributeName="opacity" values="0.4;0.6;0.3;0.6;0.4;0.6;0.3;0.6" dur="0.4s" repeatCount="indefinite"/>
+    </line>
+    <line x1="55" y1="38" x2="62" y2="38" stroke="#aaaaaa" stroke-width="0.7">
+      <animate attributeName="opacity" values="0.5;0.3;0.6;0.3;0.5;0.3;0.6;0.3" dur="0.4s" repeatCount="indefinite"/>
+    </line>
   </g>
 
-  <!-- BACK ARM -->
-  <g transform="translate(33,24)">
-    <animateTransform attributeName="transform" type="rotate" values="70 0 0; 0 0 0; -60 0 0; 0 0 0; 70 0 0" dur="0.4s" repeatCount="indefinite" additive="sum"/>
-    <rect x="-2" y="0" width="4" height="13" fill="#2a2a3a"/>
-    <circle cx="0" cy="13" r="1.8" fill="#2a2a3a"/>
-  </g>
+  <!-- Body bob group: rises during suspension, falls on contact -->
+  <g>
+    <animateTransform attributeName="transform" type="translate"
+                      values="0,-1; 0,0; 0,-1; 0,-2.5; 0,-1; 0,0; 0,-1; 0,-2.5"
+                      dur="0.4s" repeatCount="indefinite"/>
 
-  <!-- torso (forward lean via skewed polygon) -->
-  <polygon points="26,22 34,22 36,42 27,42" fill="#2a2a3a"/>
-  <rect x="26" y="28" width="11" height="2" fill="#cc2222"/>
+    <!-- BACK LEG (2-segment with knee) — phase offset by 4 frames from front -->
+    <g transform="translate(32, 40)">
+      <!-- upper leg rotation -->
+      <animateTransform attributeName="transform" type="rotate"
+                        values="-35; -20; 0; 20; 35; 15; 0; -25"
+                        dur="0.4s" repeatCount="indefinite" additive="sum"/>
+      <rect x="-2" y="0" width="4" height="8" fill="#1a1a2a"/>
+      <rect x="-2" y="0" width="0.8" height="8" fill="#0a0a18"/>
+      <!-- knee joint -->
+      <g transform="translate(0, 8)">
+        <animateTransform attributeName="transform" type="rotate"
+                          values="-70; -90; -50; -20; -5; -25; -10; -40"
+                          dur="0.4s" repeatCount="indefinite" additive="sum"/>
+        <rect x="-1.8" y="0" width="3.6" height="8" fill="#1a1a2a"/>
+        <rect x="-1.8" y="0" width="0.7" height="8" fill="#0a0a18"/>
+        <!-- foot -->
+        <rect x="-2.5" y="7" width="6" height="2.5" fill="#000000"/>
+        <rect x="-2.5" y="7" width="6" height="0.5" fill="#2a2a3a"/>
+      </g>
+    </g>
 
-  <!-- head (ninja mask, profile facing LEFT, slight lean forward) -->
-  <circle cx="28" cy="17" r="6" fill="#2a2a3a"/>
-  <rect x="20" y="15" width="5" height="2" fill="#ffffff"/>
-  <circle cx="22" cy="16" r="0.8" fill="#000"/>
-  <path d="M 32,13 Q 34,17 32,21" stroke="#1a1a2a" stroke-width="1" fill="none"/>
-  <!-- headband tie -->
-  <polygon points="34,16 38,14 38,18" fill="#cc2222"/>
+    <!-- BACK ARM (counter-phase to back leg) -->
+    <g transform="translate(33, 24)">
+      <animateTransform attributeName="transform" type="rotate"
+                        values="45; 30; 0; -30; -45; -30; 0; 30"
+                        dur="0.4s" repeatCount="indefinite" additive="sum"/>
+      <rect x="-1.8" y="0" width="3.6" height="7" fill="#2a2a3a"/>
+      <rect x="-1.8" y="0" width="0.7" height="7" fill="#1a1a2a"/>
+      <!-- forearm (slight bend) -->
+      <g transform="translate(0, 7)">
+        <animateTransform attributeName="transform" type="rotate"
+                          values="-20; -10; 0; 10; 20; 10; 0; -10"
+                          dur="0.4s" repeatCount="indefinite" additive="sum"/>
+        <rect x="-1.6" y="0" width="3.2" height="6" fill="#2a2a3a"/>
+        <rect x="-1.6" y="0" width="0.6" height="6" fill="#1a1a2a"/>
+        <!-- fist -->
+        <circle cx="0" cy="7" r="1.5" fill="#2a2a3a"/>
+      </g>
+    </g>
 
-  <!-- FRONT LEG -->
-  <g transform="translate(29,42)">
-    <animateTransform attributeName="transform" type="rotate" values="55 0 0; 0 0 0; -55 0 0; 0 0 0; 55 0 0" dur="0.4s" repeatCount="indefinite" additive="sum"/>
-    <rect x="-2.2" y="0" width="4.4" height="16" fill="#3a3a4a"/>
-    <rect x="-3" y="14" width="6" height="3" fill="#111111"/>
-  </g>
+    <!-- TORSO (forward lean for running) -->
+    <g>
+      <!-- main body (slanted polygon for forward lean) -->
+      <polygon points="24,22 33,22 35,40 26,40" fill="#2a2a3a"/>
+      <polygon points="24,22 33,22 33,25 24,25" fill="#3a3a4a"/>
+      <!-- chest piece -->
+      <polygon points="26,28 33,28 33,30 26,30" fill="#1a1a2a"/>
+      <!-- red sash diagonal -->
+      <polygon points="24,30 35,28 35,32 24,34" fill="#cc2222"/>
+      <polygon points="24,30 35,28 35,29 24,31" fill="#ee3333"/>
+      <!-- belt -->
+      <rect x="26" y="38" width="9" height="2" fill="#0a0a18"/>
+    </g>
 
-  <!-- FRONT ARM with kunai -->
-  <g transform="translate(27,24)">
-    <animateTransform attributeName="transform" type="rotate" values="-60 0 0; 0 0 0; 70 0 0; 0 0 0; -60 0 0" dur="0.4s" repeatCount="indefinite" additive="sum"/>
-    <rect x="-2" y="0" width="4" height="12" fill="#3a3a4a"/>
-    <circle cx="0" cy="12" r="1.8" fill="#3a3a4a"/>
-    <!-- kunai (grip + blade) -->
-    <rect x="-1" y="12" width="2" height="3" fill="#3a2a1a"/>
-    <polygon points="-2.5,15 2.5,15 0,22" fill="#aaaaaa"/>
+    <!-- HEAD (ninja mask, profile facing LEFT) -->
+    <g>
+      <!-- head extra bob (more pronounced) -->
+      <animateTransform attributeName="transform" type="translate"
+                        values="0,0; 0,0.3; 0,0; 0,-0.5; 0,0; 0,0.3; 0,0; 0,-0.5"
+                        dur="0.4s" repeatCount="indefinite" additive="sum"/>
+      <!-- head shape -->
+      <circle cx="28" cy="17" r="6" fill="#2a2a3a"/>
+      <!-- mask covering lower face -->
+      <path d="M 22,17 Q 28,22 32,18 L 32,21 Q 26,23 22,20 Z" fill="#1a1a2a"/>
+      <!-- visible eye (white sclera with focused pupil) -->
+      <rect x="20" y="15" width="5" height="2" fill="#ffffff"/>
+      <rect x="20.5" y="15.2" width="4" height="1.6" fill="#e8e8e8"/>
+      <circle cx="22" cy="16" r="0.9" fill="#0a0a18"/>
+      <circle cx="22.2" cy="15.7" r="0.3" fill="#ffffff"/>
+      <!-- focused eyebrow (slight V for determined look) -->
+      <polygon points="20,13.5 25,13 25,14" fill="#000000"/>
+      <!-- HEADBAND (red, around forehead) -->
+      <rect x="22" y="13" width="11" height="2" fill="#cc2222"/>
+      <rect x="22" y="13" width="11" height="0.5" fill="#ee3333"/>
+      <!-- headband tie trailing back (animated wave) -->
+      <g>
+        <animateTransform attributeName="transform" type="rotate"
+                          values="0 33 14; -5 33 14; -10 33 14; -15 33 14; 0 33 14; 5 33 14; 10 33 14; 5 33 14"
+                          dur="0.4s" repeatCount="indefinite"/>
+        <polygon points="32,14 40,13 42,15 40,16" fill="#cc2222"/>
+        <polygon points="32,14 40,13 41,14 33,15" fill="#ee3333"/>
+        <polygon points="38,16 44,18 38,17" fill="#aa1010"/>
+      </g>
+    </g>
+
+    <!-- TRAILING SCARF (behind back, waves with motion lag) -->
+    <g>
+      <path d="M 33,24 Q 44,22 50,28 Q 46,32 38,30 Z" fill="#cc2222">
+        <animate attributeName="d"
+                 values="M 33,24 Q 44,22 50,28 Q 46,32 38,30 Z;
+                         M 33,24 Q 42,26 48,32 Q 46,36 36,32 Z;
+                         M 33,24 Q 44,22 52,26 Q 50,30 38,28 Z;
+                         M 33,24 Q 46,20 54,24 Q 52,28 40,26 Z;
+                         M 33,24 Q 44,24 50,28 Q 48,32 38,30 Z;
+                         M 33,24 Q 42,26 48,32 Q 46,36 36,32 Z;
+                         M 33,24 Q 44,22 52,26 Q 50,30 38,28 Z;
+                         M 33,24 Q 46,20 54,24 Q 52,28 40,26 Z"
+                 dur="0.4s" repeatCount="indefinite"/>
+      </path>
+      <!-- highlight on scarf -->
+      <path d="M 33,24 Q 42,23 48,26" stroke="#ee3333" stroke-width="0.8" fill="none">
+        <animate attributeName="d"
+                 values="M 33,24 Q 42,23 48,26;
+                         M 33,24 Q 40,26 46,30;
+                         M 33,24 Q 42,23 50,25;
+                         M 33,24 Q 44,21 52,23;
+                         M 33,24 Q 42,24 48,27;
+                         M 33,24 Q 40,26 46,30;
+                         M 33,24 Q 42,23 50,25;
+                         M 33,24 Q 44,21 52,23"
+                 dur="0.4s" repeatCount="indefinite"/>
+      </path>
+    </g>
+
+    <!-- FRONT LEG (2-segment with knee) -->
+    <g transform="translate(28, 40)">
+      <animateTransform attributeName="transform" type="rotate"
+                        values="35; 15; 0; -25; -35; -20; 0; 20"
+                        dur="0.4s" repeatCount="indefinite" additive="sum"/>
+      <rect x="-2" y="0" width="4" height="8" fill="#2a2a3a"/>
+      <rect x="-2" y="0" width="0.8" height="8" fill="#1a1a2a"/>
+      <!-- knee -->
+      <g transform="translate(0, 8)">
+        <animateTransform attributeName="transform" type="rotate"
+                          values="-5; -25; -10; -40; -70; -90; -50; -20"
+                          dur="0.4s" repeatCount="indefinite" additive="sum"/>
+        <rect x="-1.8" y="0" width="3.6" height="8" fill="#2a2a3a"/>
+        <rect x="-1.8" y="0" width="0.7" height="8" fill="#1a1a2a"/>
+        <!-- foot -->
+        <rect x="-2.5" y="7" width="6" height="2.5" fill="#0a0a0a"/>
+        <rect x="-2.5" y="7" width="6" height="0.5" fill="#3a3a4a"/>
+      </g>
+    </g>
+
+    <!-- FRONT ARM (with kunai, counter-phase) -->
+    <g transform="translate(27, 24)">
+      <animateTransform attributeName="transform" type="rotate"
+                        values="-45; -30; 0; 30; 45; 30; 0; -30"
+                        dur="0.4s" repeatCount="indefinite" additive="sum"/>
+      <rect x="-1.8" y="0" width="3.6" height="7" fill="#3a3a4a"/>
+      <rect x="-1.8" y="0" width="0.7" height="7" fill="#2a2a3a"/>
+      <!-- forearm (slight bend) -->
+      <g transform="translate(0, 7)">
+        <animateTransform attributeName="transform" type="rotate"
+                          values="20; 10; 0; -10; -20; -10; 0; 10"
+                          dur="0.4s" repeatCount="indefinite" additive="sum"/>
+        <rect x="-1.6" y="0" width="3.2" height="6" fill="#3a3a4a"/>
+        <rect x="-1.6" y="0" width="0.6" height="6" fill="#2a2a3a"/>
+        <!-- hand gripping kunai -->
+        <circle cx="0" cy="7" r="1.6" fill="#3a3a4a"/>
+        <!-- kunai (grip + blade) -->
+        <rect x="-0.7" y="7" width="1.4" height="3" fill="#3a2a1a"/>
+        <polygon points="-2.2,10 2.2,10 0,15.5" fill="#c0c0c0"/>
+        <polygon points="-1.4,10 1.4,10 0,14" fill="#9a9a9a"/>
+        <polygon points="-0.3,10 0.3,10 0,15" fill="#ffffff"/>
+        <!-- kunai ring on grip -->
+        <circle cx="0" cy="11" r="0.7" fill="none" stroke="#3a2a1a" stroke-width="0.4"/>
+      </g>
+    </g>
   </g>
 </svg>

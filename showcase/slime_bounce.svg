@@ -1,43 +1,112 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- shadow scales inversely to jump height -->
-  <ellipse cx="32" cy="58" rx="14" ry="2" fill="rgba(0,0,0,0.25)">
-    <animate attributeName="rx" values="14;7;14" dur="0.7s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.3;0.12;0.3" dur="0.7s" repeatCount="indefinite"/>
+  <!-- Ground shadow (scales inversely to jump height, biggest when squashed) -->
+  <ellipse cx="32" cy="58" rx="14" ry="2" fill="#000000" opacity="0.3">
+    <animate attributeName="rx" values="14;16;10;8;6;6;8;11;18;16;14;14" dur="0.7s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.3;0.35;0.2;0.15;0.1;0.1;0.15;0.2;0.4;0.35;0.3;0.3" dur="0.7s" repeatCount="indefinite"/>
   </ellipse>
 
-  <!-- body moves up then lands; squash/stretch -->
+  <!-- Slime drip particles (squeezed out on landing squash, fall slightly) -->
   <g>
-    <animateTransform attributeName="transform" type="translate" values="32,44; 32,28; 32,44; 32,44" dur="0.7s" repeatCount="indefinite"/>
-
-    <!-- body ellipse: stretched tall when airborne, squashed flat when landed -->
-    <ellipse cx="0" cy="0" rx="14" ry="12" fill="#4ade80">
-      <animate attributeName="rx" values="14;10;17;14" dur="0.7s" repeatCount="indefinite"/>
-      <animate attributeName="ry" values="12;16;7;12" dur="0.7s" repeatCount="indefinite"/>
-      <animate attributeName="cy" values="0;-2;3;0" dur="0.7s" repeatCount="indefinite"/>
-    </ellipse>
-
-    <!-- highlight (shiny spot) -->
-    <ellipse cx="-5" cy="-6" rx="3" ry="4" fill="#86efac" opacity="0.85">
-      <animate attributeName="ry" values="4;5;2;4" dur="0.7s" repeatCount="indefinite"/>
-    </ellipse>
-
-    <!-- eyes -->
-    <circle cx="-4" cy="-2" r="1.6" fill="#000">
-      <animate attributeName="cy" values="-2;-4;0;-2" dur="0.7s" repeatCount="indefinite"/>
+    <circle r="1.4" fill="#4ade80">
+      <animate attributeName="cx" values="32;32;32;32;32;32;32;22;20;22;26;30" dur="0.7s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="44;44;44;44;44;44;44;52;54;55;56;56" dur="0.7s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;0;0;0;0;0;0.6;1;0.8;0.4;0" dur="0.7s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="0.5;0.5;0.5;0.5;0.5;0.5;0.5;1.2;1.4;1.2;0.8;0.3" dur="0.7s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="4" cy="-2" r="1.6" fill="#000">
-      <animate attributeName="cy" values="-2;-4;0;-2" dur="0.7s" repeatCount="indefinite"/>
+    <circle r="1.2" fill="#86efac">
+      <animate attributeName="cx" values="32;32;32;32;32;32;32;42;44;42;38;34" dur="0.7s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="44;44;44;44;44;44;44;52;54;55;56;56" dur="0.7s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;0;0;0;0;0;0.5;1;0.7;0.3;0" dur="0.7s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="0.5;0.5;0.5;0.5;0.5;0.5;0.5;1;1.2;1;0.7;0.3" dur="0.7s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="-3.7" cy="-2.6" r="0.5" fill="#fff">
-      <animate attributeName="cy" values="-2.6;-4.6;-0.6;-2.6" dur="0.7s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="4.3" cy="-2.6" r="0.5" fill="#fff">
-      <animate attributeName="cy" values="-2.6;-4.6;-0.6;-2.6" dur="0.7s" repeatCount="indefinite"/>
-    </circle>
+  </g>
 
-    <!-- mouth (smiles when airborne, neutral when landed) -->
-    <path d="M -3,3 Q 0,5 3,3" stroke="#000" stroke-width="1" fill="none">
-      <animate attributeName="d" values="M -3,3 Q 0,5 3,3; M -3,1 Q 0,4 3,1; M -3,4 Q 0,5 3,4; M -3,3 Q 0,5 3,3" dur="0.7s" repeatCount="indefinite"/>
-    </path>
+  <!-- Slime body group: translates up/down through the bounce cycle -->
+  <g>
+    <animateTransform attributeName="transform" type="translate"
+                      values="32,44; 32,46; 32,40; 32,32; 32,24; 32,24; 32,28; 32,36; 32,46; 32,42; 32,44; 32,44"
+                      dur="0.7s" repeatCount="indefinite"/>
+
+    <!-- Slime body main shape -->
+    <g>
+      <!-- dark base ring (gives depth at bottom) -->
+      <ellipse cx="0" cy="2" rx="14" ry="3" fill="#16a34a" opacity="0.6">
+        <animate attributeName="rx" values="14;17;11;10;13;13;11;10;19;16;13;14" dur="0.7s" repeatCount="indefinite"/>
+        <animate attributeName="ry" values="3;2;2.5;2.5;2;2;2.5;2.5;1.2;2;2.5;3" dur="0.7s" repeatCount="indefinite"/>
+      </ellipse>
+
+      <!-- main body -->
+      <ellipse cx="0" cy="0" rx="14" ry="12" fill="#4ade80">
+        <animate attributeName="rx" values="14;17;11;10;13;13;11;10;19;16;13;14" dur="0.7s" repeatCount="indefinite"/>
+        <animate attributeName="ry" values="12;8;17;18;13;13;17;19;6;9;13;12" dur="0.7s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="0;3;-2;-3;0;0;-2;-3;5;2;0;0" dur="0.7s" repeatCount="indefinite"/>
+      </ellipse>
+
+      <!-- inner mid-tone -->
+      <ellipse cx="0" cy="-1" rx="10" ry="9" fill="#86efac" opacity="0.6">
+        <animate attributeName="rx" values="10;13;8;7;9;9;8;7;15;12;9;10" dur="0.7s" repeatCount="indefinite"/>
+        <animate attributeName="ry" values="9;5;13;14;10;10;13;15;4;6;10;9" dur="0.7s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="-1;2;-3;-4;-1;-1;-3;-4;3;0;-1;-1" dur="0.7s" repeatCount="indefinite"/>
+      </ellipse>
+
+      <!-- shiny highlight -->
+      <ellipse cx="-5" cy="-6" rx="3" ry="4" fill="#bbf7d0" opacity="0.85">
+        <animate attributeName="ry" values="4;3;6;6;4.5;4.5;6;6.5;2;3;4.5;4" dur="0.7s" repeatCount="indefinite"/>
+        <animate attributeName="rx" values="3;4;2;2;3;3;2;2;4.5;4;3;3" dur="0.7s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="-6;-3;-9;-10;-6;-6;-9;-11;-2;-4;-6;-6" dur="0.7s" repeatCount="indefinite"/>
+      </ellipse>
+
+      <!-- small secondary highlight -->
+      <circle cx="-7" cy="-3" r="1" fill="#dcfce7" opacity="0.7">
+        <animate attributeName="cy" values="-3;-1;-5;-6;-3;-3;-5;-6;1;-1;-3;-3" dur="0.7s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- eyes -->
+      <g>
+        <animateTransform attributeName="transform" type="translate"
+                          values="0,0; 0,3; 0,-3; 0,-4; 0,-1; 0,-1; 0,-3; 0,-4; 0,4; 0,2; 0,0; 0,0"
+                          dur="0.7s" repeatCount="indefinite"/>
+        <!-- whites -->
+        <circle cx="-4" cy="-2" r="2" fill="#ffffff"/>
+        <circle cx="4" cy="-2" r="2" fill="#ffffff"/>
+        <!-- pupils (squash with body) -->
+        <ellipse cx="-4" cy="-1.5" rx="1.4" ry="1.6" fill="#0a1a0a">
+          <animate attributeName="ry" values="1.6;1;2;2.2;1.7;1.7;2;2.2;0.5;1;1.7;1.6" dur="0.7s" repeatCount="indefinite"/>
+        </ellipse>
+        <ellipse cx="4" cy="-1.5" rx="1.4" ry="1.6" fill="#0a1a0a">
+          <animate attributeName="ry" values="1.6;1;2;2.2;1.7;1.7;2;2.2;0.5;1;1.7;1.6" dur="0.7s" repeatCount="indefinite"/>
+        </ellipse>
+        <!-- eye sparkle -->
+        <circle cx="-3.5" cy="-2.3" r="0.5" fill="#ffffff"/>
+        <circle cx="4.5" cy="-2.3" r="0.5" fill="#ffffff"/>
+      </g>
+
+      <!-- mouth (excited open when airborne, "ooof" on landing) -->
+      <g>
+        <animateTransform attributeName="transform" type="translate"
+                          values="0,0; 0,3; 0,-3; 0,-4; 0,-1; 0,-1; 0,-3; 0,-4; 0,4; 0,2; 0,0; 0,0"
+                          dur="0.7s" repeatCount="indefinite"/>
+        <path d="M -3,3 Q 0,5 3,3" stroke="#0a1a0a" stroke-width="0.9" fill="none">
+          <animate attributeName="d"
+                   values="M -3,3 Q 0,5 3,3;
+                           M -3,2.5 Q 0,4 3,2.5;
+                           M -3,2 Q 0,5.5 3,2;
+                           M -3,1.5 Q 0,5 3,1.5;
+                           M -3,3 Q 0,5.5 3,3;
+                           M -3,3 Q 0,5.5 3,3;
+                           M -3,2 Q 0,5 3,2;
+                           M -3,1.5 Q 0,4.5 3,1.5;
+                           M -3,4 Q 0,4.5 3,4;
+                           M -3,3.5 Q 0,5 3,3.5;
+                           M -3,3 Q 0,5 3,3;
+                           M -3,3 Q 0,5 3,3"
+                   dur="0.7s" repeatCount="indefinite"/>
+        </path>
+        <!-- tongue (visible when mouth open during jump) -->
+        <ellipse cx="0" cy="4" rx="1.5" ry="0.8" fill="#dc4a4a" opacity="0.7">
+          <animate attributeName="opacity" values="0;0;0.7;0.9;0.5;0.5;0.7;0.9;0;0;0;0" dur="0.7s" repeatCount="indefinite"/>
+        </ellipse>
+      </g>
+    </g>
   </g>
 </svg>

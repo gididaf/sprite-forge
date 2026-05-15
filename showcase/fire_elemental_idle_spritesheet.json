@@ -1,10 +1,10 @@
 {
   "source": "fire_elemental_idle.svg",
-  "frameCount": 8,
+  "frameCount": 12,
   "frameWidth": 64,
   "frameHeight": 64,
-  "sheetWidth": 512,
+  "sheetWidth": 768,
   "sheetHeight": 64,
-  "animationDuration": 0.5,
-  "fps": 16.0
+  "animationDuration": 0.6,
+  "fps": 20.0
 }

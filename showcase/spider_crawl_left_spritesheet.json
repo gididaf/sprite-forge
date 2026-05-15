@@ -1,10 +1,10 @@
 {
   "source": "spider_crawl_left.svg",
   "frameCount": 8,
-  "frameWidth": 64,
-  "frameHeight": 64,
-  "sheetWidth": 512,
-  "sheetHeight": 64,
+  "frameWidth": 80,
+  "frameHeight": 80,
+  "sheetWidth": 640,
+  "sheetHeight": 80,
   "animationDuration": 0.5,
   "fps": 16.0,
   "mirror": "spider_crawl_left_spritesheet_mirror.png"
