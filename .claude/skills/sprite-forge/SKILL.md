@@ -57,11 +57,61 @@ Classify the user's request before starting:
 
 In Modify mode, skip phases that don't apply (e.g. if the change is colour-only, you can jump from spec straight to phase 6 polish). In all other cases, run all six phases below in order.
 
+### Perspective & direction-set detection
+
+Sprite Forge is **orientation-aware**. There is no universal "always face left" rule. Before drawing, classify the request into ONE perspective, which determines how many directions you produce and which are drawn fresh vs. mirror-derived:
+
+| Perspective | Directions in the set | Drawn fresh | Mirror-derived (via `--flip-to`) | Filename suffixes |
+|---|---|---|---|---|
+| **Side-scroller** | left, right | `left` | `right` = flip(left) | `_left`, `_right` |
+| **Top-down 4-way** | down, up, left, right | `down`, `up`, `left` | `right` = flip(left) | `_down`, `_up`, `_left`, `_right` |
+| **Top-down 8-way** | down, up, left, right, downleft, downright, upleft, upright | `down`, `up`, `left`, `downleft`, `upleft` | `right`=flip(left), `downright`=flip(downleft), `upright`=flip(upleft) | the 8 direction names |
+| **Single / non-directional** | one sprite | the single pose | none | **no suffix** |
+
+**How to choose:**
+- **Side-scroller** — platformers, side-view combat, anything that moves along a horizontal floor and only ever faces left or right. This is the old default.
+- **Top-down 4-way / 8-way** — RPG / roguelike / twin-stick views where the character walks toward the camera (down), away (up), and sideways. `down` = facing the camera (front view), `up` = back view.
+- **Single / non-directional** — objects (chest, torch, gem), UI, projectiles with one travel direction, front-only portraits, radially-symmetric creatures (slime, fire elemental). No mirror, no suffix.
+
+If the user named a perspective ("top-down", "platformer", "8-direction"), use it. If the subject strongly implies one (a treasure chest is non-directional; a "side-scroller hero" is side-scroller), infer it and **state your choice in the report**. If genuinely ambiguous (e.g. just "a goblin walking"), ask the user which perspective with `AskUserQuestion` before drawing — it changes how many sprites you produce.
+
+**Mirror-derivation is the default** for the flippable directions: `right` is produced by horizontally flipping `left` (and the diagonals likewise) using the CLI's `--flip-to` flag — no redrawing. This is fast and pixel-consistent. Caveat: asymmetric details flip sides (a sword held in the left hand becomes the right hand, text reverses). If the subject has strong handedness or readable text that must not flip, note it in the report and offer to draw that direction fresh instead.
+
+---
+
+## Pick your pipeline depth (complexity tier)
+
+Not every sprite needs the full six phases. After choosing the perspective, classify the subject into one tier and run the matching pipeline. **Default to the tier the subject implies; if the user says "quick / just make it", force Lite; if they say "make it good / be thorough", force Full.**
+
+**Lite tier — abbreviated pipeline.** Subjects with no directional physics and a simple, mostly-symmetric form:
+- Static / idle objects: chest, torch, gem, coin, potion, crate, lever, sign, banner.
+- Non-directional symmetric creatures with a gentle idle: slime, fire/water elemental, floating orb, eyeball.
+- Anything you classified as **single/non-directional** in the perspective table almost always lands here.
+
+Run only **Phase 1 (compact)** → **Phase 2 (rest pose)** → **Phase 5 (animation)** → **Phase 7 (report)**. Skip the silhouette phase (3), peak-pose phase (4), and separate secondary-motion phase (6) — fold any light polish (shadow, subtle bob, glint) into Phase 5. Skip the fresh-eyes subagent. Iteration cap **2** per phase. Compact Phase 1 to ~3 subject anchors + the single motion; skip the three-moment key-pose plan (a chest opening has no "peak readability" stress test).
+
+**Full tier — all six phases.** Anything with directional physics, weight transfer, multi-part interaction, or that gets mirrored into a set:
+- Walk / run cycles, jumps, dodges (weight + foot contact matter).
+- Combat: attacks, archer draws, caster channels, weapon swings (action mechanics + directional correctness).
+- Multi-part / articulated: riders+mounts, multi-segment creatures, wing-flappers, quadrupeds.
+- Any **side-scroller / top-down** directional set (the spec is amortized across directions, so the rigor is cheap per sprite).
+
+Run phases 1→7 with the fresh-eyes subagent where its triggers apply.
+
+Tiers control *pipeline depth, not the quality ceiling* — a Lite chest must still pass its spec checks; it just skips silhouette-vs-peak contrast analysis and counter-motion layering it would never use. State the tier you chose in the Phase 7 report.
+
 ---
 
 ## The 6-phase pipeline
 
-Each phase produces or modifies a single artifact and is reviewed against the prior phase before continuing. **Iteration cap: 3 per phase**, not global — you may iterate up to 3 times inside any phase before reporting remaining issues to the user.
+Each phase produces or modifies a single artifact and is reviewed against the prior phase before continuing. **Iteration cap: 3 per phase** (2 in Lite tier), not global — you may iterate that many times inside any phase before reporting remaining issues to the user. **Lite tier runs only phases 1, 2, 5, 7** (see complexity tier above).
+
+**How the pipeline maps onto a direction set:**
+- Run the **full** 6-phase pipeline once for the **anchor** direction — `left` for side-scroller/top-down, `down` for a top-down set with no left (rare), or the single pose for non-directional.
+- The phase-1a spec (all three layers), the chosen rig, and the style pack are **shared across the whole set** — write them once. Don't re-derive identity or style per direction.
+- For each **additional fresh** direction (e.g. `up`, `down`, `downleft`), run an **abbreviated** pipeline reusing the shared spec: rest pose → silhouette → animation, with one review pass. You're re-posing the same character to a new viewing angle, not re-inventing it.
+- **Inter-direction readability check (8-way especially):** when you draw a diagonal, render its rest silhouette next to the two cardinals it sits between (e.g. `upleft` beside `up` and `left`) and confirm it reads as a *distinct in-between angle*. If `upleft` is indistinguishable from `up`, it failed — apply the diagonal differentiation rules (torso turn, exposed side sliver, head offset) and re-render before animating. Back-diagonals are the usual offender.
+- **Mirror-derived** directions (`right`, `downright`, `upright`) get **no pipeline** — they are produced by `--flip-to` in the same conversion call as their source (see phase 5). Just eyeball the flipped GIF once to confirm it reads correctly.
 
 ### Phase 1 — Spec + key-pose plan (text only)
 
@@ -88,26 +138,34 @@ Do not draw yet. The spec and pose plan stay in your working context for all lat
 Generate a static SVG at the **rest pose only** (no `<animate>` elements yet).
 
 Filename rules:
-- **Generate mode**: pick descriptive `<subject>_<action>_left.svg`. Append `_2`, `_3` on collision.
+- **Generate mode**: `<subject>_<action>_<direction>.svg` for directional sets (e.g. `hero_walk_left.svg`, `hero_walk_down.svg`); `<subject>_<action>.svg` with **no suffix** for single/non-directional sprites (e.g. `treasure_chest_open.svg`). Append `_2`, `_3` on collision.
 - **Modify mode**: overwrite the source file.
 - **Template mode**: pick a new name, never overwrite the template.
 
-Apply SVG conventions:
-- Side-view, facing LEFT.
+You draw only the **fresh** directions (see the perspective table). The mirror-derived directions are produced by the CLI, not authored by hand.
+
+Apply SVG conventions — these depend on the viewing angle:
 - `viewBox="0 0 64 64"` standard, `"0 0 80 64"` for wider subjects.
-- Side-view torso width ≤ 7px (at viewBox 64). Anything wider reads as front-facing.
+- **Side view** (`left`, and the side-facing component of diagonals): true profile. Torso width ≤ 7px (at viewBox 64) — anything wider reads as front-facing. Layer back limbs first (darker), then body, then front limbs to create depth.
+- **Front view** (`down` in top-down): symmetric, facing the camera. Torso may be wider; both arms/legs visible and roughly mirror-symmetric. Layer is back-to-front (far arm, body, near arm) but left/right symmetry dominates.
+- **Back view** (`up` in top-down): symmetric, facing away. Show the back of the head/hair/cloak; hide the face.
+- **Diagonals** (8-way): a true three-quarter view that must read as **distinct from BOTH neighbouring cardinals** (e.g. `upleft` must not look like `up` nor like `left`). A "slight asymmetry" is not enough — the back-diagonals in particular tend to collapse into the plain back view. Enforce all of:
+  - **Turn the torso/shoulders ~30°** toward the travel direction — one shoulder comes forward and reads nearer/larger, the other recedes.
+  - **Expose a sliver of the side profile**: show one side of the body that the pure front/back view hides (a bit of chest+one arm on front-diagonals; a bit of back+one shoulder blade on back-diagonals; a cape/hair edge peeking to one side).
+  - **Offset the head** a few px toward the travel direction and shift facial features (front-diagonals) or hair/crest (back-diagonals) the same way, to suggest a head turn.
+  - Front-diagonals (`downleft`) still show **some face**; back-diagonals (`upleft`) show **no face** but a clearly *angled* back, not a flat one.
+  - The result should be visibly between the cardinal and the side view — if you laid `up`, `upleft`, `left` side by side, the middle one reads as the in-between angle.
 - Limb thickness ≥ 5px. 4px renders as a thread at 64×64.
 - Flat colours. No gradients unless essential.
-- Layer back limbs first (darker), then body, then front limbs.
-- Pick a palette from `styles/` unless the user has specified.
+- Pick a palette from `styles/` unless the user has specified — and reuse the **same** palette across every direction in the set.
 
-Render at 256×256:
+Render at 256×256 **to a scratch inspection file** (never the deliverable name — see the anti-clobber rule below):
 
 ```bash
-sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --no-mirror
+sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --output <file>_inspect.png
 ```
 
-This produces `<name>_spritesheet.png` containing only the rest pose at high resolution.
+This produces `<file>_inspect.png` containing only the rest pose at high resolution. The real `<file>_spritesheet.png` deliverable is written later, only by the full bake in phase 5/6.
 
 **Review (statics):**
 - Pass A (adversarial): "If this rest pose is wrong, what are the 3 most likely problems?"
@@ -121,10 +179,10 @@ Fix and re-render until rest pose passes, max 3 iterations.
 Render the rest pose as a black-on-white silhouette:
 
 ```bash
-sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --no-mirror --silhouette
+sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --silhouette --output <file>_inspect.png
 ```
 
-This produces `<name>_silhouette.png`.
+This produces `<file>_silhouette.png` (the scratch sheet goes to `<file>_inspect.png`, leaving the deliverable untouched).
 
 **Review (readability):**
 Look at the silhouette alone — no colours, no detail. Ask:
@@ -140,10 +198,10 @@ Max 3 iterations.
 
 Modify the SVG to show the **extreme of the action** (arm fully extended, bow fully drawn, leg fully forward, wings fully down-stroked, jaws fully open). The peak is the moment you wrote about in 1b — make the SVG show that pose now.
 
-Render at 256×256 (regular and silhouette):
+Render at 256×256 (regular and silhouette) to the scratch inspection file:
 
 ```bash
-sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --no-mirror --silhouette
+sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --silhouette --output <file>_inspect.png
 ```
 
 **Review (extreme readability):**
@@ -176,20 +234,28 @@ Leave secondary motion (head bob, tail sway, cloth flutter, body bob) for phase 
 Bake and render the GIF:
 
 ```bash
-sprite-forge <file>.svg
+sprite-forge <file>.svg --facing <direction>
 ```
 
-This produces the sprite sheet, mirror, JSON, and GIF (GIF is default on now).
+This produces the sprite sheet, JSON (stamped with `facing`), and GIF. **No mirror file is produced by default.**
+
+If this direction has a mirror-derived twin (`left`→`right`, `downleft`→`downright`, `upleft`→`upright`), add `--flip-to` to emit the flipped sibling deliverable in the same call — one render, two directions:
+
+```bash
+sprite-forge hero_walk_left.svg --facing left --flip-to hero_walk_right
+```
+
+This additionally writes `hero_walk_right_spritesheet.png`, `hero_walk_right.gif`, and `hero_walk_right_spritesheet.json` (the latter stamped `mirrorOf`). For non-directional sprites, omit both `--facing` and `--flip-to`.
 
 **Review (dynamics — review the GIF, not the strip):**
 - Pass A (adversarial): "If this motion is wrong, what are the 3 most likely problems?"
 - Pass B (spec check): every action-mechanics item from phase 1a — PASS/FAIL/UNCLEAR.
 - Look for: detached parts (something stays still when its parent moves), clipping, dead limbs (no movement when there should be), uneven timing, robotic linear motion, wrong direction (projectile fires the wrong way).
 
-If you need detail, render a single suspect frame at high resolution:
+If you need detail, render a single suspect frame at high resolution (to the scratch file, never the deliverable):
 
 ```bash
-sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --no-mirror --duration <T>
+sprite-forge <file>.svg --frames 1 --size 256 --no-gif --no-meta --duration <T> --output <file>_inspect.png
 ```
 
 where `<T>` makes frame 0 land at the suspect moment.
@@ -201,17 +267,17 @@ Max 3 iterations.
 Now layer in the secondary motion that makes the sprite feel alive:
 
 - Body bob on the root `<svg>` (translate `0,0; 0,-1; 0,0` is the classic).
-- Counter-motion: arms swing opposite to legs in a walk.
+- Counter-motion: arms swing opposite to legs in a walk — and make it **visible**, not token. A walk where only the legs move reads as half-dead. Keep a 1–2px gap (outline/shadow) between arm and torso so the arm doesn't fuse into the body, and give it a real counter-swing (rotate ≈ ±12–18° at the shoulder, opposite phase to the same-side leg). On front/back views where a full swing would clip, at least bob the hands and shift the shoulder line.
 - Lag/follow-through: ears, cloth, tail, hair animate a quarter-cycle behind the body.
 - Secondary part wobble: weapon sway, helmet jiggle, antenna flop.
 - Ease shaping: if the primary motion still looks robotic, add intermediate keyframes near the extremes (slowing in/out) — consult `principles/ease.md`.
 - Anticipation frames: a small reverse motion before the main strike — consult `principles/anticipation.md`.
 - Shadow ellipse if missing: `<ellipse fill="rgba(0,0,0,0.15)">` at the character's feet.
 
-Bake and re-render:
+Bake and re-render (same flags as phase 5 — include `--facing` and any `--flip-to` twin):
 
 ```bash
-sprite-forge <file>.svg
+sprite-forge <file>.svg --facing <direction> [--flip-to <twin>]
 ```
 
 **Review (full dynamics):**
@@ -221,9 +287,27 @@ sprite-forge <file>.svg
 
 Max 3 iterations.
 
-### Phase 7 — Report
+### Phase 7 — Set assembly + report
 
-Tell the user what was generated, summarise the spec checks (which items PASS, any UNCLEAR/FAIL left), and suggest next steps ("want a running version?", "want me to add idle frames?").
+For a **multi-direction set**, once every direction (fresh + mirror-derived) is rendered, write a combined manifest so a game engine can load the whole set. Name it `<subject>_<action>_set.json`:
+
+```json
+{
+  "subject": "hero_walk",
+  "perspective": "top-down-4",
+  "frameWidth": 64, "frameHeight": 64,
+  "directions": {
+    "down":  { "sheet": "hero_walk_down_spritesheet.png",  "gif": "hero_walk_down.gif",  "origin": "drawn" },
+    "up":    { "sheet": "hero_walk_up_spritesheet.png",    "gif": "hero_walk_up.gif",    "origin": "drawn" },
+    "left":  { "sheet": "hero_walk_left_spritesheet.png",  "gif": "hero_walk_left.gif",  "origin": "drawn" },
+    "right": { "sheet": "hero_walk_right_spritesheet.png", "gif": "hero_walk_right.gif", "origin": "mirror", "mirrorOf": "left" }
+  }
+}
+```
+
+Single/non-directional sprites need no manifest.
+
+Then report: state the **perspective** and **complexity tier** you chose (and why, if inferred), list every direction produced and whether it was drawn or mirror-derived, summarise the spec checks (PASS / any UNCLEAR/FAIL left), flag any handedness/text-asymmetry caveats from mirroring, and suggest next steps ("want an attack set in the same directions?", "want me to draw `right` fresh instead of mirroring?").
 
 ---
 
@@ -275,7 +359,9 @@ Hand it the spec from phase 1a so it can grade against your criteria, not just r
 
 ## Batch requests
 
-When the user asks for multiple sprites in one invocation (e.g. "generate 10 sprites" or "make a goblin, ogre, and orc"), run the full 6-phase pipeline **per sprite, sequentially**:
+A **direction set** (one subject in several directions) is NOT a batch — it shares a single spec/rig/style and is handled by the pipeline reuse described above (full pipeline for the anchor, abbreviated for other fresh directions, `--flip-to` for mirror twins).
+
+A **batch** is several *distinct subjects*. When the user asks for multiple sprites in one invocation (e.g. "generate 10 sprites" or "make a goblin, ogre, and orc"), run the full 6-phase pipeline **per sprite, sequentially**:
 
 1. Sprite #1: phases 1 → 7. Carry forward any lessons (e.g. "4px limbs render too thin at 64×64 — bump all future sprites to 5px").
 2. Sprite #2: phases 1 → 7, with prior lessons applied.
@@ -289,7 +375,11 @@ Only skip per-sprite review when the user explicitly trades quality for speed ("
 
 ## Mirroring
 
-Do NOT use `scale(-1,1)` for right-facing versions inside the SVG — it breaks SMIL animation. The pipeline produces a `_mirror.png` flipped sprite sheet automatically (`--no-mirror` to disable).
+Do NOT use `scale(-1,1)` for flipped versions inside the SVG — it breaks SMIL animation. Mirroring is a **pixel operation done by the CLI**, never an SVG transform.
+
+- Mirroring is **off by default** — a bare `sprite-forge <file>.svg` produces no flipped file.
+- To derive a flipped direction as a first-class, correctly-named deliverable, use **`--flip-to <name>`** (preferred): it emits `<name>_spritesheet.png` + `<name>.gif` + `<name>_spritesheet.json` flipped from the source. This is the right way to make `right` from `left`.
+- The legacy `--mirror` flag still exists and emits a generic `<stem>_spritesheet_mirror.png` (off by default). Prefer `--flip-to` so the output carries its real direction name instead of `_mirror`.
 
 ## Important
 
@@ -298,3 +388,5 @@ Do NOT use `scale(-1,1)` for right-facing versions inside the SVG — it breaks 
 - Every `<animate>` / `<animateTransform>` needs both `dur` and `values`.
 - Validate the SVG is well-formed XML before saving.
 - A single SVG file is built up across phases 2 → 6 — don't fragment into multiple files unless explicitly asked.
+- **Never clobber the deliverable.** The final `<file>_spritesheet.png` / `.gif` is written ONLY by the full bake (`sprite-forge <file>.svg --facing …`). Every inspection render (`--frames 1`, high-res, silhouette, suspect-frame) MUST use `--output <file>_inspect.png` — otherwise it overwrites the real sprite sheet with a single static frame. Symptom of getting this wrong: a `_spritesheet.png` that is square (e.g. 256×256) instead of a wide N-frame strip.
+- **Mirror-derive last, and keep twins fresh.** Run `--flip-to <twin>` only *after* a direction's final full bake, as the last action for that direction. If you later re-edit a drawn direction (e.g. fix its pose), you MUST re-run its `--flip-to` twin — otherwise the mirrored sibling is a stale flip of the old version and won't match.

@@ -49,9 +49,14 @@ chmod +x "$INSTALL_DIR/sprite-forge.py"
 echo "[bin] Linked: sprite-forge -> $BIN_DIR/sprite-forge"
 
 # ── Install Claude Code skill ────────────────────────────────────────────
-mkdir -p "$SKILL_DIR/sprite-forge"
-ln -sf "$INSTALL_DIR/.claude/skills/sprite-forge/SKILL.md" "$SKILL_DIR/sprite-forge/SKILL.md"
-echo "[skill] Linked: /sprite-forge skill -> $SKILL_DIR/sprite-forge/SKILL.md"
+# Link the WHOLE skill directory, not just SKILL.md — the skill ships its
+# rigs/, styles/, and principles/ libraries alongside SKILL.md and resolves
+# them relative to its own directory. Linking only the file leaves those
+# libraries invisible to the skill at runtime.
+mkdir -p "$SKILL_DIR"
+rm -rf "$SKILL_DIR/sprite-forge"
+ln -sfn "$INSTALL_DIR/.claude/skills/sprite-forge" "$SKILL_DIR/sprite-forge"
+echo "[skill] Linked: /sprite-forge skill (with rigs/styles/principles) -> $SKILL_DIR/sprite-forge"
 
 # ── Check PATH ────────────────────────────────────────────────────────────
 if [[ ":$PATH:" != *":$BIN_DIR:"* ]]; then

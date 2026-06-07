@@ -8,7 +8,7 @@ Describe a character, get a game-ready sprite sheet.
 /sprite-forge dragon flying left, breathing fire
 ```
 
-→ animated SVG → baked frames → PNG sprite sheet with mirror + metadata. Ready to drop into Unity, Godot, Phaser, LÖVE, or whatever engine you're using.
+→ animated SVG → baked frames → PNG sprite sheet + GIF + metadata, in any orientation (side-scroller, top-down, or a full directional set). Ready to drop into Unity, Godot, Phaser, LÖVE, or whatever engine you're using.
 
 ---
 
@@ -33,7 +33,7 @@ Every sprite below was generated from a single text description. No art skills, 
   </tr>
 </table>
 
-The sprites above are the *animated SVGs themselves*, rendered inline by your browser — no GIF conversion, no video player. Each source file is 1–3 KB, vector, infinitely scalable, and auto-plays without click-to-start controls. The pipeline also produces 64×64 PNG sprite sheets (plus mirrored version, JSON metadata, optional animated GIFs) for game-engine import. Sources in [`showcase/`](showcase/) — tweak and re-run the pipeline.
+The sprites above are the *animated SVGs themselves*, rendered inline by your browser — no GIF conversion, no video player. Each source file is 1–3 KB, vector, infinitely scalable, and auto-plays without click-to-start controls. The pipeline also produces 64×64 PNG sprite sheets (JSON metadata, animated GIFs, and optional flipped/directional siblings via `--flip-to`) for game-engine import. Sources in [`showcase/`](showcase/) — tweak and re-run the pipeline.
 
 ---
 
@@ -60,10 +60,18 @@ Open Claude Code in any directory and type:
 Claude generates the SVG, runs the conversion pipeline, and hands you:
 
 ```
-goblin_warrior_walk_left.svg                    ← animated source (editable)
-goblin_warrior_walk_left_spritesheet.png        ← 8-frame horizontal strip
-goblin_warrior_walk_left_spritesheet_mirror.png ← right-facing version
-goblin_warrior_walk_left_spritesheet.json       ← frame data for your engine
+goblin_warrior_walk_left.svg              ← animated source (editable)
+goblin_warrior_walk_left_spritesheet.png  ← 8-frame horizontal strip
+goblin_warrior_walk_left.gif              ← animated preview
+goblin_warrior_walk_left_spritesheet.json ← frame data for your engine
+```
+
+Need the right-facing version too? One render produces both:
+
+```
+goblin_warrior_walk_right_spritesheet.png ← flipped sibling via --flip-to
+goblin_warrior_walk_right.gif
+goblin_warrior_walk_right_spritesheet.json
 ```
 
 The SVG is the source of truth — tweak it and re-run the pipeline anytime.
@@ -89,8 +97,11 @@ Claude reads the existing SVG, applies your change, and regenerates the sprite s
 Already have an animated SVG? Convert it directly:
 
 ```bash
-# Default: 8 frames, 64×64, with mirror + metadata
+# Default: 8 frames, 64×64, sprite sheet + GIF + metadata
 sprite-forge hero_walk_left.svg
+
+# Also emit a flipped right-facing sibling (sheet + gif + meta) in one render
+sprite-forge hero_walk_left.svg --facing left --flip-to hero_walk_right
 
 # Higher resolution, more frames, with HTML preview
 sprite-forge hero_walk_left.svg --frames 12 --size 128 --preview
@@ -103,7 +114,9 @@ sprite-forge hero_walk_left.svg --frames 12 --size 128 --preview
 | `--frames N` | 8 | Number of animation frames |
 | `--size N` | 64 | Frame size in pixels (square) |
 | `--output PATH` | auto | Output PNG path |
-| `--mirror` / `--no-mirror` | on | Generate flipped sprite sheet |
+| `--flip-to NAME` | — | Emit a complete flipped sibling deliverable (sheet + gif + meta) named `NAME_*` — preferred for right-facing directions |
+| `--facing LABEL` | — | Record facing (`left`, `down`, `up`, `downleft`, …) in the metadata |
+| `--mirror` / `--no-mirror` | off | Generate a generic `_mirror.png` flipped sheet (legacy — prefer `--flip-to`) |
 | `--meta` / `--no-meta` | on | Emit JSON metadata |
 | `--gif` / `--no-gif` | on | Animated GIF (great for READMEs / Discord / wikis) |
 | `--preview` | off | Generate animated HTML preview |
@@ -123,7 +136,7 @@ The pipeline:
 2. **Bake** — sample `<animate>` / `<animateTransform>` values at N evenly-spaced time points, producing N static SVG snapshots
 3. **Render** — rasterize each snapshot via `rsvg-convert`
 4. **Stitch** — combine frames into a horizontal sprite sheet
-5. **Mirror** — flip each frame individually (preserving per-frame geometry, unlike a blanket `scale(-1,1)` transform)
+5. **Flip** (`--flip-to`, optional) — flip each frame individually to derive the opposite-facing direction (preserving per-frame geometry, unlike a blanket `scale(-1,1)` transform)
 6. **Emit** — metadata JSON + optional animated HTML preview
 
 The `/sprite-forge` skill bundles a visual review loop: Claude reads its own generated sprite sheet, grades it against a correctness spec, and iterates until it looks right (hard cap: 3 iterations). For subjects involving directional physics (archers, casters) it can spawn a fresh-eyes subagent reviewer to catch blind spots.
@@ -134,7 +147,7 @@ The `/sprite-forge` skill bundles a visual review loop: Claude reads its own gen
 
 If you're hand-editing SVGs or extending the skill:
 
-- **Facing**: side-view characters face LEFT — the pipeline mirrors for the right-facing version.
+- **Orientation**: the skill is orientation-aware — side-scroller (left/right), top-down 4-/8-way, or single/non-directional. Draw the non-flippable directions; derive the right-facing twins with `--flip-to`.
 - **ViewBox**: `0 0 64 64` standard, `0 0 80 64` for wide characters (spiders, dragons).
 - **Animation**: SMIL only (`<animate>`, `<animateTransform>`). CSS animations aren't baked.
 - **Layering**: back limbs (darker) → body → front limbs for depth.

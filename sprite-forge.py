@@ -179,6 +179,17 @@ def generate_mirror(sheet: Image.Image, size: int, frame_count: int, output_path
     return mirrored
 
 
+def flip_frames(frame_paths: list[str], tmp_dir: str) -> list[str]:
+    """Horizontally flip each frame PNG, writing the results to new files."""
+    flipped_paths = []
+    for i, path in enumerate(frame_paths):
+        frame = ImageOps.mirror(Image.open(path).convert("RGBA"))
+        out = os.path.join(tmp_dir, f"flip_frame_{i:03d}.png")
+        frame.save(out, "PNG")
+        flipped_paths.append(out)
+    return flipped_paths
+
+
 def write_silhouette(frame_path: str, output_path: str):
     """Convert a frame to a pure black-on-white silhouette for readability inspection."""
     src = Image.open(frame_path).convert("RGBA")
@@ -206,7 +217,8 @@ def write_gif(frame_paths: list[str], duration: float, output_path: str):
 
 
 def write_metadata(output_path: str, source: str, frame_count: int, size: int,
-                   duration: float, mirror_path: str | None):
+                   duration: float, mirror_path: str | None,
+                   facing: str | None = None, mirror_of: str | None = None):
     """Write a JSON metadata file for game engine import."""
     meta = {
         "source": source,
@@ -218,6 +230,10 @@ def write_metadata(output_path: str, source: str, frame_count: int, size: int,
         "animationDuration": duration,
         "fps": round(frame_count / duration, 2),
     }
+    if facing:
+        meta["facing"] = facing
+    if mirror_of:
+        meta["mirrorOf"] = mirror_of
     if mirror_path:
         meta["mirror"] = os.path.basename(mirror_path)
 
@@ -376,8 +392,31 @@ def run_pipeline(svg_path: Path, args):
 
     if meta_path:
         write_metadata(str(meta_path), input_path.name, args.frames, args.size,
-                       duration, str(mirror_path) if mirror_path else None)
+                       duration, str(mirror_path) if mirror_path else None,
+                       facing=args.facing)
         print(f"[metadata] {meta_path.name}")
+
+    # --flip-to: emit a complete horizontally-flipped sibling deliverable
+    # (sheet + gif + meta) under the given NAME. This is how the right-facing
+    # direction of a set is derived from the left-facing source without redrawing.
+    if args.flip_to:
+        flip_stem = Path(args.flip_to).stem
+        flip_frame_paths = flip_frames(frame_paths, tmp_dir)
+
+        flip_sheet_path = out_dir / f"{flip_stem}_spritesheet.png"
+        stitch_frames(flip_frame_paths, args.size, str(flip_sheet_path))
+        print(f"[flip-to] {flip_sheet_path.name} (flipped from {sheet_path.name})")
+
+        if gif_path:
+            flip_gif_path = out_dir / f"{flip_stem}.gif"
+            write_gif(flip_frame_paths, duration, str(flip_gif_path))
+            print(f"[flip-to] {flip_gif_path.name}")
+
+        if meta_path:
+            flip_meta_path = out_dir / f"{flip_stem}_spritesheet.json"
+            write_metadata(str(flip_meta_path), input_path.name, args.frames, args.size,
+                           duration, None, mirror_of=sheet_path.name)
+            print(f"[flip-to] {flip_meta_path.name}")
 
     if preview_path:
         generate_preview(
@@ -415,7 +454,9 @@ def main():
     parser.add_argument("--frames", type=int, default=8, help="number of frames (default: 8)")
     parser.add_argument("--size", type=int, default=64, help="frame size in px (default: 64)")
     parser.add_argument("--output", help="output PNG path (default: auto-derived)")
-    parser.add_argument("--mirror", action=argparse.BooleanOptionalAction, default=True, help="generate a flipped sprite sheet (default: on)")
+    parser.add_argument("--mirror", action=argparse.BooleanOptionalAction, default=False, help="also emit a horizontally-flipped <stem>_spritesheet_mirror.png (default: off)")
+    parser.add_argument("--flip-to", dest="flip_to", metavar="NAME", help="emit a complete horizontally-flipped sibling deliverable (sheet + gif + meta) named NAME_*. Use for the right-facing direction of a set, e.g. --flip-to hero_walk_right")
+    parser.add_argument("--facing", help="record this facing label in the metadata (e.g. left, down, up, downleft)")
     parser.add_argument("--meta", action=argparse.BooleanOptionalAction, default=True, help="generate JSON metadata file (default: on)")
     parser.add_argument("--keep-frames", action="store_true", help="keep individual frame PNGs")
     parser.add_argument("--duration", type=float, help="override animation duration (seconds)")
