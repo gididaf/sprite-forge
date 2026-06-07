@@ -147,15 +147,17 @@ You draw only the **fresh** directions (see the perspective table). The mirror-d
 Apply SVG conventions — these depend on the viewing angle:
 - `viewBox="0 0 64 64"` standard, `"0 0 80 64"` for wider subjects.
 - **Side view** (`left`, and the side-facing component of diagonals): true profile. Torso width ≤ 7px (at viewBox 64) — anything wider reads as front-facing. Layer back limbs first (darker), then body, then front limbs to create depth.
-- **Front view** (`down` in top-down): symmetric, facing the camera. Torso may be wider; both arms/legs visible and roughly mirror-symmetric. Layer is back-to-front (far arm, body, near arm) but left/right symmetry dominates.
-- **Back view** (`up` in top-down): symmetric, facing away. Show the back of the head/hair/cloak; hide the face.
+- **Front view** (`down` in top-down): symmetric, facing the camera. Torso may be wider; both arms/legs visible and roughly mirror-symmetric. Layer is back-to-front (far arm, body, near arm) but left/right symmetry dominates. **Back-worn items** (cape, cloak, quiver, backpack) belong behind the body — in the front view show them as only a thin sliver peeking past the shoulders, or hide them entirely. Do NOT draw a cape as two wide symmetric flaps either side of the torso; that reads as side-wings, not a back cape.
+- **Back view** (`up` in top-down): symmetric, facing away. Show the back of the head/hair/cloak; hide the face. This is where a cape/cloak reads at **full width** — make it prominent here.
 - **Diagonals** (8-way): a true three-quarter view that must read as **distinct from BOTH neighbouring cardinals** (e.g. `upleft` must not look like `up` nor like `left`). A "slight asymmetry" is not enough — the back-diagonals in particular tend to collapse into the plain back view. Enforce all of:
   - **Turn the torso/shoulders ~30°** toward the travel direction — one shoulder comes forward and reads nearer/larger, the other recedes.
   - **Expose a sliver of the side profile**: show one side of the body that the pure front/back view hides (a bit of chest+one arm on front-diagonals; a bit of back+one shoulder blade on back-diagonals; a cape/hair edge peeking to one side).
   - **Offset the head** a few px toward the travel direction and shift facial features (front-diagonals) or hair/crest (back-diagonals) the same way, to suggest a head turn.
   - Front-diagonals (`downleft`) still show **some face**; back-diagonals (`upleft`) show **no face** but a clearly *angled* back, not a flat one.
   - The result should be visibly between the cardinal and the side view — if you laid `up`, `upleft`, `left` side by side, the middle one reads as the in-between angle.
-- Limb thickness ≥ 5px. 4px renders as a thread at 64×64.
+  - **Tie-breaker vs the side neighbour:** the diagonal must also not collapse into the pure side (`left`). The side view is a flat profile (one shoulder, torso depth ≤ ~7px); the diagonal shows **more torso width / both shoulders at an angle** and a partial front-or-back face. If your `upleft` looks like `left`, you've over-rotated — bring it back toward the cardinal so more of the back (or front) plane is visible.
+- Limb thickness ≥ 5px — **including lower legs/forearms, and especially mid-stride** when a limb is extended and tends to thin out. A leg that's 5px standing but tapers to 2–3px when striding reads as spindly.
+- **Make identity features read at 64px.** The traits that distinguish a subject (tusks, brow ridge, crest, ears, snout, helmet shape) must be **chunky — ≥3–4px and clearly silhouetted**, not a single tiny mark. A lone small dot is ambiguous (is the orc's red speck an eye or a helmet crest?). When several siblings share a body type (goblin/ogre/orc; all green humanoids), lean on **distinct silhouette + size + a bold readable feature each** — not colour alone, and not a 1px detail.
 - Flat colours. No gradients unless essential.
 - Pick a palette from `styles/` unless the user has specified — and reuse the **same** palette across every direction in the set.
 
@@ -266,7 +268,7 @@ Max 3 iterations.
 
 Now layer in the secondary motion that makes the sprite feel alive:
 
-- Body bob on the root `<svg>` (translate `0,0; 0,-1; 0,0` is the classic).
+- Body bob on the root `<svg>` (translate `0,0; 0,-1; 0,0` is the classic). **But for an idle** (where the bob IS the main motion, not a garnish on a walk), 1px is too subtle to read at 64px — use a **2–3px** breathing bob plus at least one visible secondary beat (chest/shoulder rise, weapon-tip sway, head dip). An idle should never look frozen when played.
 - Counter-motion: arms swing opposite to legs in a walk — and make it **visible**, not token. A walk where only the legs move reads as half-dead. Keep a 1–2px gap (outline/shadow) between arm and torso so the arm doesn't fuse into the body, and give it a real counter-swing (rotate ≈ ±12–18° at the shoulder, opposite phase to the same-side leg). On front/back views where a full swing would clip, at least bob the hands and shift the shoulder line.
 - Lag/follow-through: ears, cloth, tail, hair animate a quarter-cycle behind the body.
 - Secondary part wobble: weapon sway, helmet jiggle, antenna flop.
