@@ -2,6 +2,8 @@
 
 Seven principles to consult during phases 5 and 6 of the pipeline. Each doc explains the principle, when it applies, and how to express it in SMIL `values=` lists for this engine.
 
+> For **tileable textures** (not sprites), see [textures.md](textures.md) instead — edge-wrapping, noise-as-overlay, tiling rhythm, and light direction. The seven animation principles below do not apply to static textures.
+
 ## Index
 
 | Principle | One-line |

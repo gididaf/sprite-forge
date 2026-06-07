@@ -1,0 +1,32 @@
+<!-- cobblestone.svg — packed rounded stones (opaque, seamlessly tiling).
+     Offset rows of rounded "pill" stones (running bond, like brick with rx),
+     varied greys. Stones straddle the vertical edges on offset rows; the row
+     gap straddles the horizontal edges. Dark grout fills behind. Seam 0. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#2e2c2a"/>
+
+  <!-- even rows (offset 0): grout straddles x=0/64 -->
+  <g rx="5">
+    <rect x="2"  y="2"  width="28" height="12" rx="5" fill="#7a766e"/>
+    <rect x="34" y="2"  width="28" height="12" rx="5" fill="#6e6a62"/>
+    <rect x="2"  y="34" width="28" height="12" rx="5" fill="#736f67"/>
+    <rect x="34" y="34" width="28" height="12" rx="5" fill="#807c72"/>
+  </g>
+  <!-- offset rows: a stone straddles each vertical edge -->
+  <g>
+    <rect x="-14" y="18" width="28" height="12" rx="5" fill="#6a665e"/>
+    <rect x="18"  y="18" width="28" height="12" rx="5" fill="#7d796f"/>
+    <rect x="50"  y="18" width="28" height="12" rx="5" fill="#6a665e"/>
+    <rect x="-14" y="50" width="28" height="12" rx="5" fill="#767268"/>
+    <rect x="18"  y="50" width="28" height="12" rx="5" fill="#6c685f"/>
+    <rect x="50"  y="50" width="28" height="12" rx="5" fill="#767268"/>
+  </g>
+
+  <!-- top highlight on each stone (single light direction) -->
+  <g fill="#9a958a" opacity="0.45">
+    <rect x="4" y="3" width="24" height="2" rx="1"/><rect x="36" y="3" width="24" height="2" rx="1"/>
+    <rect x="4" y="35" width="24" height="2" rx="1"/><rect x="36" y="35" width="24" height="2" rx="1"/>
+    <rect x="-12" y="19" width="24" height="2" rx="1"/><rect x="20" y="19" width="24" height="2" rx="1"/><rect x="52" y="19" width="24" height="2" rx="1"/>
+    <rect x="-12" y="51" width="24" height="2" rx="1"/><rect x="20" y="51" width="24" height="2" rx="1"/><rect x="52" y="51" width="24" height="2" rx="1"/>
+  </g>
+</svg>

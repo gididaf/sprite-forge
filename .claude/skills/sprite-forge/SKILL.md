@@ -1,20 +1,21 @@
 ---
 name: sprite-forge
-description: Generate animated SVG game sprites and convert them to PNG sprite sheets
+description: Generate animated SVG game sprites and tileable surface textures, and convert them to PNG sprite sheets
 user_invocable: true
 ---
 
 # Sprite Forge
 
-Generate animated SVG game sprites and convert them to PNG sprite sheets.
+Generate animated SVG game sprites — and seamlessly tileable surface textures (Doom/Duke-3D-style walls and floors) — then convert them to PNG.
 
 ## Usage
 
 The user describes what they want in natural language:
 
-- `skeleton warrior walking left` — generate from scratch
+- `skeleton warrior walking left` — generate a sprite from scratch
 - `make it red, modify hero.svg` — modify an existing SVG in place
 - `add a shield, based on hero.svg` — create a new SVG using an existing one as reference
+- `a seamless mossy brick wall texture` — generate a tileable surface texture (see **Texture mode**)
 
 ## Library available to you
 
@@ -22,7 +23,8 @@ Three directories ship inside this skill. Read from them whenever they help.
 
 - `rigs/` — pre-wired rest-pose SVGs for common archetypes (humanoid, quadruped, wing-flapper, caster, archer, brute, serpent, multi-leg, blob, levitator, static-object, rider, projectile, vehicle). `additive="sum"` is already set on shoulder/elbow/hip groups; limb thickness and torso width already pass the conventions below. **Default behaviour: start from a rig when one fits, then restyle.** Never re-derive a humanoid skeleton from scratch when `rigs/humanoid.svg` exists.
 - `styles/` — style packs (palette + line conventions) you can pick from or combine: `pixel-chunky`, `cel-shaded`, `dark-fantasy`, `high-saturation`, `monochrome`. Use one unless the user specifies otherwise.
-- `principles/` — one doc per animation principle (anticipation, follow-through, ease, squash-stretch, arcs, secondary-motion, weight) with inline SVG snippets you can adapt. Consult before phases 5 and 6.
+- `principles/` — one doc per animation principle (anticipation, follow-through, ease, squash-stretch, arcs, secondary-motion, weight) with inline SVG snippets you can adapt. Consult before phases 5 and 6. `principles/textures.md` covers the static-texture principles (edge-wrapping, noise-as-overlay, tiling rhythm, light direction).
+- `textures/` — seam-correct tileable surface templates (brick, stone_block, cobblestone, wood_planks, metal_plate, tile_checker, fabric, scifi_panel, dirt_ground, concrete, organic, and the animated `liquid` + `forcefield`). The texture equivalent of `rigs/`: each already tiles seamlessly. Used only in **Texture mode** (below).
 
 ## Your workflow
 
@@ -47,6 +49,15 @@ If `curl` is unavailable, install manually:
 4. `ln -sf ~/.sprite-forge/sprite-forge.py ~/.local/bin/sprite-forge && chmod +x ~/.sprite-forge/sprite-forge.py`
 
 Verify with `sprite-forge --help`. Skip this phase on subsequent runs.
+
+### Artifact routing — sprite or texture?
+
+Before anything else, decide which kind of asset the request is:
+
+- **Texture** — a tileable *surface*: a wall, floor, ceiling, or material covering (brick, stone, metal, wood, dirt, tile, cloth, water/lava, moss/rust). Trigger words: *texture, tileable, seamless, wall, floor, ground, surface, material, "Doom/Duke-3D wall"*, or a bare material name ("a rusty metal floor"). Textures have **no facing, no direction set, no walk cycle, and no sprite sheet** — jump straight to **Texture mode** below and ignore the perspective / tier / 6-phase sprite workflow entirely.
+- **Sprite** — everything else (a character, creature, object, or effect that moves or is viewed as a discrete entity). Continue with the sprite workflow below.
+
+If genuinely ambiguous, ask with `AskUserQuestion`.
 
 ### Mode detection
 
@@ -310,6 +321,47 @@ For a **multi-direction set**, once every direction (fresh + mirror-derived) is 
 Single/non-directional sprites need no manifest.
 
 Then report: state the **perspective** and **complexity tier** you chose (and why, if inferred), list every direction produced and whether it was drawn or mirror-derived, summarise the spec checks (PASS / any UNCLEAR/FAIL left), flag any handedness/text-asymmetry caveats from mirroring, and suggest next steps ("want an attack set in the same directions?", "want me to draw `right` fresh instead of mirroring?").
+
+---
+
+## Texture mode
+
+For **tileable surface textures** (routed here from "Artifact routing" above). A texture is a seamlessly-repeating material image — usually static, optionally **looping/animated** (water, lava, scrolling glow; see "Animated textures" below). There is **no facing, no direction set** (no left/right/up/down). The two-pass review discipline (below) still applies; the orientation/tier/6-phase sprite machinery does not.
+
+The same Generate / Modify / Template modes apply (generate from a template, modify an existing texture SVG in place, or base a new one on an existing texture).
+
+**Read first:** `principles/textures.md` (the four texture principles) and `textures/README.md` (the template index + the seamlessness rules).
+
+### The one rule
+
+**Seamlessness comes from edge-wrapped GEOMETRY, never from noise.** librsvg's `feTurbulence stitchTiles="stitch"` is *not* pixel-perfect, so `feTurbulence` is only ever a **low-opacity overlay** (~0.2–0.4) on a solid/geometric base. Two construction patterns guarantee matching edges (both demonstrated in `textures/`):
+- **Edge-straddle** — split a gap or feature across the tile edge (half above / half below) so opposite-edge pixels are identical; draw features that run off one edge and re-enter the other (see `brick.svg`).
+- **Inset border** — keep every feature inside a uniform border/frame/grout that straddles the edges (see `metal_plate.svg`, `tile_checker.svg`).
+
+### Texture pipeline
+
+1. **Spec (text).** State: the **material** + finish (clean / worn / mossy / ancient), the **surface type** — *opaque* (wall/floor; has a full-bleed background) or *decal* (grate/vines/cracks/sign overlay; **omit the background rect** so it renders transparent), the **structural pattern** (the repeating unit + which `textures/` template to start from), and the **edge strategy** (edge-straddle vs inset border). Pick a palette from `styles/` unless the user specified colours.
+2. **Author.** Copy the chosen template, recolour to the palette, and tune the pattern. Preserve the template's edge geometry — that's what makes it tile. Keep any `feTurbulence` overlay low-opacity with its filter region pinned to the tile (`filterUnits="userSpaceOnUse"`, `x/y/width/height` = the viewBox) and `stitchTiles="stitch"`.
+3. **Seam-check (replaces the silhouette gate).** Bake with `sprite-forge <file>.svg --tileable`. Then **both**:
+   - Read the printed `[seam] edge-wrap error mean=… (seamless | SEAM VISIBLE)`. A flat-geometry tile reads ~0; a tuned noise overlay ~1–3; a broken wrap ~20+. If it says SEAM VISIBLE, the geometry doesn't wrap — fix the edges (don't just dial down noise).
+   - Open `<stem>_tilecheck.png` (the 3×3 grid) and look for hard lines or an obvious repeat where copies meet. Run Pass A (adversarial: "what are the 3 most likely seams/repeat artefacts?") then Pass B (spec check). Iterate, cap **3**.
+4. **Deliver.** The `--tileable` bake already emits the deliverables: `<stem>_64/128/256.png`, `<stem>_tilecheck.png`, and `<stem>_texture.json`. Pass `--material <name>` to tag the metadata; `--sizes` / `--tile-grid` to override defaults; add `--animated` for a looping texture (see "Animated textures" below). (No `--facing`, `--flip-to`, or sprite-sheet flags — they're ignored in texture mode.)
+5. **Report.** State the material, surface type (opaque/decal), the sizes emitted, the seam verdict + `seamError.mean`, and the template you started from. Suggest next steps ("want a matching floor?", "a worn/damaged variant?", "a decal layer — cracks or moss — to scatter on top?").
+
+### Texture naming
+
+`<material>_<variant>_texture.svg` (e.g. `brick_mossy_texture.svg`, `metal_floor_texture.svg`). Outputs are `<stem>_<size>.png`, `<stem>_tilecheck.png`, `<stem>_texture.json` — disjoint from the sprite suffixes (`_spritesheet`, `_silhouette`, `.gif`), so textures and sprites never collide. Append `_2` on a name collision; in Template mode never overwrite the source.
+
+### Animated textures
+
+Looping textures (flowing water, bubbling lava, scrolling glow, pulsing tech) **are supported** — bake with `--tileable --animated`. An animated texture must be seamless on **two axes**:
+
+- **Space** — exactly the static rule above: edge-wrapped geometry, checked per frame (the bake prints `[seam] spatial edge-wrap (avg over frames) … (seamless | SEAM VISIBLE)`).
+- **Time** — the loop must return to its start without a jump. Author the motion with **cyclic SMIL** whose `values` end where they began, ideally translating by exactly one tile/wavelength so frame N flows back into frame 0 (e.g. `values="0 0; -32 0"` to scroll one 32px wavelength). The bake prints `[loop] … ratio=R (loops cleanly | LOOP POPS)`; `ratio≈1` is a clean loop, `ratio` ≫ 1 means it pops — fix the SMIL so it's cyclic.
+
+**Gotcha — make the motion visible.** Scrolling a feature that is *uniform along the scroll axis* (e.g. a full-width horizontal band scrolled horizontally) produces no visible change. Give the moving feature structure across the scroll direction (wavy crests, dashes, blobs) — see `textures/liquid.svg`.
+
+Start from an animated template — `textures/liquid.svg` (water/lava, a *scroll*) or `textures/forcefield.svg` (energy barrier, a *pulse* — and a transparent decal) — or add cyclic SMIL to any template (e.g. pulse the `scifi_panel.svg` glow strip's opacity). The animated bake produces a **flipbook sprite sheet per size** (`<stem>_<size>_sheet.png`), a looping `<stem>.gif`, a static `<stem>_tilecheck.png`, an **animated `<stem>_tilecheck.gif`** (the 3×3 grid in motion — the best single check of both axes), and animated metadata (`animated`, `frameCount`, `fps`, `loopError`/`loops`). Use `--frames` / `--duration` to control the cycle. In step 3, watch the animated tilecheck GIF and confirm both the seams and the loop.
 
 ---
 

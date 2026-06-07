@@ -18,7 +18,7 @@ run() {
   local id="$1" dir="$2" to="$3" prompt="$4"
   mkdir -p "$dir"; cd "$dir" || return
   echo "[$(date +%H:%M:%S)] START $id :: $prompt"
-  timeout "$to" claude -p "$prompt" "${FLAGS[@]}" > "$dir/result.json" 2> "$dir/err.log"
+  timeout "$to" claude -p "$prompt" "${FLAGS[@]}" < /dev/null > "$dir/result.json" 2> "$dir/err.log"
   local ec=$?
   python3 - "$dir/result.json" "$id" "$SUMMARY" "$ec" <<'PY'
 import json,sys,os,glob
@@ -54,6 +54,8 @@ run A4 "$ROOT/A4_hero_top8"        3300 "/sprite-forge a top-down hero walking, 
 run A5 "$ROOT/A5_goblin_ambiguous" 1800 "/sprite-forge a goblin walking"             # ambiguous (headless: defaults)
 run A6 "$ROOT/A6_knight_sword_rh"  1800 "/sprite-forge a knight holding a sword in his right hand, side-scroller"
 run A9 "$ROOT/A9_batch_monsters"   3600 "/sprite-forge make a goblin, an ogre, and an orc, all side-scroller"
+run A10 "$ROOT/A10_texture_brick"  1800 "/sprite-forge a seamless brick wall texture"   # texture mode
+run A11 "$ROOT/A11_texture_water_anim" 1800 "/sprite-forge a seamless flowing water texture, animated"  # animated texture
 
 echo "[$(date +%H:%M:%S)] ===== BATCH COMPLETE ====="
 cat "$SUMMARY"

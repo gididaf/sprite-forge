@@ -1,0 +1,26 @@
+<!-- dirt_ground.svg — packed earth / ground (opaque, seamlessly tiling).
+     A solid base carries the colour; a feTurbulence grain (stitchTiles="stitch",
+     filter region pinned to the 0..64 tile) adds organic speckle as a LOW-OPACITY
+     overlay only — never the load-bearing tiling mechanism (librsvg's stitch is
+     not pixel-perfect). A few inset pebbles add chunk without touching the edges. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="grain" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
+      <feTurbulence type="fractalNoise" baseFrequency="0.18" numOctaves="3" seed="7" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 0.16  0 0 0 0 0.11  0 0 0 0 0.06  0 0 0 0.45 0"/>
+    </filter>
+  </defs>
+
+  <rect width="64" height="64" fill="#5a4632"/>
+  <rect width="64" height="64" filter="url(#grain)"/>
+
+  <!-- inset pebbles (fully inside the tile) -->
+  <g opacity="0.7">
+    <ellipse cx="16" cy="20" rx="3" ry="2" fill="#6e5a44"/>
+    <ellipse cx="44" cy="14" rx="2.5" ry="1.8" fill="#473625"/>
+    <ellipse cx="30" cy="40" rx="3.5" ry="2.2" fill="#6a553e"/>
+    <ellipse cx="50" cy="48" rx="2.2" ry="1.6" fill="#473625"/>
+    <ellipse cx="12" cy="50" rx="2.6" ry="1.8" fill="#6e5a44"/>
+  </g>
+</svg>

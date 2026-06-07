@@ -1,0 +1,29 @@
+<!-- metal_plate.svg — riveted metal panel (opaque, seamlessly tiling).
+     Each tile is one panel: a dark seam frame STRADDLES all four edges (so the
+     edges are uniform frame colour and opposite edges match exactly), with a
+     bevelled plate and rivets inset inside. When tiled, the straddling frame
+     reads as the panel seams between plates. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- dark seam fills the tile; the plate is inset, leaving a frame that straddles edges -->
+  <rect width="64" height="64" fill="#33363a"/>
+  <rect x="2" y="2" width="60" height="60" fill="#6a6e74"/>
+
+  <!-- bevel: light top/left, dark bottom/right (single light direction) -->
+  <g opacity="0.5">
+    <rect x="2" y="2" width="60" height="3" fill="#969aa0"/>
+    <rect x="2" y="2" width="3"  height="60" fill="#969aa0"/>
+    <rect x="2" y="59" width="60" height="3" fill="#3e4146"/>
+    <rect x="59" y="2" width="3"  height="60" fill="#3e4146"/>
+  </g>
+
+  <!-- a couple of greeble panel lines, inset -->
+  <g stroke="#4e5256" stroke-width="1.5" opacity="0.7">
+    <line x1="10" y1="32" x2="54" y2="32"/>
+  </g>
+
+  <!-- rivets, inset at the four corners + center; never touch an edge -->
+  <g>
+    <g fill="#454a4e"><circle cx="8" cy="8" r="2.4"/><circle cx="56" cy="8" r="2.4"/><circle cx="8" cy="56" r="2.4"/><circle cx="56" cy="56" r="2.4"/><circle cx="32" cy="32" r="2.4"/></g>
+    <g fill="#9aa0a6"><circle cx="7.2" cy="7.2" r="0.9"/><circle cx="55.2" cy="7.2" r="0.9"/><circle cx="7.2" cy="55.2" r="0.9"/><circle cx="55.2" cy="55.2" r="0.9"/><circle cx="31.2" cy="31.2" r="0.9"/></g>
+  </g>
+</svg>

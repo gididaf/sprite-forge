@@ -1,0 +1,21 @@
+<!-- tile_checker.svg — checkerboard floor tiles with grout (opaque, seamlessly tiling).
+     A 2x2 arrangement of 32px tiles in a checker of light/dark. Grout lines
+     STRADDLE the tile edges (and the centre cross), so every edge is grout
+     (uniform) and opposite edges match exactly (seam 0). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#2a2a2e"/>
+
+  <!-- four tiles inset within grout; checker colouring -->
+  <rect x="2"  y="2"  width="28" height="28" fill="#c6bca0"/>
+  <rect x="34" y="2"  width="28" height="28" fill="#8a8270"/>
+  <rect x="2"  y="34" width="28" height="28" fill="#8a8270"/>
+  <rect x="34" y="34" width="28" height="28" fill="#c6bca0"/>
+
+  <!-- bevel: light top/left edge per tile -->
+  <g opacity="0.4">
+    <rect x="2"  y="2"  width="28" height="2" fill="#e4dcc4"/><rect x="2"  y="2"  width="2" height="28" fill="#e4dcc4"/>
+    <rect x="34" y="2"  width="28" height="2" fill="#a8a088"/><rect x="34" y="2"  width="2" height="28" fill="#a8a088"/>
+    <rect x="2"  y="34" width="28" height="2" fill="#a8a088"/><rect x="2"  y="34" width="2" height="28" fill="#a8a088"/>
+    <rect x="34" y="34" width="28" height="2" fill="#e4dcc4"/><rect x="34" y="34" width="2" height="28" fill="#e4dcc4"/>
+  </g>
+</svg>

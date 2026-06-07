@@ -1,0 +1,37 @@
+<!-- wood_planks.svg — horizontal wood planks (opaque, seamlessly tiling).
+     Four planks (pitch 16). A 2px dark plank gap STRADDLES the top/bottom edge
+     (1px each side) so y=0 and y=63 are both gap. Planks span the full width and
+     grain runs full width, so left/right edges are identical (seam 0). Nail heads
+     are inset, never touching an edge. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#2e1d10"/>
+
+  <!-- plank bodies (gap straddles y=0/64) -->
+  <g fill="#8a5a32">
+    <rect x="0" y="1"  width="64" height="14"/>
+    <rect x="0" y="17" width="64" height="14"/>
+    <rect x="0" y="33" width="64" height="14"/>
+    <rect x="0" y="49" width="64" height="14"/>
+  </g>
+
+  <!-- grain: full-width thin lines so x-edges stay identical -->
+  <g stroke="#6e4626" stroke-width="1" opacity="0.6">
+    <line x1="0" y1="5"  x2="64" y2="5"/>  <line x1="0" y1="10" x2="64" y2="10"/>
+    <line x1="0" y1="21" x2="64" y2="21"/> <line x1="0" y1="26" x2="64" y2="26"/>
+    <line x1="0" y1="37" x2="64" y2="37"/> <line x1="0" y1="42" x2="64" y2="42"/>
+    <line x1="0" y1="53" x2="64" y2="53"/> <line x1="0" y1="58" x2="64" y2="58"/>
+  </g>
+  <!-- top highlight on each plank (single light direction) -->
+  <g fill="#a87a4a" opacity="0.5">
+    <rect x="0" y="1" width="64" height="2"/><rect x="0" y="17" width="64" height="2"/>
+    <rect x="0" y="33" width="64" height="2"/><rect x="0" y="49" width="64" height="2"/>
+  </g>
+
+  <!-- nail heads, inset from edges so they never break the wrap -->
+  <g fill="#3a2a1a">
+    <circle cx="8"  cy="8"  r="1.4"/><circle cx="56" cy="8"  r="1.4"/>
+    <circle cx="8"  cy="24" r="1.4"/><circle cx="56" cy="24" r="1.4"/>
+    <circle cx="8"  cy="40" r="1.4"/><circle cx="56" cy="40" r="1.4"/>
+    <circle cx="8"  cy="56" r="1.4"/><circle cx="56" cy="56" r="1.4"/>
+  </g>
+</svg>

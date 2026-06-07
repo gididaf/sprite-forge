@@ -1,0 +1,39 @@
+<!-- liquid.svg — water / lava surface, ANIMATED + seamlessly tiling.
+     Two axes of seamlessness:
+       SPACE — the caustic wave lines are periodic with wavelength 32 (tile = 2
+               wavelengths) and drawn from x=-32 to x=128, so the visible 0..64
+               wraps cleanly at any scroll offset. Lines are inset in y, so the
+               top/bottom edges stay base colour.
+       TIME  — the wave group scrolls horizontally by exactly one wavelength
+               (translate 0 to minus 32) over the cycle, so the last frame flows
+               back into the first (a clean loop). The crests have horizontal
+               shape, so the sideways scroll is actually visible (not a flat band).
+     Bake animated with the tileable + animated flags; a plain tileable bake uses
+     the calm t=0 frame. Restyle base + line colours for lava (oranges) vs water. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="ripple" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08 0.16" numOctaves="2" seed="2" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 0.6  0 0 0 0 0.8  0 0 0 0 1.0  0 0 0 0.22 0"/>
+    </filter>
+  </defs>
+
+  <rect width="64" height="64" fill="#1f5fb0"/>
+
+  <!-- scrolling caustic crests: wavelength 32, span x=-32..128, scroll one wavelength -->
+  <g fill="none" stroke-linecap="round">
+    <animateTransform attributeName="transform" type="translate"
+                      values="0 0; -32 0" dur="3s" repeatCount="indefinite"/>
+    <g stroke="#5fa0e4" stroke-width="2.5" opacity="0.65">
+      <path d="M -32 14 q 8 -4 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0"/>
+      <path d="M -32 46 q 8 -4 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0"/>
+    </g>
+    <g stroke="#a8d2f8" stroke-width="1.4" opacity="0.7">
+      <path d="M -24 30 q 8 -3 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0 t 16 0"/>
+    </g>
+  </g>
+
+  <!-- static shimmer (low-opacity stitched noise) -->
+  <rect width="64" height="64" filter="url(#ripple)"/>
+</svg>

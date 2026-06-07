@@ -1,0 +1,42 @@
+<!-- brick.svg — running-bond brick wall (opaque, seamlessly tiling).
+     SEAMLESS BY GEOMETRY. The key trick: a mortar gap STRADDLES every tile
+     edge (split half above / half below), so the pixels on opposite edges are
+     identical. Module 32px wide (tile = 2 modules), pitch 16px (tile = 4 rows,
+     ABAB offset). Offset rows draw bricks that run off one edge (x=-14, x=50)
+     and re-enter the other. Restyle by changing fills; keep the geometry. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- mortar fills the whole tile; bricks leave 4px gaps, edge gaps straddle the border -->
+  <rect width="64" height="64" fill="#3a322c"/>
+
+  <!-- even rows (offset 0): vertical mortar gap straddles x=0/64 -->
+  <g fill="#9a4f34">
+    <rect x="2"  y="2"  width="28" height="12"/>
+    <rect x="34" y="2"  width="28" height="12"/>
+    <rect x="2"  y="34" width="28" height="12"/>
+    <rect x="34" y="34" width="28" height="12"/>
+  </g>
+  <!-- odd rows (offset 16): a brick straddles each vertical edge (x=-14, x=50) -->
+  <g fill="#8a472e">
+    <rect x="-14" y="18" width="28" height="12"/>
+    <rect x="18"  y="18" width="28" height="12"/>
+    <rect x="50"  y="18" width="28" height="12"/>
+    <rect x="-14" y="50" width="28" height="12"/>
+    <rect x="18"  y="50" width="28" height="12"/>
+    <rect x="50"  y="50" width="28" height="12"/>
+  </g>
+
+  <!-- single-direction light: top highlight (+2px) and bottom shade per brick,
+       same x/width as the bricks so they wrap identically across the seam -->
+  <g fill="#b87a5a" opacity="0.55">
+    <rect x="2" y="2" width="28" height="2"/><rect x="34" y="2" width="28" height="2"/>
+    <rect x="2" y="34" width="28" height="2"/><rect x="34" y="34" width="28" height="2"/>
+    <rect x="-14" y="18" width="28" height="2"/><rect x="18" y="18" width="28" height="2"/><rect x="50" y="18" width="28" height="2"/>
+    <rect x="-14" y="50" width="28" height="2"/><rect x="18" y="50" width="28" height="2"/><rect x="50" y="50" width="28" height="2"/>
+  </g>
+  <g fill="#5e2e1c" opacity="0.5">
+    <rect x="2" y="12" width="28" height="2"/><rect x="34" y="12" width="28" height="2"/>
+    <rect x="2" y="44" width="28" height="2"/><rect x="34" y="44" width="28" height="2"/>
+    <rect x="-14" y="28" width="28" height="2"/><rect x="18" y="28" width="28" height="2"/><rect x="50" y="28" width="28" height="2"/>
+    <rect x="-14" y="60" width="28" height="2"/><rect x="18" y="60" width="28" height="2"/><rect x="50" y="60" width="28" height="2"/>
+  </g>
+</svg>

@@ -1,0 +1,23 @@
+<!-- organic.svg — generic mottled organic surface: moss / rust / marble base.
+     Two stitched feTurbulence layers (coarse mottle + fine grain), both pinned
+     to the 0..64 tile and kept at LOW opacity so the solid base dominates and
+     the residual seam stays small. Restyle by changing the base + the two tint
+     matrices (green=moss, orange=rust, near-white=marble). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="mottle" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="3" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 0.17  0 0 0 0 0.28  0 0 0 0 0.12  0 0 0 0.4 0"/>
+    </filter>
+    <filter id="grain" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
+      <feTurbulence type="fractalNoise" baseFrequency="0.35" numOctaves="2" seed="11" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 0.10  0 0 0 0 0.16  0 0 0 0 0.07  0 0 0 0.3 0"/>
+    </filter>
+  </defs>
+
+  <rect width="64" height="64" fill="#4a5a3a"/>
+  <rect width="64" height="64" filter="url(#mottle)"/>
+  <rect width="64" height="64" filter="url(#grain)"/>
+</svg>

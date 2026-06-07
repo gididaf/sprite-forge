@@ -6,6 +6,9 @@ __pycache__/
 *_preview.html
 *_silhouette.png
 *_frames/
+*_tilecheck.png
+*_texture.json
+*_texture_preview.html
 *.svg
 !.claude/
 !.claude/**

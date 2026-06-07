@@ -28,7 +28,12 @@ EXPECT = {
     "A5_goblin_ambiguous":    ("ambiguous-default", None, None),
     "A6_knight_sword_rh":     ("side-scroller+caveat", ["left"], ["right"]),
     "A9_batch_monsters":      ("batch", None, None),
+    "A10_texture_brick":      ("texture", None, None),
+    "A11_texture_water_anim": ("texture", None, None),
 }
+
+SEAM_MAX = 8.0  # mean edge-wrap error a tile may have and still count seamless
+LOOP_RATIO_MAX = 2.5  # wrap-step / avg-step ratio above which an animated loop "pops"
 
 def subj_dir(stem):
     for d in DIRS:
@@ -68,10 +73,64 @@ def report_flags(result_json):
             if s: out.append(s[:160])
     return out[:8]
 
+def evaluate_texture(case, d, files):
+    """Texture-mode case: expect seam-correct tile variants + a seam-check grid +
+    texture metadata, and NO sprite-sheet outputs (textures have no facing/frames)."""
+    findings=[]; level=["PASS"]
+    def fail(m): level[0]="FAIL"; findings.append("FAIL: "+m)
+    def warn(m):
+        if level[0]!="FAIL": level[0]="WARN"
+        findings.append("WARN: "+m)
+
+    if any(f.endswith("_spritesheet.png") for f in files):
+        fail("texture case produced a _spritesheet.png — should be a texture, not a sprite")
+
+    metas=[f for f in files if f.endswith("_texture.json")]
+    if not metas:
+        fail("no _texture.json produced")
+    subjects=set()
+    for mf in metas:
+        try:
+            m=json.load(open(os.path.join(d,mf)))
+        except Exception as e:
+            fail("texture metadata %s invalid JSON: %s"%(mf,e)); continue
+        subjects.add(mf[:-len("_texture.json")])
+        if m.get("type")!="texture":
+            fail("%s: type is %r, expected 'texture'"%(mf,m.get("type")))
+        mean=(m.get("seamError") or {}).get("mean")
+        if mean is None or mean>SEAM_MAX:
+            fail("%s: seamError.mean=%s exceeds %s (visible seam)"%(mf,mean,SEAM_MAX))
+        if not m.get("seamless"):
+            warn("%s: seamless flag is false"%mf)
+        for sz,name in (m.get("variants") or {}).items():
+            if name not in files: fail("%s: variant %s (%s) not on disk"%(mf,sz,name))
+        tc=m.get("tileCheck")
+        if tc and tc not in files: fail("%s: tileCheck %s not on disk"%(mf,tc))
+        if m.get("animated"):
+            if not (m.get("frameCount") or 0) > 1:
+                fail("%s: animated but frameCount=%s (no real animation)"%(mf,m.get("frameCount")))
+            ratio=(m.get("loopError") or {}).get("ratio")
+            if ratio is None or ratio>LOOP_RATIO_MAX:
+                fail("%s: loopError.ratio=%s exceeds %s (loop pops)"%(mf,ratio,LOOP_RATIO_MAX))
+            for k in ("gif","tileCheckAnimated"):
+                v=m.get(k)
+                if v and v not in files: fail("%s: %s %s not on disk"%(mf,k,v))
+            findings.append("ok: %s animated frames=%s fps=%s loopRatio=%s mean=%s"
+                            %(mf,m.get('frameCount'),m.get('fps'),ratio,mean))
+        elif tc:
+            findings.append("ok: %s mean=%s sizes=%s alpha=%s surface=%s"
+                            %(mf,mean,list((m.get('variants') or {})),m.get('hasAlpha'),m.get('surface')))
+
+    return {"case":case,"expect":"texture","level":level[0],"subjects":sorted(subjects),
+            "svgs":[],"sheets":[],"findings":findings,
+            "report_flags":report_flags(os.path.join(d,"result.json"))}
+
 def evaluate(case):
     d = os.path.join(ROOT, case)
     if not os.path.isdir(d): return None
     files = case_files(d)
+    if EXPECT.get(case,(None,))[0]=="texture":
+        return evaluate_texture(case, d, files)
     svgs = {subj_dir(f[:-4])[1] for f in files if f.endswith(".svg")}
     sheets = {subj_dir(f[:-len("_spritesheet.png")])[1] for f in files if f.endswith("_spritesheet.png")}
     subjects = {subj_dir(f[:-4])[0] for f in files if f.endswith(".svg")}

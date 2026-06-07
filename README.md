@@ -1,14 +1,15 @@
 # 🔥 Sprite Forge
 
-**Generate animated 2D game sprites from plain English — powered by [Claude Code](https://docs.anthropic.com/en/docs/claude-code).**
+**Generate animated 2D game sprites _and seamless tileable textures_ from plain English — powered by [Claude Code](https://docs.anthropic.com/en/docs/claude-code).**
 
-Describe a character, get a game-ready sprite sheet.
+Describe a character, get a game-ready sprite sheet. Describe a wall, get a seamless texture.
 
 ```
 /sprite-forge dragon flying left, breathing fire
+/sprite-forge a seamless mossy brick wall texture
 ```
 
-→ animated SVG → baked frames → PNG sprite sheet + GIF + metadata, in any orientation (side-scroller, top-down, or a full directional set). Ready to drop into Unity, Godot, Phaser, LÖVE, or whatever engine you're using.
+→ animated SVG → baked frames → PNG sprite sheet + GIF + metadata, in any orientation (side-scroller, top-down, or a full directional set) — or a seamlessly-tiling Doom/Duke-3D-style surface texture at multiple power-of-two sizes. Ready to drop into Unity, Godot, Phaser, LÖVE, or whatever engine you're using.
 
 ---
 
@@ -34,6 +35,44 @@ Every sprite below was generated from a single text description. No art skills, 
 </table>
 
 The sprites above are the *animated SVGs themselves*, rendered inline by your browser — no GIF conversion, no video player. Each source file is 1–3 KB, vector, infinitely scalable, and auto-plays without click-to-start controls. The pipeline also produces 64×64 PNG sprite sheets (JSON metadata, animated GIFs, and optional flipped/directional siblings via `--flip-to`) for game-engine import. Sources in [`showcase/`](showcase/) — tweak and re-run the pipeline.
+
+---
+
+## 🧱 Texture Showcase
+
+Describe a surface, get a **seamlessly tileable** texture — Doom/Duke-3D-style walls and floors. Each image below is a **3×3 tiling** of one generated tile, so you can see the edges wrap with no seam. Every tile is built from edge-wrapped geometry and numerically seam-checked at bake time.
+
+<table>
+  <tr>
+    <td align="center"><img src="showcase/textures/brick_tilecheck.png" width="120"/><br/><sub><i>brick</i></sub></td>
+    <td align="center"><img src="showcase/textures/stone_block_tilecheck.png" width="120"/><br/><sub><i>stone block</i></sub></td>
+    <td align="center"><img src="showcase/textures/cobblestone_tilecheck.png" width="120"/><br/><sub><i>cobblestone</i></sub></td>
+    <td align="center"><img src="showcase/textures/wood_planks_tilecheck.png" width="120"/><br/><sub><i>wood planks</i></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="showcase/textures/metal_plate_tilecheck.png" width="120"/><br/><sub><i>metal plate</i></sub></td>
+    <td align="center"><img src="showcase/textures/tile_checker_tilecheck.png" width="120"/><br/><sub><i>floor tiles</i></sub></td>
+    <td align="center"><img src="showcase/textures/scifi_panel_tilecheck.png" width="120"/><br/><sub><i>sci-fi panel</i></sub></td>
+    <td align="center"><img src="showcase/textures/fabric_tilecheck.png" width="120"/><br/><sub><i>woven fabric</i></sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="showcase/textures/dirt_ground_tilecheck.png" width="120"/><br/><sub><i>dirt ground</i></sub></td>
+    <td align="center"><img src="showcase/textures/concrete_tilecheck.png" width="120"/><br/><sub><i>concrete</i></sub></td>
+    <td align="center"><img src="showcase/textures/organic_tilecheck.png" width="120"/><br/><sub><i>organic (moss/rust)</i></sub></td>
+    <td align="center"></td>
+  </tr>
+</table>
+
+**…and they animate.** Looping textures are seamless in *space* (edges wrap) **and** *time* (the loop returns to its start). These are 3×3 tilings, playing live:
+
+<table>
+  <tr>
+    <td align="center"><img src="showcase/textures/water_tilecheck.gif" width="200"/><br/><sub><i>"flowing water, animated" — scrolling caustics</i></sub></td>
+    <td align="center"><img src="showcase/textures/forcefield_tilecheck.gif" width="200"/><br/><sub><i>"energy barrier, animated" — pulsing (transparent decal)</i></sub></td>
+  </tr>
+</table>
+
+Thirteen seam-correct starting templates ship with the skill, restyleable to any palette. Sources in [`showcase/textures/`](showcase/textures/). See the [Textures](#-textures) section below for how it works.
 
 ---
 
@@ -92,6 +131,30 @@ Claude reads the existing SVG, applies your change, and regenerates the sprite s
 
 ---
 
+## 🧱 Textures
+
+Sprite Forge also generates **seamlessly tileable surface textures** — the kind you'd wrap around a Duke Nukem 3D / Doom wall (see the [Texture Showcase](#-texture-showcase) above for the full gallery). Describe a material; get a tile that repeats with no visible seam, at multiple power-of-two sizes, plus a 3×3 verification grid.
+
+```
+/sprite-forge a worn brick wall, seamless texture
+```
+
+Thirteen seam-correct starting templates ship with the skill (brick, stone, cobblestone, wood, metal, tile, fabric, sci-fi panel, dirt, concrete, organic moss/rust/marble, plus animated water/lava and a force field), restyleable to any palette. Seamlessness is built from **edge-wrapped geometry** — the baker numerically self-checks every tile (`[seam] edge-wrap error mean=0.0 (seamless)`) so a broken wrap never slips through. Textures can be opaque walls/floors or transparent **decals** (grates, vines, cracks) that sit on top of another surface.
+
+Each bake produces `<name>_64/128/256.png`, a `<name>_tilecheck.png` grid, and a `<name>_texture.json` for your engine.
+
+### Animated textures
+
+Textures can also **loop** — flowing water, bubbling lava, scrolling glow, a pulsing force field:
+
+```
+/sprite-forge a seamless flowing water texture, animated
+```
+
+An animated texture is seamless on **two axes**: *space* (edge-wrapped geometry, checked per frame) and *time* (a cyclic loop that returns to its start — the baker measures the loop and warns if it pops). `--tileable --animated` bakes a flipbook sprite sheet per size, a looping GIF, and an animated 3×3 seam-check (shown in the [Texture Showcase](#-texture-showcase) above).
+
+---
+
 ## 🛠 Standalone CLI
 
 Already have an animated SVG? Convert it directly:
@@ -105,6 +168,9 @@ sprite-forge hero_walk_left.svg --facing left --flip-to hero_walk_right
 
 # Higher resolution, more frames, with HTML preview
 sprite-forge hero_walk_left.svg --frames 12 --size 128 --preview
+
+# Texture mode: seamless tile at 64/128/256 + a 3×3 seam-check grid
+sprite-forge brick_wall_texture.svg --tileable --material brick
 ```
 
 ### Options
@@ -123,6 +189,16 @@ sprite-forge hero_walk_left.svg --frames 12 --size 128 --preview
 | `--silhouette` | off | Black-on-white silhouette of frame 0 (readability check) |
 | `--keep-frames` | off | Keep individual frame PNGs |
 | `--duration SECS` | auto | Override animation duration |
+
+**Texture mode** (`--tileable`) renders a seamless surface instead of a sprite sheet:
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--tileable` | off | Texture mode — emit a seamlessly tiling surface (no sprite sheet, no facing) |
+| `--sizes A,B,C` | `64,128,256` | Power-of-two sizes to emit (supersedes `--size`) |
+| `--tile-grid N` | 3 | Emit an N×N seam-check grid PNG (`0` disables) |
+| `--material NAME` | — | Material label recorded in the metadata |
+| `--animated` | off | Bake a looping animated texture from the SVG's cyclic SMIL (flipbook sheet per size + GIF + animated seam-check) |
 
 ---
 

@@ -1,0 +1,30 @@
+<!-- stone_block.svg — coursed ashlar stone wall (opaque, seamlessly tiling).
+     Like brick but larger, greyer, rougher blocks. Two courses (pitch 32),
+     offset 16 on the lower course so blocks straddle the vertical edges; the
+     course gap straddles the horizontal edges. Edges are all mortar / matching
+     block, so opposite edges are identical (seam 0). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#423e36"/>
+
+  <!-- upper course (offset 0): mortar gap straddles x=0/64 -->
+  <g fill="#6e6a60">
+    <rect x="2"  y="2" width="28" height="28"/>
+    <rect x="34" y="2" width="28" height="28"/>
+  </g>
+  <!-- lower course (offset 16): a block straddles each vertical edge -->
+  <g fill="#787266">
+    <rect x="-14" y="34" width="28" height="28"/>
+    <rect x="18"  y="34" width="28" height="28"/>
+    <rect x="50"  y="34" width="28" height="28"/>
+  </g>
+
+  <!-- bevel: light top edge, dark bottom edge (single light direction) -->
+  <g fill="#928c80" opacity="0.6">
+    <rect x="2" y="2" width="28" height="3"/><rect x="34" y="2" width="28" height="3"/>
+    <rect x="-14" y="34" width="28" height="3"/><rect x="18" y="34" width="28" height="3"/><rect x="50" y="34" width="28" height="3"/>
+  </g>
+  <g fill="#332f28" opacity="0.55">
+    <rect x="2" y="27" width="28" height="3"/><rect x="34" y="27" width="28" height="3"/>
+    <rect x="-14" y="59" width="28" height="3"/><rect x="18" y="59" width="28" height="3"/><rect x="50" y="59" width="28" height="3"/>
+  </g>
+</svg>

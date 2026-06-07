@@ -1,0 +1,23 @@
+<!-- concrete.svg — poured concrete / plaster (opaque, seamlessly tiling).
+     Flat grey base + a very LOW-opacity stitched feTurbulence grain (pinned to
+     the 0..64 tile). Hairline cracks are inset polylines that never reach an
+     edge, so they don't break the wrap. Subtle by design. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="grain" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
+      <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="2" seed="5" stitchTiles="stitch" result="n"/>
+      <feColorMatrix in="n" type="matrix"
+        values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.18 0"/>
+    </filter>
+  </defs>
+
+  <rect width="64" height="64" fill="#8a8884"/>
+  <rect width="64" height="64" filter="url(#grain)"/>
+
+  <!-- hairline cracks, inset -->
+  <g stroke="#6e6c68" stroke-width="0.8" fill="none" opacity="0.7" stroke-linejoin="round">
+    <polyline points="20,10 26,22 22,34 30,44"/>
+    <polyline points="44,16 40,26 48,36"/>
+    <polyline points="10,46 18,52 14,58"/>
+  </g>
+</svg>
