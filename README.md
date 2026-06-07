@@ -67,8 +67,8 @@ Describe a surface, get a **seamlessly tileable** texture — Doom/Duke-3D-style
 
 <table>
   <tr>
-    <td align="center"><img src="showcase/textures/water_tilecheck.gif" width="200"/><br/><sub><i>"flowing water, animated" — scrolling caustics</i></sub></td>
-    <td align="center"><img src="showcase/textures/forcefield_tilecheck.gif" width="200"/><br/><sub><i>"energy barrier, animated" — pulsing (transparent decal)</i></sub></td>
+    <td align="center"><img src="showcase/textures/water_tiled.svg" width="200"/><br/><sub><i>"flowing water, animated" — scrolling caustics</i></sub></td>
+    <td align="center"><img src="showcase/textures/forcefield_tiled.svg" width="200"/><br/><sub><i>"energy barrier, animated" — pulsing (transparent decal)</i></sub></td>
   </tr>
 </table>
 
