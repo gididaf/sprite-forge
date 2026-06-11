@@ -6,6 +6,7 @@ A tool for generating 2D game sprite sheets — and seamless tileable surface te
 
 - **`/sprite-forge` skill** — Claude generates SVGs directly (no subprocess CLI calls). Two artifact kinds, routed by intent: **sprites** (generate / modify / template modes; animated, directional) and **textures** (tileable surfaces; static). See `.claude/skills/sprite-forge/SKILL.md` ("Artifact routing" + "Texture mode").
 - **`sprite-forge.py`** — Conversion pipeline only. No AI code. Two entry points: `run_pipeline` (animated SVG → PNG sprite sheet) and `run_texture_pipeline` (static SVG → seamless texture tiles + a seam-check grid + texture metadata, via `--tileable`).
+- **Reference grounding (optional)** — `.claude/skills/sprite-forge/reference/` generates concept-art reference images with a local FLUX model (`mflux`, Apple-MLX) so a sprite can be *grounded* on real reference art before Claude draws. **Off by default**, intent-triggered (see SKILL.md "Reference grounding"), with graceful fallback to cold generation when `mflux` is absent. Design-level grounding only — Claude draws fresh from the reference, never traces it; one design reference per subject, Claude renders the directions itself (base FLUX can't do per-angle turnarounds). The image model is *not* Claude — shelling out to `mflux` is fine; the "no subprocess CLI" rule is specifically about not calling the `claude` CLI for AI work.
 
 ## Workflow
 
@@ -49,7 +50,10 @@ When generating tileable surface textures (Texture mode — see the skill):
 /sprite-forge make it red, modify hero_walk_left.svg
 /sprite-forge add a shield, based on hero_walk_left.svg
 /sprite-forge a seamless mossy brick wall texture
+/sprite-forge a Byzantine cataphract, use a reference
 ```
+
+For the last one, Claude generates a few FLUX reference images, you pick one, and it grounds the sprite on your pick (optional — see SKILL.md "Reference grounding"; needs the optional `mflux` dependency).
 
 ### Direct conversion (standalone)
 
@@ -131,6 +135,7 @@ curl -fsSL https://raw.githubusercontent.com/gididaf/sprite-forge/main/install.s
 - Pillow (`pip3 install Pillow`) — for PNG stitching and mirroring
 - `rsvg-convert` (`brew install librsvg`) — for SVG to PNG rendering
 - Claude Code — for the `/sprite-forge` skill
+- **Optional, for reference grounding only:** `mflux` (Apple Silicon / MLX) in an isolated venv — install via `.claude/skills/sprite-forge/reference/install.sh`. The FLUX model (~9.6 GB) is pulled on first use and cached. Not required for normal sprite/texture generation.
 
 ## File organization
 

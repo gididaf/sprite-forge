@@ -131,6 +131,22 @@ Claude reads the existing SVG, applies your change, and regenerates the sprite s
 
 ---
 
+## 🖼 Reference grounding (optional)
+
+Want a sprite grounded on real concept art instead of drawn from priors? Sprite Forge can generate a few reference images with a **local** image model, let you pick one, and ground the sprite on it — so a *specific* request comes out as that, not a generic stereotype.
+
+```
+/sprite-forge a Byzantine cataphract, use a reference
+```
+
+Claude generates a few candidates, you pick one (or blend two in plain words), and it lifts the palette, gear, and silhouette into the sprite. It's **design-level grounding** — Claude draws a fresh, clean, animatable SVG *from* the reference, never traces it.
+
+- **Local & free** — runs [`mflux`](https://github.com/filipstrand/mflux) (FLUX on Apple-MLX) on-device. No API keys, no per-image cost, nothing leaves your machine.
+- **Optional & off by default** — only engages when you ask ("use a reference", "make it look like a real X") or supply your own image. Plain requests stay fast and dependency-free.
+- **Apple Silicon only**, one-time setup: `bash .claude/skills/sprite-forge/reference/install.sh` (pulls the model, ~9.6 GB, cached); the first generation downloads it. If it isn't installed, Sprite Forge just falls back to normal generation.
+
+---
+
 ## 🧱 Textures
 
 Sprite Forge also generates **seamlessly tileable surface textures** — the kind you'd wrap around a Duke Nukem 3D / Doom wall (see the [Texture Showcase](#-texture-showcase) above for the full gallery). Describe a material; get a tile that repeats with no visible seam, at multiple power-of-two sizes, plus a 3×3 verification grid.
