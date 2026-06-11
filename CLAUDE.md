@@ -140,3 +140,7 @@ curl -fsSL https://raw.githubusercontent.com/gididaf/sprite-forge/main/install.s
 ## File organization
 
 SVGs and their outputs are kept together in the same directory. The SVG is the source of truth — PNGs can always be regenerated from it.
+
+## Last Wrapped Commit
+
+`0ce24bb98626b0c8c8fda64842faf85d695924f8` — 2026-06-11
